@@ -1,27 +1,6 @@
-@import "tailwindcss";
-
-@theme {
---color-background: #181d23; /* Your custom color hex, rgb, oklch, etc. */
---color-danger: #ef4444;
---color-alt: #371C51;
---color-card: #232A33;
---color-primary: #191919;
---color-secondary: #292929;
---color-muted: #505050;
---color-info: #08B0F0;
---color-white: #FFFFFF;
---color-black: #000000;
---color-danger: #d2433f;
---color-warning: #f0ad4e;
---color-success: #62af66;
---color-infodark: #184556;
---color-successdark: #324132;
---color-errordark: #682F2D;
---color-transparent: #00000000;
---color-discord: #7289da;
---color-youtube: #cd201f;
---color-facebook: #1877F2;
-}
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 @font-face { font-family: "PlusJakartaSans"; src: url('../fonts/PlusJakartaSans.ttf'); font-display: fallback;}
 @font-face { font-family: "Kanit-Medium"; src: url('../fonts/Kanit-Medium.ttf'); font-display: fallback;}

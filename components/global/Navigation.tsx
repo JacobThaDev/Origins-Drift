@@ -6,11 +6,10 @@ import links from '@/cfg/NavLinks';
 const Navigation = () => {
 
     return(
-        <div className="bg-black/20 absolute w-full z-1000 top-16 h-27.5 flex items-center backdrop-blur">
+        <div className="bg-black/20 absolute w-full z-[1000] top-[64px] h-[110px] flex items-center backdrop-blur">
             <Container>
-
                 <div className="flex">
-                    <div className="max-w-62.5 min-w-62.5 lg:h-27.5 relative flex items-center">
+                    <div className="max-w-[250px] min-w-[250px] lg:h-[110px] relative flex items-center">
                          <p className="font-black text-3xl hidden lg:inline-block">Origins [DC]</p>
                          <p className="font-black text-3xl lg:hidden">Origins</p>
                      </div>
@@ -24,7 +23,7 @@ const Navigation = () => {
                         })}
                      </div>
                      <div className="lg:hidden flex items-center ml-auto">
-                         <MenuIcon height={30}/>
+                        <MenuIcon height={30}/>
                      </div>
                 </div>
             </Container>
@@ -41,7 +40,7 @@ const NavLink = ({ children, url, title }: {
     return(
         <Link href={url} target="_blank" rel="nofollow" 
             aria-label={title}
-            className={`text-xl hover:text-warning flex items-center justify-center px-5 transition-all font-bold`}>
+            className={`text-xl hover:text-warning text-white/80 flex items-center justify-center px-5 transition-all font-bold`}>
             {children}
         </Link>
     )
