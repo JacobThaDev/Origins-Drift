@@ -11,7 +11,7 @@ const SocialBar = () => {
     const FACEBOOK_URL = process.env.NEXT_PUBLIC_FACEBOOK_URL as string;
 
     return(
-        <div className="py-3 bg-black/40 z-[1000] absolute top-0 left-0 w-full backdrop-blur">
+        <div className="py-3 bg-[black]/40 z-1000 absolute top-0 left-0 w-full backdrop-blur">
             <Container>
                 <div className="flex justify-between items-center">
                     <div className="flex items-center gap-3">
