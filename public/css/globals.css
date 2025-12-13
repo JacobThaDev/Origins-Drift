@@ -1,0 +1,39 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@font-face { 
+    font-family: "PlusJakartaSans"; 
+    src: url('../fonts/PlusJakartaSans.ttf'); 
+    font-display: fallback; /* Define how the browser behaves during download */ 
+}
+
+@font-face { 
+    font-family: "Kanit-Medium"; 
+    src: url('../fonts/Kanit-Medium.ttf'); 
+    font-display: fallback; /* Define how the browser behaves during download */ 
+}
+
+@font-face { 
+    font-family: "Kanit-Semibold"; 
+    src: url('../fonts/Kanit-SemiBold.ttf'); 
+    font-display: fallback; /* Define how the browser behaves during download */ 
+}
+
+html {
+    height: 100% !important;
+}
+
+body {
+    height: 100%;
+    font-family: "PlusJakartaSans" !important;
+    color: white;
+    /*background: url(../img/hero.png) top -10px center no-repeat;*/
+    min-height: fit-content;
+}
+
+@layer utilities {
+    .text-balance {
+      text-wrap: balance;
+    }
+}
