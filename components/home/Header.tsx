@@ -16,7 +16,7 @@ const HomeHeader = () => {
                     <p className="max-w-[1200px] lg:text-lg mb-5">
                         We are a group dedicated drifting enthusiasts from all around 
                         the world. See how you stack up against some of the best and submit your own scores 
-                        once you've joined our club!
+                        once you&apos;ve joined our club!
                     </p>
 
                     <p className="mb-3 text-white/70">Supported</p>
