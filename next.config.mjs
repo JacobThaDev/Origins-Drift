@@ -60,12 +60,6 @@ const nextConfig =  {
                 hostname: 'avatars.githubusercontent.com',
                 port: '',
                 pathname: '/**',
-            },
-            {
-                protocol: 'https',
-                hostname: 'oldschool.runescape.wiki',
-                port: '',
-                pathname: '/**',
             }
         ],
     },

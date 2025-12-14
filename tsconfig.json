@@ -30,8 +30,7 @@
         "models/*.js",
         "providers/*.tsx",
         ".next/types/**/*.ts", 
-        "default_settings.jsx"    
-, "models/hiscores/hiscores_skills.model.js"    ],
+    ],
     "exclude": [
         "node_modules"
     ]

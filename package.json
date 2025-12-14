@@ -9,6 +9,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@better-auth/passkey": "^1.4.6",
         "@headlessui/react": "^2.1.10",
         "@heroicons/react": "^2.1.5",
         "@number-flow/react": "^0.5.10",
