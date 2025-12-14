@@ -6,6 +6,7 @@ import mysql2 from "mysql2";
 import gamesModel from './games.model';
 import classesModel from './classes.model';
 import tracksModel from './tracks.model';
+import scoresModel from './scores.model';
 
 let sequelize = new Sequelize(process.env.MYSQL_DATABASE, process.env.MYSQL_USER, process.env.MYSQL_PASS, {
     host: process.env.MYSQL_HOST,
@@ -34,6 +35,7 @@ db.Sequelize  = Sequelize;
 db.games   = gamesModel(sequelize, Sequelize);
 db.classes = classesModel(sequelize, Sequelize);
 db.tracks  = tracksModel(sequelize, Sequelize);
+db.scores  = scoresModel(sequelize, Sequelize);
 
 db.games.hasMany(db.tracks, {
     targetKey: "id",
@@ -45,6 +47,20 @@ db.tracks.belongsTo(db.games, {
     targetKey: "id",
     foreignKey: 'game',
     as: 'Game', // **Crucial change:** Name the association on the 'Track' model
+    onDelete: "NO ACTION"
+});
+
+db.scores.belongsTo(db.games, {
+    targetKey: "id",
+    foreignKey: 'game',
+    as: 'Game',
+    onDelete: "NO ACTION"
+});
+
+db.scores.belongsTo(db.tracks, {
+    targetKey: "id",
+    foreignKey: 'track',
+    as: 'Track',
     onDelete: "NO ACTION"
 });
 

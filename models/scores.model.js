@@ -1,38 +1,46 @@
 module.exports = (sequelize, DataTypes) => {
-    const tracks = sequelize.define("tracks", {
+    const scores = sequelize.define("scores", {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            defaultValue: ""
-        },
-        short_name: {
+        username: {
             type: DataTypes.STRING,
             allowNull: false,
             defaultValue: ""
         },
         game: {
             type: DataTypes.INTEGER,
-            allowNull: false,
-            defaultValue: 1
+            allowNull: false
         },
-        favorite: {
+        track: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        class: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        score: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0
+        },
+        proof_url: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: null
+        },
+        verified: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false
         },
-        track_image: {
-            type: DataTypes.STRING,
-            allowNull: true
-        }
     }, {
         freezeTableName: true,
-        timestamps: false,
+        timestamps: true,
         underscored: true
     });
-    return tracks;
+    return scores;
 };
