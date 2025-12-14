@@ -11,7 +11,6 @@ import {
 
 import { createPool } from "mysql2/promise";
 import { nextCookies } from "better-auth/next-js";
-import { env as _env } from 'process';
 import { passkey } from "@better-auth/passkey";
 
 export const auth = betterAuth({
