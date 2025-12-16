@@ -1,14 +1,27 @@
+"use client";
+
 import Link from "next/link";
 import { DiscordIcon } from "../icons/DiscordIcon";
 import Container from "../layout/Container";
 import { YoutubeIcon } from "../icons/YoutubeIcon";
 import { FacebookIcon } from "../icons/FacebookIcon";
+import { createAuthClient } from "better-auth/client";
+
+const authClient = createAuthClient();
 
 const SocialBar = () => {
 
     const DISCORD_URL  = process.env.NEXT_PUBLIC_DISCORD_URL as string;
     const YOUTUBE_URL  = process.env.NEXT_PUBLIC_YOUTUBE_URL as string;
     const FACEBOOK_URL = process.env.NEXT_PUBLIC_FACEBOOK_URL as string;
+
+    const signIn = async () => { 
+        await authClient.signIn.social({
+            provider: "google",
+            callbackURL: "/",
+            errorCallbackURL: "/login",
+        });
+    }
 
     return(
         <div className="py-3 bg-black/40 z-[1000] absolute top-0 left-0 w-full backdrop-blur">
@@ -32,9 +45,9 @@ const SocialBar = () => {
                     </div>
 
                     <div className="flex gap-3 items-center">
-                        <Link href="/download" className="bg-warning/30 hover:bg-warning/70 transition-all px-5 rounded-lg py-2">
-                            Submit PB
-                        </Link>
+                        <button onClick={() => signIn()} className="bg-warning/30 hover:bg-warning/70 transition-all px-5 rounded-lg py-2">
+                            Sign In
+                        </button>
                     </div>
                 </div>
             </Container>

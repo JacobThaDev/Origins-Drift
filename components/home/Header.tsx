@@ -6,12 +6,12 @@ const HomeHeader = () => {
         <div className="bg-header w-full min-h-[700px] max-h-[700px] pt-36 flex justify-center items-center text-white">
             <Container>
                 <div className="relative z-[1]">
-                    <p className="text-lg mb-2">
+                    <p className="lg:text-lg mb-5">
                         - Welcome!
                     </p>
-                    <p className="text-2xl lg:text-6xl font-black mb-5">
+                    <p className="text-3xl lg:text-6xl font-black mb-5">
                         The premier destination for authentic 
-                        drifters in Forza Horizon.
+                        drifters in the world of Forza
                     </p>
                     <p className="max-w-[1200px] lg:text-lg mb-5">
                         We are a group dedicated drifting enthusiasts from all around 
@@ -19,7 +19,7 @@ const HomeHeader = () => {
                         once you&apos;ve joined our club!
                     </p>
 
-                    <p className="mb-3 text-white/70">Supported</p>
+                    <p className="mb-5 text-white/70">Supported</p>
 
                     <ForzaHorizonIcon height={36}/>
                 </div>

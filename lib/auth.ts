@@ -39,8 +39,7 @@ export const auth = betterAuth({
 		accountLinking: {
 			trustedProviders: [
                 "google", 
-                "discord",
-                "github"
+                "discord"
             ],
 		},
 	},
@@ -48,6 +47,10 @@ export const auth = betterAuth({
         discord: {
 			clientId: process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID || "",
 			clientSecret: process.env.DISCORD_CLIENT_SECRET || "",
+		},
+        google: {
+			clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "",
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
 		}
 	},
 	plugins: [

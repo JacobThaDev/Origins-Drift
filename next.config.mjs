@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig =  {
-    async headers() {
+    /*async headers() {
         return [{
             source: "/api/vote/callback",
             headers: [
@@ -18,7 +18,7 @@ const nextConfig =  {
                 },
             ],
         }];
-    },
+    },*/
     webpack: config => {
         config.module.rules.push({
             test: /\.svg$/,
