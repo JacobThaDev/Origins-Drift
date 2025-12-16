@@ -3,7 +3,6 @@ import { DiscordIcon } from "../icons/DiscordIcon";
 import Container from "../layout/Container";
 import { YoutubeIcon } from "../icons/YoutubeIcon";
 import { GithubIcon } from "../icons/GithubIcon";
-import SignInButton from "./SignInButton";
 
 const SocialBar = async() => {
 
@@ -33,7 +32,7 @@ const SocialBar = async() => {
                     </div>
 
                     <div className="flex gap-3 items-center">
-                        
+
                     </div>
                 </div>
             </Container>
