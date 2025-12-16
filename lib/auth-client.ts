@@ -1,61 +1,86 @@
-"use client"
-import { createAuthClient } from "better-auth/react";
+import { betterAuth } from "better-auth";
 
 import {
-	organizationClient,
-	twoFactorClient,
-	adminClient,
-	multiSessionClient,
-	oneTapClient,
-	oidcClient,
-	genericOAuthClient,
-} from "better-auth/client/plugins";
+	bearer,
+	multiSession,
+	oneTap,
+	oAuthProxy,
+	openAPI,
+	customSession,
+} from "better-auth/plugins";
 
-import { passkeyClient } from "@better-auth/passkey/client";
+import { createPool } from "mysql2/promise";
+import { nextCookies } from "better-auth/next-js";
+import { passkey } from "@better-auth/passkey/*";
 
+const development_config = {
+    host: process.env.MYSQL_HOST,
+    port: process.env.MYSQL_PORT ? process.env.MYSQL_PORT : 3306,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASS,
+    database: process.env.MYSQL_DATABASE,
+    pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+    },
+}
 
-import { toast } from "sonner";
+const production_config = {
+    host: process.env.MYSQL_HOST,
+    port: process.env.MYSQL_PORT ? process.env.MYSQL_PORT : 3306,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASS,
+    database: process.env.MYSQL_DATABASE,
+    ssl : {
+        ca: process.env.MYSQL_CERT ?? ''
+    },
+    pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+    },
+}
 
-export const client = createAuthClient({
-	plugins: [
-		organizationClient(),
-		twoFactorClient({
-			onTwoFactorRedirect() {
-				window.location.href = "/two-factor";
-			},
-		}),
-		passkeyClient(),
-		adminClient(),
-		multiSessionClient(),
-		oneTapClient({
-			clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-			promptOptions: {
-				maxAttempts: 1,
-			},
-		}),
-		oidcClient(),
-		genericOAuthClient(),
-		
-	],
-	fetchOptions: {
-		onError(e) {
-			if (e.error.status === 429) {
-				toast.error("Too many requests. Please try again later.");
-			}
+export const auth = betterAuth({
+	appName:"Origins-Drift",
+    baseURL: "https://127.0.0.1:3000",
+    trustedOrigins: [
+        "https://127.0.0.1:3000"
+    ],
+	database: createPool(process.env.MYSQL_CERT == undefined ? development_config : production_config),
+	account: {
+		accountLinking: {
+			trustedProviders: [
+                "google", 
+                "github"
+            ],
 		},
 	},
+	socialProviders: {
+		google: {
+			clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "",
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+		}
+	},
+	plugins: [
+		passkey(),
+		openAPI(),
+		bearer(),
+		multiSession(),
+		oAuthProxy(),
+		nextCookies(),
+		oneTap(),
+		customSession(async (session) => {
+			return {
+				...session,
+				user: {
+					...session.user,
+					dd: "test",
+				},
+			};
+		})
+	]
 });
-
-export const {
-	signUp,
-	signIn,
-	signOut,
-	useSession,
-    getSession,
-    revokeSession,
-	organization,
-	useListOrganizations,
-	useActiveOrganization,
-} = client;
-
-client.$store.listen("$sessionSignal", async () => {});

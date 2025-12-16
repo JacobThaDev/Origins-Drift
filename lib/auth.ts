@@ -25,8 +25,8 @@ export const auth = betterAuth({
         user: process.env.MYSQL_USER  as string,
         password: process.env.MYSQL_PASS  as string,
         database: process.env.MYSQL_DATABASE  as string,
-        ssl : {
-            ca: process.env.MYSQL_CERT as string ?? ''
+        ssl : process.env.MYSQL_CERT == undefined ? undefined : {
+            ca: process.env.MYSQL_CERT
         },
         pool: {
             max: 5,
@@ -39,7 +39,8 @@ export const auth = betterAuth({
 		accountLinking: {
 			trustedProviders: [
                 "google", 
-                "discord"
+                "discord",
+                "github"
             ],
 		},
 	},
@@ -47,10 +48,6 @@ export const auth = betterAuth({
         discord: {
 			clientId: process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID || "",
 			clientSecret: process.env.DISCORD_CLIENT_SECRET || "",
-		},
-        google: {
-			clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "",
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
 		}
 	},
 	plugins: [
