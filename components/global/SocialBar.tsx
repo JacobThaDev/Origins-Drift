@@ -3,12 +3,20 @@ import { DiscordIcon } from "../icons/DiscordIcon";
 import Container from "../layout/Container";
 import { YoutubeIcon } from "../icons/YoutubeIcon";
 import { GithubIcon } from "../icons/GithubIcon";
+import SignInButton from "./SignInButton";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import SignOutButton from "./SignOutButton";
 
 const SocialBar = async() => {
 
     const DISCORD_URL  = process.env.NEXT_PUBLIC_DISCORD_URL as string;
     const YOUTUBE_URL  = process.env.NEXT_PUBLIC_YOUTUBE_URL as string;
     const GITHUB_URL   = process.env.NEXT_PUBLIC_GITHUB_URL as string;
+
+    const session = await auth.api.getSession({
+        headers: await headers()
+    });
     
     return(
         <div className="py-3 bg-black/40 z-[1000] absolute top-0 left-0 w-full backdrop-blur">
@@ -32,7 +40,11 @@ const SocialBar = async() => {
                     </div>
 
                     <div className="flex gap-3 items-center">
-
+                        {session ? 
+                        <>
+                            Welcome, {session.user.name}
+                            <SignOutButton />
+                        </> : <SignInButton />}
                     </div>
                 </div>
             </Container>
