@@ -8,6 +8,7 @@ const SignInButton = () => {
     const signIn = async () => {
         await authClient.signIn.social({
             provider: "discord",
+            callbackURL: "/",
             errorCallbackURL: "/",
         });
     }

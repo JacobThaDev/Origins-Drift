@@ -33,7 +33,7 @@ const SocialBar = async() => {
                     </div>
 
                     <div className="flex gap-3 items-center">
-                        <SignInButton />
+                        
                     </div>
                 </div>
             </Container>
