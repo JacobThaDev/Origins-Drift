@@ -11,7 +11,7 @@ import {
 } from "better-auth/client/plugins";
 
 import { toast } from "sonner";
-import { passkey } from "@better-auth/passkey/*";
+import { passkey } from "@better-auth/passkey";
 
 export const client = createAuthClient({
 	plugins: [

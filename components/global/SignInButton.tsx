@@ -1,7 +1,6 @@
 "use client";
 
 import { createAuthClient } from "better-auth/client";
-
 const authClient = createAuthClient();
 
 const SignInButton = () => {
