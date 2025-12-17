@@ -2,38 +2,14 @@
 
 import Image from "next/image";
 import Container from "../layout/Container";
-import { useEffect, useState } from "react";
-import LocalApi from "@/services/LocalApi";
+import { useState } from "react";
 import { TracksTypes } from "@/utils/types/TracksTypes";
-import { GamesTypes } from "@/utils/types/GamesTypes";
 import { BookmarkIcon } from "../icons/BookmarkIcon";
 import Link from "next/link";
 
-const TracksSection = () => {
+const TracksSection = ({ tracks }: { tracks:TracksTypes[] }) => {
 
-    const [ tracks, setTracks ]   = useState<TracksTypes[]>();
-    const [ mounted, setMounted ] = useState<boolean>(false);
     const [ showAll, setShowAll ] = useState<boolean>(false);
-
-    useEffect(() => setMounted(true), []);
-
-    useEffect(() => {
-        if (!mounted) {
-            return;
-        }
-
-        async function loadTracks() {
-            const gamesData:GamesTypes = await LocalApi.get("games/fh5").then(r => r.data);
-
-            if (gamesData != null) {
-                const tracks:TracksTypes[] = gamesData.tracks;
-                setTracks(tracks);
-            }
-        }
-
-        loadTracks();
-
-    }, [ mounted ])
 
     return(
         <div className="w-full py-20 relative z-[1] mb-10">

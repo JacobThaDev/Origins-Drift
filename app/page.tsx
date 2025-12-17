@@ -2,15 +2,36 @@ import Navigation from "@/components/global/Navigation";
 import SocialBar from "@/components/global/SocialBar";
 import HomeHeader from "@/components/home/Header";
 import TracksSection from "@/components/home/Tracks";
+import LocalApi from "@/services/LocalApi";
+import { GamesTypes } from "@/utils/types/GamesTypes";
+import { TracksTypes } from "@/utils/types/TracksTypes";
 
-export default function Home() {
+export default async function Home() {
 
+    let trackData:TracksTypes[] = [];
+
+    try {
+        const gamesData:GamesTypes = await LocalApi.get("games/fh5").then(r => r.data);
+
+        if (gamesData != null) {
+            trackData = gamesData.tracks;
+        }
+    } catch (e:any) {
+        return(
+            <>
+                <SocialBar/>
+                <Navigation/>
+                <HomeHeader/>
+            </>
+        )
+    }
+    
     return (
         <>
             <SocialBar/>
             <Navigation/>
             <HomeHeader/>
-            <TracksSection/>
+            <TracksSection tracks={trackData}/>
 
         </>
     );
