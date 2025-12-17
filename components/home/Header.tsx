@@ -1,5 +1,6 @@
 import Container from "../layout/Container";
 import { ForzaHorizonIcon } from "../icons/ForzaHorizonIcon";
+import GlowText from "../misc/GlowText";
 
 const HomeHeader = () => {
     return (
@@ -10,7 +11,7 @@ const HomeHeader = () => {
                         - Welcome!
                     </p>
                     <p className="text-3xl lg:text-6xl font-black mb-5">
-                        The premier destination for authentic 
+                        The <GlowText text="premier"/> destination for authentic 
                         drifters in the world of Forza
                     </p>
                     <p className="max-w-[1200px] lg:text-lg mb-5">
@@ -19,7 +20,9 @@ const HomeHeader = () => {
                         once you&apos;ve joined our club!
                     </p>
 
-                    <p className="mb-5 text-white/70">Supported</p>
+                    <p className="mb-5 text-white/70">
+                        Supported
+                    </p>
 
                     <ForzaHorizonIcon height={36}/>
                 </div>

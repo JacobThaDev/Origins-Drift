@@ -6,6 +6,8 @@ import { useState } from "react";
 import { TracksTypes } from "@/utils/types/TracksTypes";
 import { BookmarkIcon } from "../icons/BookmarkIcon";
 import Link from "next/link";
+import { TropyIcon } from "../icons/TrophyIcon";
+import Meteors from "../misc/Meteors";
 
 const TracksSection = ({ tracks }: { tracks:TracksTypes[] }) => {
 
@@ -18,28 +20,10 @@ const TracksSection = ({ tracks }: { tracks:TracksTypes[] }) => {
                     <p className="font-bold text-2xl">
                         Leaderboards
                     </p>
-
-                    {/* <div className="flex rounded items-center overflow-hidden bg-danger font-black text-sm">
-                        <div className="w-[38px] text-center">
-                            A
-                        </div>
-                        <div className="text-center border-danger border-2 border-l-0 bg-white h-full flex items-center justify-center text-black w-[48px] rounded-r">
-                            800
-                        </div>
-                    </div>
-
-                    <div className="flex rounded items-center overflow-hidden bg-[#69459C] font-black text-sm">
-                        <div className="w-[38px] text-center">
-                            S1
-                        </div>
-                        <div className="text-center border-[#69459C] border-2 border-l-0 bg-white h-full flex items-center justify-center text-black w-[48px] rounded-r">
-                            900
-                        </div>
-                    </div> */}
                 </div>
 
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5 mb-10 group">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5 mb-10">
                     {tracks && tracks.map((track:TracksTypes, index:number) => {
                         if (!showAll && index > 5) {
                             return null;
@@ -59,10 +43,18 @@ const TracksSection = ({ tracks }: { tracks:TracksTypes[] }) => {
                                     alt=""
                                     className={`rounded-2xl h-auto w-full relative hover:z-[1] transition-all duration-[450ms]`}/>
 
-                                <div className="p-3">
-                                    <Link href={`/track/${track.short_name}`}
-                                            className="inline-block text-center bg-card brightness-110 hover:brightness-125 w-full py-3 rounded-xl">
-                                        Leaderboard
+                                <div className="p-3 pb-1.5">
+                                    <Link 
+                                        href={`/track/${track.short_name}`}
+                                        className="relative overflow-hidden inline-block text-center bg-button hover:bg-buttonHover group w-full py-3 rounded-xl transition-all duration-500">
+                                        <Meteors className="hidden group-hover:inline-block"/>
+                                        <TropyIcon 
+                                            height={80}
+                                            className="absolute -top-3 right-3 rotate-[-15deg] text-white/5 group-hover:text-warning/20 transition-all duration-500"/>
+                                        
+                                        <p className="text-white transition-all duration-500">
+                                            Leaderboard
+                                        </p>
                                     </Link>
                                 </div>
                             </div>

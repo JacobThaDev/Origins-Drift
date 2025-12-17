@@ -17,6 +17,7 @@ export default async function Home() {
             trackData = gamesData.tracks;
         }
     } catch (e:any) {
+        console.error(e);
         return(
             <>
                 <SocialBar/>
@@ -32,7 +33,6 @@ export default async function Home() {
             <Navigation/>
             <HomeHeader/>
             <TracksSection tracks={trackData}/>
-
         </>
     );
 

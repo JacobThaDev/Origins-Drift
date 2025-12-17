@@ -13,6 +13,8 @@ const config: Config = {
             background: "#181d23",
             alt: "#371C51",
             card: "#232A33",
+            button: "#2C3440",
+            buttonHover: "#343F4C",
             primary: "#191919",
             secondary: "#292929",
             muted: "#505050",

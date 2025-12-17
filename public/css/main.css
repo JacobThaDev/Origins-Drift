@@ -182,3 +182,49 @@
     height: 14px;
     background: inherit;
 }
+
+.glow-button {
+    z-index: 2;
+    background: var(--button-gradient);
+}
+
+.glow-button:before {
+    z-index: -3;
+    position: absolute;
+    content: ' ';
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    filter: blur(10px);
+    border-radius: inherit;
+    background: var(--button-gradient);
+    /* animation: example 1.5s infinite linear alternate; */
+}
+
+.highlight {
+    display: inline-block;
+    position: relative;
+}
+
+.highlight .highlight-text {
+    position: absolute;
+    background: var(--text-gradient);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    z-index: 1;
+}
+
+.highlight .highlight-glow {
+    background: var(--text-gradient);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter:blur(6px);
+    /* animation: example 1.5s infinite linear alternate; */
+}
+
+
+@keyframes example {
+    from { filter: blur(10px);  }
+    to { filter: blur(20px); }
+}
