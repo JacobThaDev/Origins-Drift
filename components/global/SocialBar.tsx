@@ -7,6 +7,7 @@ import SignInButton from "./SignInButton";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import SignOutButton from "./SignOutButton";
+import ProfileButton from "./ProfileButton";
 
 const SocialBar = async() => {
 
@@ -17,34 +18,44 @@ const SocialBar = async() => {
     const session = await auth.api.getSession({
         headers: await headers()
     });
-    
+
     return(
         <div className="py-3 bg-black/40 z-[1000] absolute top-0 left-0 w-full backdrop-blur">
             <Container>
                 <div className="flex justify-between items-center">
                     <div className="flex items-center gap-3">
-                        {DISCORD_URL != "" && 
-                        <SocialButton url={DISCORD_URL} color="discord">
-                           <DiscordIcon height={20} />
-                        </SocialButton>}
+                        {DISCORD_URL != undefined && 
+                        <Link href={DISCORD_URL} 
+                            target="_blank" 
+                            rel="nofollow" 
+                            className={`hover:text-discord transition-all hover:scale-125`}>
+                             <DiscordIcon height={20} />
+                        </Link>}
 
-                        {YOUTUBE_URL != "" && 
-                        <SocialButton url={YOUTUBE_URL} color="youtube">
-                           <YoutubeIcon height={20} />
-                        </SocialButton>}
-
-                        {GITHUB_URL != "" && 
-                        <SocialButton url={GITHUB_URL} color="github">
-                           <GithubIcon height={20} />
-                        </SocialButton>}
+                        {YOUTUBE_URL != undefined && 
+                        <Link href={YOUTUBE_URL} 
+                            target="_blank" 
+                            rel="nofollow" 
+                            className={`hover:text-youtube transition-all hover:scale-125`}>
+                             <YoutubeIcon height={20} />
+                        </Link>}
+                        
+                        {GITHUB_URL != undefined && 
+                        <Link href={GITHUB_URL} 
+                            target="_blank" 
+                            rel="nofollow" 
+                            className={`hover:text-black transition-all hover:scale-125`}>
+                             <GithubIcon height={20} />
+                        </Link>}
                     </div>
 
                     <div className="flex gap-3 items-center">
                         {session ? 
                         <>
-                            Welcome, {session.user.name}
-                            <SignOutButton />
-                        </> : <SignInButton />}
+                            <ProfileButton session={session} />
+                            <SignOutButton /> 
+                        </>
+                        : <SignInButton />}
                     </div>
                 </div>
             </Container>
@@ -52,51 +63,5 @@ const SocialBar = async() => {
     )
 }
 
-const SocialButton = ({ children, url, color }: {
-    url: string;
-    children?: React.ReactNode;
-    color?:"youtube"|"discord"|"facebook"|"github";
-}) => {
-
-    if (color == "discord") {
-        return(
-            <Link href={url} 
-                target="_blank" 
-                rel="nofollow" 
-                className={`hover:text-discord transition-all hover:scale-125`}>
-                {children}
-            </Link>
-        )
-    }
-
-    if (color == "youtube") {
-        return(
-            <Link href={url} 
-                target="_blank" 
-                rel="nofollow" 
-                className={`hover:text-youtube transition-all hover:scale-125`}>
-                {children}
-            </Link>
-        )
-    }
-
-     if (color == "facebook") {
-        return(
-            <Link href={url} 
-                target="_blank" 
-                rel="nofollow" 
-                className={`hover:text-facebook transition-all hover:scale-125`}>
-                {children}
-            </Link>
-        )
-    }
-
-    return(
-        <Link href={url} target="_blank" rel="nofollow" 
-            className={`hover:text-white transition-all hover:scale-125`}>
-            {children}
-        </Link>
-    )
-}
 
 export default SocialBar;

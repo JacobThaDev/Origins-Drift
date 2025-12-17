@@ -53,6 +53,7 @@ export const {
 	organization,
 	useListOrganizations,
 	useActiveOrganization,
+    listAccounts
 } = client;
 
 client.$store.listen("$sessionSignal", async () => {});

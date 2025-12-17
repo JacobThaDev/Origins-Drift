@@ -15,9 +15,12 @@ export async function GET(req: any, res:any) {
             where: {
                 symbol: gameType
             },
-            include: {
-                model: db.tracks
-            }
+            include: [
+                {
+                    model: db.tracks,
+                    as: 'tracks'
+                },
+            ]
         });
 
         if (!game) {

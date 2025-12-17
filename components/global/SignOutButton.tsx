@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { createAuthClient } from "better-auth/client";
+import { PowerIcon } from "../icons/PowerIcon";
 
 const authClient = createAuthClient();
 
@@ -23,11 +24,13 @@ const SignOutButton = () => {
     }
 
     return (
-        <>
-            <button onClick={() => logout()} className="bg-warning/30 hover:bg-warning/70 transition-all px-5 rounded-lg py-2">
-                Sign Out
-            </button>
-        </>
+        <button 
+            onClick={() => logout()} 
+            aria-label="Sign out"
+            title="Sign out"
+            className="hover:bg-danger/70 transition-all p-2 text-white/50 rounded-full outline-0">
+            <PowerIcon width={24}  />
+        </button>
     )
 }
 
