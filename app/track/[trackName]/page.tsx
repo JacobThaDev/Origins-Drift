@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: MetaProps): Promise<Metadata>
         
         return {
             title: capitalize(trackName)+" Leaderboard",
-            description: `Top 50 drifters on ${trackName}`,
+            description: `Top 100 drifters on ${trackName}`,
         };
     } catch (e:any) {
         console.error(e);
