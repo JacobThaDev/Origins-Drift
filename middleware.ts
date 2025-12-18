@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { env as _env } from 'process';
 import LocalApi from "./services/LocalApi";
+import { redirect } from "next/navigation";
 
 export async function middleware(request: NextRequest) {
+    const { pathname } = new URL(request.url);
+
+    if (pathname == "/" || pathname == "/login") {
+        return NextResponse.next();
+    }
+
     try {
         const { data: session } = await LocalApi.get("/api/auth/get-session", {
             baseURL: request.nextUrl.origin,
@@ -12,8 +19,7 @@ export async function middleware(request: NextRequest) {
         });
 
         if(!session) {
-            return NextResponse.next();
-            //return NextResponse.redirect(new URL("/login", request.url));
+            return NextResponse.redirect(new URL("/login", request.url));
         }
         
         return NextResponse.next();
@@ -24,6 +30,8 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
 	matcher: [
+        "/",
+        "/profile",
         "/dashboard",
-    ],
+    ]
 };

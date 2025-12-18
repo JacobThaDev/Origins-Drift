@@ -1,9 +1,8 @@
 import Container from "@/components/layout/Container";
-import LeaderEntry from "@/components/leaderboards/LeaderEntry";
+import LeaderTable from "@/components/leaderboards/LeaderTable";
 import LocalApi from "@/services/LocalApi";
 import { capitalize } from "@/utils/Functions";
-import { LeadersTypes } from "@/utils/types/LeadersTypes";
-import { ScoresTypes } from "@/utils/types/ScoresTypes";
+import { TracksTypes } from "@/utils/types/TracksTypes";
 import { Metadata } from "next";
 import Image from "next/image";
 
@@ -29,7 +28,7 @@ export async function generateMetadata({ params }: MetaProps): Promise<Metadata>
 export default async function TrackLeaderboard({ params }: { params: Promise<{ trackName: string }>}) {
 
     const { trackName } = await params;
-    const trackData:ScoresTypes = await LocalApi.get("games/fh5/"+trackName+"/leaders").then(r => r.data);
+    const trackData:TracksTypes = await LocalApi.get("games/fh5/"+trackName+"").then(r => r.data);
 
     if (!trackData || trackData.error) {
         return(
@@ -65,18 +64,18 @@ export default async function TrackLeaderboard({ params }: { params: Promise<{ t
         )
     }
 
-    const bgImage = `/img/tracks/headers/${trackData.track.short_name}.jpg`;
+    const bgImage = `/img/tracks/headers/${trackData.short_name}.jpg`;
 
     return (
         <>
             <div style={{ backgroundImage: `url(${bgImage})`}}
-                className={`bg-track w-full min-h-[450px] max-h-[450px] pt-36 flex justify-center items-center text-white`}/>
+                className={`bg-track w-full min-h-[350px] max-h-[350px] lg:min-h-[450px] lg:max-h-[450px] pt-36 flex justify-center items-center text-white`}/>
 
             <div className="pb-16">
                 <Container>
                     <div className="flex flex-col lg:flex-row gap-7 items-start mt-[-60px] relative">
                         <div className="bg-card rounded-2xl relative mt-[-50px] p-1 lg:min-w-[450px]">
-                            <Image src={trackData.track.track_image} 
+                            <Image src={trackData.track_image} 
                                 className="rounded-xl" width={450} height={150} alt=""/>
                         </div>
 
@@ -87,13 +86,7 @@ export default async function TrackLeaderboard({ params }: { params: Promise<{ t
                                 </p>
                             </div>
                         
-                            <div className="flex flex-col gap-4">
-                                {trackData.scores && trackData.scores.map((score:LeadersTypes, index:number) => {
-                                    return(
-                                        <LeaderEntry key={index} score={score} rank={index} />
-                                    )
-                                })}
-                            </div>
+                            <LeaderTable track={trackData}/>
                         </div>
                     </div>
                 </Container>
