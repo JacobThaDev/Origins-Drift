@@ -4,10 +4,10 @@ import Image from "next/image";
 import Container from "../layout/Container";
 import { useState } from "react";
 import { TracksTypes } from "@/utils/types/TracksTypes";
-import { BookmarkIcon } from "../icons/BookmarkIcon";
 import Link from "next/link";
 import { TropyIcon } from "../icons/TrophyIcon";
 import Meteors from "../misc/Meteors";
+import { SparklesIcon } from '@heroicons/react/24/solid'
 
 const TracksSection = ({ tracks }: { tracks:TracksTypes[] }) => {
 
@@ -32,8 +32,8 @@ const TracksSection = ({ tracks }: { tracks:TracksTypes[] }) => {
                         return(
                             <div className="h-full bg-card rounded-2xl relative overflow-hidden transition-all duration-500" key={index}>
                                 {track.favorite && 
-                                <div className="absolute top-0 left-0 z-[4] bg-info/50 flex gap-2 items-center px-4 pe-5 py-2 rounded-br-2xl">
-                                    <BookmarkIcon height={20} className="text-info" />
+                                <div className="absolute top-0 left-0 z-[4] bg-black/20 backdrop-blur flex gap-2 items-center px-4 pe-5 py-2 rounded-br-2xl">
+                                    <SparklesIcon height={20} className="text-info" />
                                     <p className="text-sm font-bold">Top Track</p>
                                 </div>}
                                 <Image 

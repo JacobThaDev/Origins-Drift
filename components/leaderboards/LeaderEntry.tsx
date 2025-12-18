@@ -4,7 +4,7 @@ import { ClassABadge, ClassS1Badge } from "../misc/ClassBadges";
 import PlatformIcon from "./PlatformIcon";
 import Image from "next/image";
 import Link from "next/link";
-import { VerifiedIcon } from "../icons/VerifiedIcon";
+import { CheckBadgeIcon } from '@heroicons/react/24/outline'
 
 const LeaderEntry = ({ score, rank } : { score: LeadersTypes, rank: number }) => {
 
@@ -35,7 +35,7 @@ const LeaderEntry = ({ score, rank } : { score: LeadersTypes, rank: number }) =>
                     </Link>
                     <div className="flex gap-1 items-center">
                         {score.verified && 
-                            <VerifiedIcon height={20} strokeWidth={1.5} className="text-info"/>
+                            <CheckBadgeIcon height={20} strokeWidth={2} className="text-info"/>
                         }
                         <p>{formatNumber(score.score, 0)}</p>
                     </div>

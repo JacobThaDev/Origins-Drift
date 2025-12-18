@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { createAuthClient } from "better-auth/client";
-import { PowerIcon } from "../icons/PowerIcon";
+import { PowerIcon } from '@heroicons/react/24/outline'
 
 const authClient = createAuthClient();
 
@@ -29,7 +29,7 @@ const SignOutButton = () => {
             aria-label="Sign out"
             title="Sign out"
             className="hover:bg-danger/70 transition-all p-2 text-white/50 rounded-full outline-0">
-            <PowerIcon width={24}  />
+            <PowerIcon width={24} strokeWidth={2}  />
         </button>
     )
 }
