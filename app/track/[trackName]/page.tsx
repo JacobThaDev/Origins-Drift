@@ -31,8 +31,6 @@ export default async function TrackLeaderboard({ params }: { params: Promise<{ t
     const { trackName } = await params;
     const trackData:ScoresTypes = await LocalApi.get("games/fh5/"+trackName+"/leaders").then(r => r.data);
 
-    console.log(trackData);
-
     if (!trackData || trackData.error) {
         return(
             <>
@@ -72,7 +70,7 @@ export default async function TrackLeaderboard({ params }: { params: Promise<{ t
     return (
         <>
             <div style={{ backgroundImage: `url(${bgImage})`}}
-                className={`bg-track w-full min-h-[350px] max-h-[350px] pt-36 flex justify-center items-center text-white`}/>
+                className={`bg-track w-full min-h-[450px] max-h-[450px] pt-36 flex justify-center items-center text-white`}/>
 
             <div className="pb-16">
                 <Container>
