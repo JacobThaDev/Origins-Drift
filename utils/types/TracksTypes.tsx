@@ -5,4 +5,5 @@ export interface TracksTypes {
     game: number;
     favorite: boolean;
     track_image: string;
+    error?: string;
 }

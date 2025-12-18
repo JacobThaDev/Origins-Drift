@@ -51,7 +51,11 @@ export async function GET(req: any, res:any) {
             ]
         });
 
-        return Response.json(scores);
+        return Response.json({
+            game: game,
+            track: track,
+            scores: scores
+        });
     } catch (e:any) {
         console.log(e.message);
         return Response.json({

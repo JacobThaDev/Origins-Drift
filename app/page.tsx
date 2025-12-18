@@ -1,5 +1,3 @@
-import Navigation from "@/components/global/Navigation";
-import SocialBar from "@/components/global/SocialBar";
 import HomeHeader from "@/components/home/Header";
 import TracksSection from "@/components/home/Tracks";
 import LocalApi from "@/services/LocalApi";
@@ -20,8 +18,6 @@ export default async function Home() {
         console.error(e);
         return(
             <>
-                <SocialBar/>
-                <Navigation/>
                 <HomeHeader/>
             </>
         )
@@ -29,8 +25,6 @@ export default async function Home() {
     
     return (
         <>
-            <SocialBar/>
-            <Navigation/>
             <HomeHeader/>
             <TracksSection tracks={trackData}/>
         </>

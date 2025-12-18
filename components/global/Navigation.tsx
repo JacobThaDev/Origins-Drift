@@ -38,7 +38,7 @@ const NavLink = ({ children, url, title }: {
 }) => {
 
     return(
-        <Link href={url} target="_blank" rel="nofollow" 
+        <Link href={url}
             aria-label={title}
             className={`text-xl hover:text-warning text-white/80 flex items-center justify-center px-5 transition-all font-bold`}>
             {children}

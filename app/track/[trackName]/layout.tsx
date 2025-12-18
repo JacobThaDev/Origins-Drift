@@ -1,12 +1,10 @@
+import TrackHeader from "@/components/leaderboards/TrackHeader";
 import type { Metadata } from "next";
 
-import "@/public/css/globals.css";
-import "@/public/css/main.css";
 
-import { Toaster } from "sonner";
-import Providers from "./providers";
-import SocialBar from "@/components/global/SocialBar";
-import Navigation from "@/components/global/Navigation";
+interface RootLayoutTypes {
+    children: React.ReactNode;
+}
 
 export async function generateMetadata(): Promise<Metadata> {
 
@@ -17,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
     return {
         title: {
-            default: "Home | "+site_name,
+            default: "Test | "+site_name,
             template: "%s | "+site_name
         },
         description: site_desc,
@@ -30,23 +28,12 @@ export async function generateMetadata(): Promise<Metadata> {
     };
 }
 
-interface RootLayoutTypes {
-    children: React.ReactNode;
-}
-
 export default async function RootLayout({ children }: RootLayoutTypes) {
 
     return (
-        <html lang="en">
-            <body className={`bg-background antialiased overflow-x-hidden`}>
-                <SocialBar/>
-                <Navigation/>
-                <Providers>
-                    {children}
-                </Providers>
-                <Toaster />
-            </body>
-        </html>
+        <>
+            {children}
+        </>
     );
     
 }
