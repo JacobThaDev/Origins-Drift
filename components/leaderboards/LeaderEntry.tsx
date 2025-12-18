@@ -1,5 +1,4 @@
 import { LeadersTypes } from "@/utils/types/LeadersTypes";
-import { TropyIcon } from "../icons/TrophyIcon";
 import { formatNumber } from "@/utils/Functions";
 import { ClassABadge, ClassS1Badge } from "../misc/ClassBadges";
 import PlatformIcon from "./PlatformIcon";

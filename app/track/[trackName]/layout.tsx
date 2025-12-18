@@ -1,6 +1,4 @@
-import TrackHeader from "@/components/leaderboards/TrackHeader";
 import type { Metadata } from "next";
-
 
 interface RootLayoutTypes {
     children: React.ReactNode;
