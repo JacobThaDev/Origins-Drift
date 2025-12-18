@@ -1,25 +1,17 @@
 export const ClassABadge = () => {
     return(
-        <div className="flex rounded items-center overflow-hidden bg-danger font-black text-sm">
-            <div className="w-[38px] text-center">
-                A
-            </div>
-            <div className="text-center border-danger border-2 border-l-0 bg-white h-full flex items-center justify-center text-black w-[48px] rounded-r">
-                800
-            </div>
+        <div className="bg-danger text-xs lg:text-sm flex rounded w-[40px] lg:w-[100px] h-[30px] overflow-hidden border-2 border-danger font-black">
+            <div className="w-full max-w-[40px] flex items-center justify-center">A</div>
+            <div className="bg-black/50 w-full hidden lg:flex items-center justify-center">800</div>
         </div>
     )
 }
 
 export const ClassS1Badge = () => {
     return(
-        <div className="flex rounded items-center overflow-hidden bg-[#69459C] font-black text-sm">
-            <div className="w-[38px] text-center">
-                S1
-            </div>
-            <div className="text-center border-[#69459C] border-2 border-l-0 bg-white h-full flex items-center justify-center text-black w-[48px] rounded-r">
-                900
-            </div>
+        <div className="bg-[#69459C] text-xs lg:text-sm flex rounded w-[40px] lg:w-[100px] h-[30px] overflow-hidden border-2 border-[#69459C] font-black">
+            <div className="w-full max-w-[40px] flex items-center justify-center">S1</div>
+            <div className="bg-black/50 w-full hidden lg:flex items-center justify-center">900</div>
         </div>
     )
 }

@@ -20,6 +20,10 @@ export async function GET(req: any, res:any) {
                     model: db.tracks,
                     as: 'tracks'
                 },
+            ],
+            order: [
+                ['tracks', 'favorite', 'DESC'],
+                ['tracks', 'id', 'ASC']
             ]
         });
 

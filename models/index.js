@@ -7,6 +7,8 @@ import gamesModel from './games.model';
 import classesModel from './classes.model';
 import tracksModel from './tracks.model';
 import scoresModel from './scores.model';
+import userModel from './user.model';
+import accountModel from './account.model';
 
 let sequelize = new Sequelize(process.env.MYSQL_DATABASE, process.env.MYSQL_USER, process.env.MYSQL_PASS, {
     host: process.env.MYSQL_HOST,
@@ -36,6 +38,8 @@ db.games   = gamesModel(sequelize, Sequelize);
 db.classes = classesModel(sequelize, Sequelize);
 db.tracks  = tracksModel(sequelize, Sequelize);
 db.scores  = scoresModel(sequelize, Sequelize);
+db.users   = userModel(sequelize, Sequelize);
+db.account = accountModel(sequelize, Sequelize);
 
 db.games.hasMany(db.tracks, {
     targetKey: "id",
@@ -63,6 +67,35 @@ db.scores.belongsTo(db.tracks, {
     as: 'Track',
     onDelete: "NO ACTION"
 });
+
+db.scores.hasOne(db.account, {
+    targetKey: "user_id",
+    foreignKey: 'user_id',
+    as: 'Account',
+    onDelete: "NO ACTION"
+});
+
+db.scores.belongsTo(db.users, {
+    targetKey: "id",
+    foreignKey: 'user_id',
+    as: 'User',
+    onDelete: "NO ACTION"
+});
+
+db.users.hasOne(db.account, {
+    targetKey: "id",
+    foreignKey: 'user_id',
+    as: 'AccountData',
+    onDelete: "CASCADE"
+});
+
+db.account.belongsTo(db.users, {
+    targetKey: "id",
+    foreignKey: 'user_id',
+    as: 'UserData',
+    onDelete: "NO ACTION"
+});
+
 
 try {
     db.sequelize.sync();

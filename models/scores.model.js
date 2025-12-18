@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: ""
         },
+        user_id: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         game: {
             type: DataTypes.INTEGER,
             allowNull: false
@@ -36,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false
-        },
+        }
     }, {
         freezeTableName: true,
         timestamps: true,

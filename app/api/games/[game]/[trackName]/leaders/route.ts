@@ -38,6 +38,9 @@ export async function GET(req: any, res:any) {
         }
 
         const scores = await db.scores.findAll({
+            attributes: [
+                "username", "class", "score", "verified", "proof_url", "createdAt"
+            ],
             where: {
                 [Op.and]: {
                     game: game.id,
@@ -47,7 +50,24 @@ export async function GET(req: any, res:any) {
             order: [
                 ["score", "DESC"]
             ],
-            limit: [ 0, 1000 ]
+            limit: [ 0, 100 ],
+            include: [
+                {
+                    model: db.users,
+                    as: "User",
+                    attributes: [
+                        "name", "image", "createdAt"
+                    ],
+                    include: {
+                        model: db.account,
+                        as: "AccountData",
+                        attributes: [
+                            "display_name", "platform"
+                        ]
+                    }
+                    
+                }
+            ]
         });
 
         if (!scores) {
@@ -62,7 +82,7 @@ export async function GET(req: any, res:any) {
             scores: scores
         });
     } catch (e:any) {
-        console.log(e.message);
+
         return Response.json({
             success: false,
             message: e.message

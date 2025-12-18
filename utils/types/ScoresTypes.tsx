@@ -1,19 +1,11 @@
 import { GamesTypes } from "./GamesTypes";
+import { LeadersTypes } from "./LeadersTypes";
 import { TracksTypes } from "./TracksTypes";
+import { UsersTypes } from "./UsersTypes";
 
 export interface ScoresTypes {
     game: GamesTypes;
     track: TracksTypes;
-    scores: {
-        id: number;
-        username: string;
-        game: number;
-        track: number;
-        class: string;
-        scores: number;
-        proof_url: string;
-        verified: boolean;
-        createdAt: string;
-        updatedAt: string;
-    }[]
+    error?: string;
+    scores: LeadersTypes[]
 }

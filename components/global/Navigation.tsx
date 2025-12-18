@@ -10,7 +10,7 @@ const Navigation = () => {
             <Container>
                 <div className="flex">
                     <div className="max-w-[250px] min-w-[250px] lg:h-[110px] relative flex items-center">
-                         <p className="font-black text-3xl hidden lg:inline-block">Origins [DC]</p>
+                         <p className="font-black text-3xl hidden lg:inline-block">Origins</p>
                          <p className="font-black text-3xl lg:hidden">Origins</p>
                      </div>
                     <div className="hidden w-full lg:flex justify-start gap-1">

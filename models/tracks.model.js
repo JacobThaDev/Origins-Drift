@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: ""
         },
+        length: {
+            type: DataTypes.FLOAT,
+            allowNull: false,
+            defaultValue: 0
+        },
         game: {
             type: DataTypes.INTEGER,
             allowNull: false,
