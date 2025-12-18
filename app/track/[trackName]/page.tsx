@@ -19,6 +19,7 @@ export async function generateMetadata({ params }: MetaProps): Promise<Metadata>
             description: `Top 50 drifters on ${trackName}`,
         };
     } catch (e:any) {
+        console.error(e);
         return {
             title: "Unknown Tack"
         };
@@ -73,8 +74,8 @@ export default async function TrackLeaderboard({ params }: { params: Promise<{ t
 
             <div className="pb-16">
                 <Container>
-                    <div className="flex flex-col lg:flex-row gap-7 items-start mt-[-60px] relative">
-                        <div className="bg-card rounded-2xl relative mt-[-50px] p-1 lg:min-w-[450px]">
+                    <div className="flex flex-col lg:flex-row gap-7 items-start mt-[-80px] relative">
+                        <div className="bg-card rounded-2xl relative mt-[-20px] p-1 lg:min-w-[450px]">
                             <Image src={trackData.track_image} 
                                 className="rounded-xl" width={450} height={150} alt=""/>
                         </div>
@@ -84,8 +85,8 @@ export default async function TrackLeaderboard({ params }: { params: Promise<{ t
                                 <p className="text-2xl lg:text-4xl font-bold">
                                     Leaderboard
                                 </p>
+                                <p>Top 100</p>
                             </div>
-                        
                             <LeaderTable track={trackData}/>
                         </div>
                     </div>

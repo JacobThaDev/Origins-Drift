@@ -11,7 +11,7 @@ const HomeHeader = () => {
                         - Welcome!
                     </p>
                     <p className="text-3xl lg:text-6xl font-black mb-5">
-                        The <GlowText text="premier"/> destination for authentic 
+                        The premier destination for <GlowText text="authentic"/> 
                         drifters in the world of Forza
                     </p>
                     <p className="max-w-[1200px] lg:text-lg mb-5">

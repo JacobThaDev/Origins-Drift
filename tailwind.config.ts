@@ -17,7 +17,7 @@ const config: Config = {
             buttonHover: "#343F4C",
             primary: "#191919",
             secondary: "#292929",
-            muted: "#505050",
+            muted: "#777",
             info:"#08B0F0",
             white: "#FFFFFF",
             black: "#000000",

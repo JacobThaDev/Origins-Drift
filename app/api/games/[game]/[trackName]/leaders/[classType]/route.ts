@@ -1,5 +1,5 @@
 import db from '@/models/index';
-import { Op } from 'sequelize';
+import { Op, Sequelize } from 'sequelize';
 
 /**
  * Get all users for game mode
@@ -14,6 +14,12 @@ export async function GET(req: any, res:any) {
         const trackName = bodyData?.trackName.toLowerCase().replace("_", " ");
         const classType = bodyData?.classType.toLowerCase().replace("_", " ");
 
+        if (classType != "a" && classType != "s1") {
+             return Response.json({
+                error: "Invalid class type. Allowed: A or S1"
+            });
+        }
+        
         const game = await db.games.findOne({
             where: {
                 symbol: gameType
@@ -38,15 +44,18 @@ export async function GET(req: any, res:any) {
             });
         }
 
-         const scores = await db.scores.findAll({
+        const scores = await db.scores.findAll({
             attributes: [
                 "username", "class", "score", "verified", "proof_url", "createdAt"
             ],
             where: {
-                [Op.and]: {
-                    game: game.id,
-                    track: track.id,
-                    class: classType
+                id: {
+                    [Op.in]: Sequelize.literal(`(
+                        SELECT id FROM scores s3 
+                            WHERE s3.score = (SELECT MAX(score) 
+                                FROM scores s4 
+                                WHERE s4.user_id = s3.user_id AND s4.class = '${classType}' AND s4.track = ${track.id})
+                    )`)
                 }
             },
             order: [
