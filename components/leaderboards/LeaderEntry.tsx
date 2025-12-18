@@ -33,10 +33,10 @@ const LeaderEntry = ({ score, rank } : { score: LeadersTypes, rank: number }) =>
                         target="_blank" className="font-bold text-lg text-warning hover:underline">
                         {displayName}
                     </Link>
-                    <div className="flex gap-1 items-center">
+                    <div className="flex gap-1 items-center group">
                         <p>{formatNumber(score.score, 0)}</p>
                         {score.verified && <>
-                            <div className="relative group">
+                            <div className="relative">
                                 <CheckBadgeIcon height={20} strokeWidth={2} className="text-info"/>
                                 <div className="hidden group-hover:inline-block absolute left-full ml-2 text-nowrap -top-1.5 p-1 px-2 rounded bg-black/30">
                                     Verified Score
