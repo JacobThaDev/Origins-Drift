@@ -52,9 +52,11 @@ export async function GET(req: any, res:any) {
                 id: {
                     [Op.in]: Sequelize.literal(`(
                         SELECT id FROM scores s3 
-                            WHERE s3.score = (SELECT MAX(score) 
-                                FROM scores s4 
-                                WHERE s4.user_id = s3.user_id AND s4.class = '${classType}' AND s4.track = ${track.id})
+                        WHERE s3.score = (SELECT MAX(score) 
+                        FROM scores s4 
+                        WHERE s4.user_id = s3.user_id 
+                            AND s4.class = '${classType}' 
+                            AND s4.track = ${track.id})
                     )`)
                 }
             },
