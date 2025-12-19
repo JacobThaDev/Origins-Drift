@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { env as _env } from 'process';
 import LocalApi from "./services/LocalApi";
-import { redirect } from "next/navigation";
 
 export async function middleware(request: NextRequest) {
     const { pathname } = new URL(request.url);
@@ -11,8 +10,7 @@ export async function middleware(request: NextRequest) {
     }
 
     try {
-        const { data: session } = await LocalApi.get("/api/auth/get-session", {
-            baseURL: request.nextUrl.origin,
+        const { data: session } = await LocalApi.get("/auth/get-session", {
             headers: {
                 cookie: request.headers.get("cookie") || "", // Forward the cookies from the request
             },
@@ -24,7 +22,7 @@ export async function middleware(request: NextRequest) {
         
         return NextResponse.next();
     } catch (e:any) {
-        console.log(e)
+        console.error(e)
     }
 }
 

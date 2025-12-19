@@ -1,30 +1,8 @@
 import Container from "@/components/layout/Container";
 import LeaderTable from "@/components/leaderboards/LeaderTable";
 import LocalApi from "@/services/LocalApi";
-import { capitalize } from "@/utils/Functions";
 import { TracksTypes } from "@/utils/types/TracksTypes";
-import { Metadata } from "next";
 import Image from "next/image";
-
-interface MetaProps {
-    params: Promise<{ trackName: string }>;
-};
-
-export async function generateMetadata({ params }: MetaProps): Promise<Metadata> {
-    try {
-        const trackName = (await params).trackName.replace("_", " ").replace("%20", " ");
-        
-        return {
-            title: capitalize(trackName)+" Leaderboard",
-            description: `Top 100 drifters on ${trackName}`,
-        };
-    } catch (e:any) {
-        console.error(e);
-        return {
-            title: "Unknown Tack"
-        };
-    }
-}
 
 export default async function TrackLeaderboard({ params }: { params: Promise<{ trackName: string }>}) {
 
