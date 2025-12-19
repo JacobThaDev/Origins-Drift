@@ -1,14 +1,15 @@
 module.exports = (sequelize, DataTypes) => {
-    const account = sequelize.define("account", {
+    const passkey = sequelize.define("passkey", {
         id: {
             type: DataTypes.STRING(36),
             primaryKey: true
         },
-        accountId: {
+        name: {
             type: DataTypes.TEXT,
-            allowNull: false
+            allowNull: true,
+            defaultValue: null
         },
-        providerId: {
+        publicKey: {
             type: DataTypes.TEXT,
             allowNull: false
         },
@@ -16,45 +17,41 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(36),
             allowNull: false
         },
-        accessToken: {
+        credentialID: {
+            type: DataTypes.TEXT,
+            allowNull: false
+        },
+        counter: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        deviceType: {
+            type: DataTypes.TEXT,
+            allowNull: false
+        },
+        backedUp: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
+        transports: {
             type: DataTypes.TEXT,
             allowNull: true,
             defaultValue: null
         },
-        refreshToken: {
-            type: DataTypes.TEXT,
-            allowNull: true,
-            defaultValue: null
-        },
-        idToken: {
-            type: DataTypes.TEXT,
-            allowNull: true,
-            defaultValue: null
-        },
-        accessTokenExpiresAt: {
+        createdAt: {
             type: DataTypes.DATE,
             allowNull: true,
             defaultValue: null
         },
-        refreshTokenExpiresAt: {
-            type: DataTypes.DATE,
-            allowNull: true,
-            defaultValue: null
-        },
-        scope: {
-            type: DataTypes.TEXT,
-            allowNull: true,
-            defaultValue: null
-        },
-        password: {
+        aaguid: {
             type: DataTypes.TEXT,
             allowNull: true,
             defaultValue: null
         }
     }, {
         freezeTableName: true,
-        timestamps: true,
+        timestamps: false,
         underscored: false
     });
-    return account;
+    return passkey;
 };

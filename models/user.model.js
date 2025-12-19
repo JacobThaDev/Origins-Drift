@@ -2,7 +2,6 @@ module.exports = (sequelize, DataTypes) => {
     const user = sequelize.define("user", {
         id: {
             type: DataTypes.STRING(36),
-            autoIncrement: true,
             primaryKey: true
         },
         name: {
@@ -30,27 +29,22 @@ module.exports = (sequelize, DataTypes) => {
         },
         role: {
             type: DataTypes.STRING,
-            allowNull: true
+            allowNull: true,
         },
         banned: {
             type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: false
+            allowNull: true,
+            defaultValue: null
         },
         banReason: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: false
-        },
-        banReason: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: false
+            type: DataTypes.TEXT,
+            allowNull: true,
+            defaultValue: null
         },
         banExpires: {
             type: DataTypes.DATE,
-            allowNull: false,
-            defaultValue: DataTypes.NOW,
+            allowNull: true,
+            defaultValue: null,
         }
     }, {
         freezeTableName: true,

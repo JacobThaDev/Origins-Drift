@@ -69,14 +69,22 @@ export async function GET(req: any, res:any) {
                     attributes: [
                         "name", "image", "createdAt"
                     ],
-                    include: {
-                        model: db.account,
-                        as: "AccountData",
-                        attributes: [
-                            "display_name", "platform"
-                        ]
-                    }
-                    
+                    include: [
+                        {
+                            model: db.accountData,
+                            as: "AccountData",
+                            attributes: [
+                                "display_name", "platform"
+                            ]
+                        },
+                        {
+                            model: db.account,
+                            as: "Account",
+                            attributes: [
+                                "accountId", "providerId"
+                            ]
+                        }
+                    ]
                 }
             ]
         });
