@@ -1,5 +1,4 @@
-export interface AccountDataTypes {
-    user_id: string;
-    display_name: string;
-    platform: string;
+export interface AccountTypes {
+    accountId: string;
+    providerId: string;
 }

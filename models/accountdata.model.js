@@ -7,11 +7,16 @@ module.exports = (sequelize, DataTypes) => {
         },
         display_name: {
             type: DataTypes.STRING,
-            allowNull: false,
-            defaultValue: ""
+            allowNull: true,
+            defaultValue: null
         },
         platform: {
             type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: null
+        },
+        about_me: {
+            type: DataTypes.TEXT('medium'),
             allowNull: true,
             defaultValue: null
         }

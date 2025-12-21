@@ -1,4 +1,5 @@
-import { AccountDataTypes } from "./AccountTypes";
+import { AccountDataTypes } from "./AccountDataTypes";
+import { AccountTypes } from "./AccountTypes";
 
 export interface UsersTypes {
     id: string;
@@ -14,4 +15,5 @@ export interface UsersTypes {
     banReason: string;
     banExpires: string;
     AccountData?: AccountDataTypes;
+    Account: AccountTypes;
 }
