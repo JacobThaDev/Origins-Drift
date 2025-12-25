@@ -1,0 +1,1 @@
+export type GamingPlatform = "STEAM" | "WINDOWS" | "XBOX" | "PLAYSTATION";

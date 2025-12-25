@@ -236,3 +236,7 @@
     from { filter: blur(10px);  }
     to { filter: blur(20px); }
 }
+
+.table tbody tr:nth-of-type(even) {
+    background-color: transparent !important;
+}

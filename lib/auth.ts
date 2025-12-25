@@ -22,13 +22,13 @@ const pool = globalForDb.conn ?? createPool({
     password: process.env.MYSQL_PASS,
     database: process.env.MYSQL_DATABASE,
     ssl : process.env.MYSQL_CERT == undefined ? undefined : {
-        ca: process.env.MYSQL_CERT ?? ''
+        ca: process.env.MYSQL_CERT
     },
     waitForConnections: true,
-    connectionLimit: 5, 
+    connectionLimit: 3, 
     queueLimit: 0,
     pool: {
-        max: 5,
+        max: 3,
         min: 0,
         acquire: 30000,
         idle: 10000

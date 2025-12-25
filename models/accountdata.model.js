@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
             defaultValue: null
         },
+        platform_name: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: null
+        },
         about_me: {
             type: DataTypes.TEXT('medium'),
             allowNull: true,
