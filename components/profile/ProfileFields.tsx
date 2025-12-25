@@ -87,8 +87,9 @@ const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
                     <button type="button" 
                         id="platform-toggle"
                         onClick={() => setPlatformOpen((prev) => !prev)}
-                        className="relative inline-block bg-button hover:bg-buttonHover transition overflow-hidden px-5 py-2.5 rounded-xl w-[150px]">
-                        {capitalize(platform)}
+                        className="relative inline-block bg-button hover:bg-buttonHover text-nowrap transition overflow-hidden px-5 py-2.5 rounded-xl w-[150px]">
+                        {platform == "WINDOWS" ? "Xbox (PC)" : 
+                            platform == "XBOX" ? "Xbox (Console)" : capitalize(platform)}
                     </button>
                     <div className={`absolute top-12 w-[200px] bg-button shadow-md overflow-hidden rounded-lg ${platformOpen ? "" : "hidden"}`} id="platform-menu">
                         <button onClick={() => changePlatform("STEAM")} type="button" id="platform-btn"
@@ -99,7 +100,12 @@ const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
                         <button onClick={() => changePlatform("XBOX")} type="button" id="platform-btn"
                                 className="flex items-center gap-2 hover:bg-buttonHover px-3 py-3 w-full">
                             <XboxIcon height={26}/>
-                            Xbox / Windows
+                            Xbox &#40;Console&#41;
+                        </button>
+                        <button onClick={() => changePlatform("WINDOWS")} type="button" id="platform-btn"
+                                className="flex items-center gap-2 hover:bg-buttonHover px-3 py-3 w-full">
+                            <XboxIcon height={26}/>
+                            Xbox &#40;PC&#41;
                         </button>
                         <button onClick={() => changePlatform("PLAYSTATION")} type="button" id="platform-btn"
                                 className="flex items-center gap-2 hover:bg-buttonHover px-3 py-3 w-full">
@@ -129,7 +135,7 @@ const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
                     Platform Url:
                 </div>
                 <div>
-                    {platform == "XBOX" && 
+                    {(platform == "XBOX" || platform == "WINDOWS") && 
                     <Link target="_blank" 
                         className="text-info"
                         rel="nofollow" 

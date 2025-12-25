@@ -1,6 +1,7 @@
 import { DiscordIcon } from "@/components/icons/DiscordIcon";
 import { PlaystationIcon } from "@/components/icons/PlaystationIcon";
 import { SteamIcon } from "@/components/icons/SteamIcon";
+import { WindowsIcon } from "@/components/icons/WindowsIcon";
 import { XboxIcon } from "@/components/icons/XboxIcon";
 import Container from "@/components/layout/Container";
 import ProfileFields from "@/components/profile/ProfileFields";
@@ -54,16 +55,28 @@ export default async function Profile() {
                         <div className="mb-3">
                             {platform == "XBOX" && 
                             <Link target="_blank" 
-                                className="rounded-full px-5 py-3 bg-button hover:bg-buttonHover flex gap-2 text-sm items-center transition"
+                                className="rounded-full relative inline-flex p-3 bg-button hover:bg-buttonHover w-full gap-3 text-sm items-center transition"
                                 rel="nofollow" 
                                 href={`https://www.xbox.com/en-us/play/user/`+(platformId)}>
                                    <XboxIcon height={32} />
                                    <span>{platformId}</span>
                             </Link>}
 
+                            {platform == "WINDOWS" && 
+                            <Link target="_blank" 
+                                className="rounded-full relative inline-flex p-3 bg-button hover:bg-buttonHover w-full gap-3 text-sm items-center transition"
+                                rel="nofollow" 
+                                href={`https://www.xbox.com/en-us/play/user/`+(platformId)}>
+                                    <XboxIcon height={32} />
+                                    <span>{platformId}</span>
+                                    <div className="absolute font-black bg-black rounded-full text-[9px] h-[14px] w-[20px] bottom-2 left-[38px] ml-[-20px] flex items-center justify-center">
+                                        PC
+                                    </div>
+                            </Link>}
+
                             {platform == "STEAM" && 
                             <Link target="_blank" 
-                                className="rounded-full px-5 py-3 bg-button hover:bg-buttonHover flex gap-2 text-sm items-center transition"
+                                className="rounded-full relative inline-flex p-3 bg-button hover:bg-buttonHover w-full gap-3 text-sm items-center transition"
                                 rel="nofollow" 
                                 href={`https://steamcommunity.com/id/`+(platformId)}>
                                    <SteamIcon height={32} />
@@ -72,7 +85,7 @@ export default async function Profile() {
 
                             {platform == "PLAYSTATION" && 
                             <Link target="_blank" 
-                                className="rounded-full px-5 py-3 bg-button hover:bg-buttonHover flex gap-2 text-sm items-center transition"
+                                className="rounded-full relative inline-flex p-3 bg-button hover:bg-buttonHover w-full gap-3 text-sm items-center transition"
                                 rel="nofollow" 
                                 href={`https://psnprofiles.com/`+(platformId)}>
                                     <PlaystationIcon height={32} />
