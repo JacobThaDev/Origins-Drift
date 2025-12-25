@@ -6,7 +6,6 @@ import { UsersTypes } from "@/utils/types/UsersTypes";
 import { useEffect, useState } from "react";
 import { SteamIcon } from "../icons/SteamIcon";
 import { XboxIcon } from "../icons/XboxIcon";
-import { WindowsIcon } from "../icons/WindowsIcon";
 import { PlaystationIcon } from "../icons/PlaystationIcon";
 import Link from "next/link";
 import { CheckIcon } from "@heroicons/react/24/outline";
@@ -65,7 +64,7 @@ const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
                 id="display_name"
                 onChange={(e:any) => setDisplayName(e.target.value as string)}
                 className="bg-black/20 rounded-lg w-full px-5 py-3"
-                defaultValue={profileName}/>
+                defaultValue={displayName}/>
         </div>
 
         <div className="bg-card/70 p-4 rounded-2xl mb-5">
@@ -75,7 +74,7 @@ const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
                 className="bg-black/20 rounded-xl w-full px-5 py-3"
                 id="about_me"
                 placeholder="Introduce yourself or leave a nice message for everyone! :)"
-                defaultValue={userData.AccountData?.about_me}/>
+                defaultValue={aboutMe}/>
         </div>
 
         <div className="bg-card/70 p-4 rounded-2xl mb-5">
