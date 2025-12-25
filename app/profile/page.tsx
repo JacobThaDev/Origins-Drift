@@ -1,7 +1,6 @@
 import { DiscordIcon } from "@/components/icons/DiscordIcon";
 import { PlaystationIcon } from "@/components/icons/PlaystationIcon";
 import { SteamIcon } from "@/components/icons/SteamIcon";
-import { WindowsIcon } from "@/components/icons/WindowsIcon";
 import { XboxIcon } from "@/components/icons/XboxIcon";
 import Container from "@/components/layout/Container";
 import ProfileFields from "@/components/profile/ProfileFields";
@@ -36,8 +35,8 @@ export default async function Profile() {
             <div className={`bg-header bg-black w-full min-h-[350px] max-h-[350px] lg:min-h-[400px] lg:max-h-[400px] pt-36 flex justify-center items-center text-white`}/>
 
             <Container>
-                <div className="flex relative gap-7 items-start w-full">
-                    <div className="mt-[-82px] min-w-[200px]">
+                <div className="flex flex-col lg:flex-row relative gap-7 items-start justify-center lg:justify-start w-full pb-[50px]">
+                    <div className="mt-[-82px] w-[200px] inline-block mx-auto">
                         <div className="relative mb-7">
                             <div className="flex justify-center w-full">
                                 <Image unoptimized src={userData.image} width={175} height={175} alt="" 
@@ -52,6 +51,7 @@ export default async function Profile() {
                             </Link>
                         </div>
 
+                        {platform && platformId && 
                         <div className="mb-3">
                             {platform == "XBOX" && 
                             <Link target="_blank" 
@@ -91,14 +91,14 @@ export default async function Profile() {
                                     <PlaystationIcon height={32} />
                                     <span>{platformId}</span>
                             </Link>}
-                        </div>
+                        </div>}
 
                         <p className="text-white/50 mb-3 text-center text-sm">
                             Joined {new Date(userData.createdAt).toLocaleDateString()}
                         </p>
                     </div>
                     <div className="w-full">
-                        <div className="mt-[-64px] mb-10">
+                        <div className="lg:mt-[-64px] mb-10">
                             <p className="text-5xl font-bold">
                                 My Profile
                             </p>

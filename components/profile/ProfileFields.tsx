@@ -8,7 +8,7 @@ import { SteamIcon } from "../icons/SteamIcon";
 import { XboxIcon } from "../icons/XboxIcon";
 import { PlaystationIcon } from "../icons/PlaystationIcon";
 import Link from "next/link";
-import { CheckIcon } from "@heroicons/react/24/outline";
+import { CheckIcon, TagIcon, UserIcon } from "@heroicons/react/24/outline";
 
 const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
 
@@ -82,7 +82,7 @@ const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
             <p className="text-sm mb-5 text-white/60">
                 Select your preferred platform where you mainly play Forza Horizon games.
             </p>
-            <div className="flex w-full gap-5 mb-2">
+            <div className="flex flex-col lg:flex-row w-full gap-5 mb-2">
                 <div className="relative">
                     <button type="button" 
                         id="platform-toggle"
@@ -115,32 +115,30 @@ const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3 w-full">
-                    <div className="text-nowrap text-sm text-white/70">
-                        Platform Name
-                    </div>
-                    <div className="w-full">
-                    <input 
-                        type="text" 
-                        onChange={(e:any) => setPlatformName(e.target.value as string)}
-                        className="bg-black/20 rounded-xl w-full px-5 py-3"
-                        placeholder="Your display name on the selected platform"
-                        defaultValue={userData.AccountData?.platform_name}/>
+                <div className="flex flex-col lg:flex-row lg:items-center gap-3 w-full">
+                    <div className="w-full relative">
+                        <TagIcon height={22} className="absolute top-3 left-3 text-white/50"/>
+                        <input 
+                            type="text" 
+                            onChange={(e:any) => setPlatformName(e.target.value as string)}
+                            className="bg-black/20 rounded-xl w-full px-5 py-3 !ps-10"
+                            placeholder="Platform ID"
+                            defaultValue={userData.AccountData?.platform_name}/>
                     </div>
                 </div>
             </div>
 
-            <div className="flex gap-3 text-sm text-white/60">
-                <div>
+            <div className="flex gap-3 text-sm text-white/60 w-full">
+                <div className="text-nowrap">
                     Platform Url:
                 </div>
-                <div>
+                <div className="w-full">
                     {(platform == "XBOX" || platform == "WINDOWS") && 
                     <Link target="_blank" 
                         className="text-info"
                         rel="nofollow" 
                         href={`https://www.xbox.com/en-us/play/user/`+(platformName)}>
-                            https://www.xbox.com/en-us/play/user/{platformName}
+                            https://www.xbox.com/en-us/play/user/{platformName ?? "[platformId]"}
                     </Link>}
 
                     {platform == "STEAM" && 
@@ -166,124 +164,6 @@ const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
             <CheckIcon height={20}/>
             <span>Update Profile</span>
         </button>
-        
-        {/*<form method="post" action="" onSubmit={() => {}}>
-
-            <table className="table">
-                <tbody>
-                    <tr>
-                        <td className="min-w-[150px] text-nowrap text-end text-sm text-white/70">
-                            Display Name
-                        </td>
-                        <td className="w-full">
-                            <input 
-                                type="text" 
-                                name="about_me"
-                                className="bg-black/20 rounded-xl w-full px-5 py-3"
-                                placeholder="Tell us a bit about yourself or let people know what you're up to!"
-                                defaultValue={userData.AccountData?.display_name}/>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td className="min-w-[150px] text-nowrap text-end text-sm text-white/70">
-                            About me
-                        </td>
-                        <td className="w-full">
-                            <input 
-                                type="text" 
-                                name="about_me"
-                                className="bg-black/20 rounded-xl w-full px-5 py-3"
-                                placeholder="Tell us a bit about yourself or let people know what you're up to!"
-                                defaultValue={userData.AccountData?.about_me}/>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td className="min-w-[150px] text-nowrap text-end text-sm text-white/70">
-                            Platform
-                        </td>
-                        <td className="w-full">
-                            <div className="flex w-full gap-5 mb-1">
-
-                                <div className="relative">
-                                    <button type="button" 
-                                        id="platform-toggle"
-                                        onClick={() => setPlatformOpen((prev) => !prev)}
-                                        className="relative inline-block bg-button hover:bg-buttonHover overflow-hidden px-5 py-2.5 rounded-xl w-[150px]">
-                                        {capitalize(platform)}
-                                    </button>
-                                    <div className={`absolute top-12 w-[200px] bg-button overflow-hidden rounded-lg ${platformOpen ? "" : "hidden"}`} id="platform-menu">
-                                        <button onClick={() => setPlatform("STEAM")} type="button" id="platform-btn"
-                                                className="flex items-center gap-2 hover:bg-buttonHover px-3 py-3 w-full">
-                                            <SteamIcon height={26}/>
-                                            Steam
-                                        </button>
-                                        <button onClick={() => setPlatform("XBOX")} type="button" id="platform-btn"
-                                                className="flex items-center gap-2 hover:bg-buttonHover px-3 py-3 w-full">
-                                            <XboxIcon height={26}/>
-                                            Xbox / Windows
-                                        </button>
-                                        <button onClick={() => setPlatform("PLAYSTATION")} type="button" id="platform-btn"
-                                                className="flex items-center gap-2 hover:bg-buttonHover px-3 py-3 w-full">
-                                            <PlaystationIcon height={26}/>
-                                            Playstation
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center gap-3 w-full">
-                                    <div className="text-nowrap text-sm text-white/70">
-                                        Platform Name
-                                    </div>
-                                    <div className="w-full">
-                                    <input 
-                                        type="text" 
-                                        onChange={(e:any) => setPlatformName(e.target.value as string)}
-                                        className="bg-black/20 rounded-xl w-full px-5 py-3"
-                                        placeholder="Your display name on the selected platform"
-                                        defaultValue={userData.AccountData?.platform_name}/>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p className="text-sm text-white/60 text-end">
-                                Platform Link
-                            </p>
-                        </td>
-                        <td>
-                            {platform == "XBOX" && 
-                            <Link target="_blank" 
-                                className="text-info"
-                                rel="nofollow" 
-                                href={`https://www.xbox.com/en-us/play/user/`+(platformName)}>
-                                    https://www.xbox.com/en-us/play/user/{platformName}
-                            </Link>}
-
-                            {platform == "STEAM" && 
-                            <Link target="_blank" 
-                                className="text-info"
-                                rel="nofollow" 
-                                href={`https://steamcommunity.com/id/`+(platformName)}>
-                                    https://steamcommunity.com/id/{platformName}
-                            </Link>}
-
-                            {platform == "PLAYSTATION" && 
-                            <Link target="_blank" 
-                                className="text-info"
-                                rel="nofollow" 
-                                href={`https://psnprofiles.com/`+(platformName)}>
-                                    https://psnprofiles.com/{platformName}
-                            </Link>}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-        </form>*/}
         </>
     )
 }
