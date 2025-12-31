@@ -155,7 +155,7 @@
   /* Track */
 .scrollbar::-webkit-scrollbar-track {
     background: #12151a;
-    border-radius: 10px;
+    border-radius: 0 6px 6px 0;
     
 }
   
@@ -163,7 +163,8 @@
 .scrollbar::-webkit-scrollbar-thumb {
     background: #2c3643;
     border: solid 4px #12151a;
-    border-radius: 50px;
+    
+    border-radius: 6px;
 }
   
   /* Handle on hover */

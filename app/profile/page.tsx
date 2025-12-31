@@ -20,15 +20,8 @@ export default async function Profile() {
         },
     }).then(r => r.data);
 
-    let displayName  = userData.name;
     const platform   = userData.AccountData?.platform;
     const platformId = userData.AccountData?.platform_name;
-
-    if (userData.AccountData) {
-        if (userData.AccountData.display_name) {
-            displayName = userData.AccountData.display_name;
-        }
-    }
 
     return (
         <>

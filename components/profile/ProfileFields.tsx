@@ -8,7 +8,9 @@ import { SteamIcon } from "../icons/SteamIcon";
 import { XboxIcon } from "../icons/XboxIcon";
 import { PlaystationIcon } from "../icons/PlaystationIcon";
 import Link from "next/link";
-import { CheckIcon, TagIcon, UserIcon } from "@heroicons/react/24/outline";
+import { CheckIcon, TagIcon } from "@heroicons/react/24/outline";
+import CarSelector from "./CarSelector";
+import { CarsTypes } from "@/utils/types/CarsTypes";
 
 const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
 
@@ -24,6 +26,7 @@ const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
     const [ aboutMe, setAboutMe ]           = useState<string|undefined>(userData.AccountData?.about_me);
     const [ platform, setPlatform ]         = useState<GamingPlatform|undefined>(userData.AccountData?.platform);
     const [ platformName, setPlatformName ] = useState<string|undefined>(userData.AccountData?.platform_name);
+    const [ favoriteCar, setFavoriteCar ]   = useState<CarsTypes|undefined>();
     const [ platformOpen, setPlatformOpen ] = useState<boolean>(false);
 
     const [ mounted, setMounted ] = useState<boolean>(false);
@@ -68,13 +71,17 @@ const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
         </div>
 
         <div className="bg-card/70 p-4 rounded-2xl mb-5">
-            <p className="mb-3 text-sm text-white/50">About Me &#40;Max 400 chars.&#41;</p>
+            <p className="mb-3 text-sm text-white/50">About Me &#40;Max 250 chars.&#41;</p>
             <textarea 
                 onChange={(e:any) => setAboutMe(e.target.value as string)}
                 className="bg-black/20 rounded-xl w-full px-5 py-3"
+                maxLength={250}
                 id="about_me"
                 placeholder="Introduce yourself or leave a nice message for everyone! :)"
                 defaultValue={aboutMe}/>
+            <p className={`text-sm ${aboutMe && aboutMe.length >= 250 ? "text-danger" : "text-success"}`}>
+                {aboutMe ? aboutMe.length : 0} / 250
+            </p>
         </div>
 
         <div className="bg-card/70 p-4 rounded-2xl mb-5">
@@ -159,7 +166,12 @@ const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
                 </div>
             </div>
         </div>
-        
+
+        <CarSelector 
+            userData={userData}
+            setFavoriteCar={setFavoriteCar}
+            favoriteCar={favoriteCar} />
+
         <button type="button" className="bg-button hover:bg-infodark transition rounded-xl px-7 py-4 flex items-center gap-3">
             <CheckIcon height={20}/>
             <span>Update Profile</span>
