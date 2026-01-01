@@ -13,6 +13,7 @@ import accountDataModel from './accountdata.model';
 import verificationModel from './verification.model';
 import sessionModel from './session.model';
 import passkeyModel from './passkey.model';
+import carsModel from './cars.model';
 
 let sequelize = new Sequelize(process.env.MYSQL_DATABASE, process.env.MYSQL_USER, process.env.MYSQL_PASS, {
     host: process.env.MYSQL_HOST,
@@ -38,6 +39,7 @@ const db = {};
 db.sequelize  = sequelize;
 db.Sequelize  = Sequelize;
 
+db.cars_fh5     = carsModel(sequelize, Sequelize);
 db.games        = gamesModel(sequelize, Sequelize);
 db.classes      = classesModel(sequelize, Sequelize);
 db.tracks       = tracksModel(sequelize, Sequelize);
