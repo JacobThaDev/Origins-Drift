@@ -15,4 +15,4 @@ To install:
 - For production environment, you can use `npm run build` then `npm run start` to start up the production server. (assuming a successful build)
   - note that you will also need a `.env.production` for this to work with identical settings from the `.env.development`
  
-For automatic deployments check out [Vercel](url=https://vercel.com).
+For automatic deployments check out [Vercel](https://vercel.com).
