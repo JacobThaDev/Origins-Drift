@@ -14,6 +14,8 @@ To install:
 - For production environment, you can use `npm run build` then `npm run start` to start up the production server. (assuming a successful build)
   - note that you will also need a `.env.production` for this to work with identical settings from the `.env.development`
 
+For databasing, I prefer MySQL. I use [TiDBCloud](https://www.pingcap.com/tidb-cloud-serverless-vs-amazon-rds) as it offers a generous free tier.
+
 For Vercel deployments:
 - After importing from github, you need environment variables. **Do NOT publish an edited .env file to a public repo. you will expose your private keys!**
 - Click on the project, and hit "Settings" at the top to find environment variables.
