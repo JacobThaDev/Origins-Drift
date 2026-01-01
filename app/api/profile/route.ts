@@ -15,7 +15,7 @@ export async function GET(req: any, res:any) {
 
         const { data: session } = await LocalApi.get("/auth/get-session", {
             headers: {
-                 // Forward the cookies from the request. without it, the user isn't logged in.
+                 // Forward the cookie header from the request. without it, the user isn't logged in.
                 cookie: req.headers.get("cookie") || "",
             },
         });
