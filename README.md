@@ -1,10 +1,9 @@
 # Origins-Drift
-Website for Origins Drift Club. A serverless full-stack web application using NextJS and external databasing such as TiDB-Cloud. Uses Sequelize ORM package for database handling, TailwindCSS for designing the website itself, and Better-Auth for OAuth handling. 
+Website for Origins Drift Club. Created using [Next-JS](https://nextjs.org/) by [Vercel](https://vercel.com)
 
-Cars API endpoint data provided from here and stored in a SQL database:
-https://www.kaggle.com/datasets/harryth129/forza-horizon-5-cars-dataset
+This is a hobby project I started for a drift club within Forza Horizon 5. It's a game I've got several thousand hours into it and the Forza community is something dear to my heart. This massive project is a showcase of my love for the game with hundreds of hours put behind it. Its main purpose is to provide a place for members to submit their best scores for each track. The overall goal is to make an entire community behind it with shareable tunes, cars lookup, public profiles, and more, all free and open source.
 
-Once connected via Discord OAuth and in our official Discord, users can track their scores for each individual track on various games such as Forza Horizon 5 and Forza Horizon 6, of course which is fully manageable in the admin dashboard and is not limited to just these games. The signup process will check if the user is in the official Discord with a specific role to ensure only valid members can submit scores. Scores are accumulative, so if a user submits more than one score for a track, it will keep track of all scores for that user on that track that they've submitted. This will essentially allow for charts to show progress over time on as specific track.
+Creating an account to get started submitting your scores is as simple as logging in with your Discord. You can then also edit your public profile by setting a display name, write an about me, choose your platform, and more to be displayed publicly. Each score you submit is a new entry, allowing you to track your progression over time with charts and other data on a per-track and per-class basis.
 
 To install:
 - Run `npm install` to install dependencies
@@ -14,5 +13,12 @@ To install:
    - Default URL: `https://127.0.0.1:3000`
 - For production environment, you can use `npm run build` then `npm run start` to start up the production server. (assuming a successful build)
   - note that you will also need a `.env.production` for this to work with identical settings from the `.env.development`
- 
-For automatic deployments check out [Vercel](https://vercel.com).
+
+For Vercel deployments:
+- After importing from github, you need environment variables. **Do NOT publish an edited .env file to a public repo. you will expose your private keys!**
+- Click on the project, and hit "Settings" at the top to find environment variables.
+- You can copy and paste the entire contents of the env file to get everything set instantly. Vercel makes this pretty easy.
+  
+### Credits:
+Cars API endpoint data provided from here then coverted and stored in a SQL database:
+https://www.kaggle.com/datasets/harryth129/forza-horizon-5-cars-dataset
