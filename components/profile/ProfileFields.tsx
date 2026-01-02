@@ -10,7 +10,7 @@ import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvi
 const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
 
     const { 
-        profile, updateProfile, showBanner, selectedCar
+        profile, updateProfile, showBanner, selectedCar, loading
     }:ProfileContextTypes = useProfileContext();
 
     /**
@@ -69,7 +69,7 @@ const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
                     Select your preferred platform where you mainly play Forza Horizon games.
                 </p>
 
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col lg:flex-row lg:items-center gap-3 mb-3">
                     <select name="platform" className="bg-button px-5 py-3 rounded-xl" defaultValue={profile.AccountData?.platform ?? "XBOX"}>
                         <option value="STEAM">Steam</option>
                         <option value="WINDOWS">Xbox &#40;PC&#41;</option>
@@ -90,14 +90,14 @@ const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
                     </div>
                 </div>
 
-                <div className="flex gap-3 text-sm text-white/60 w-full">
+                <div className="flex flex-col text-sm text-white/60 w-full">
                     <div className="text-nowrap">
                         Platform Url:
                     </div>
-                    <div className="w-full">
+                    <div className="w-full truncate">
                         {(profile.AccountData?.platform == "XBOX" || profile.AccountData?.platform == "WINDOWS") && 
                         <Link target="_blank" 
-                            className="text-info"
+                            className="text-info w-full truncate overflow-hidden max-w-full"
                             rel="nofollow" 
                             href={`https://www.xbox.com/en-us/play/user/`+(profile.AccountData?.platform_name)}>
                                 https://www.xbox.com/en-us/play/user/{profile.AccountData?.platform_name ?? "[platformId]"}
@@ -120,89 +120,12 @@ const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
                         </Link>}
                     </div>
                 </div>
-
-                {/* <div className="flex flex-col lg:flex-row w-full gap-3 mb-2">
-                    <div className="relative z-1">
-                        <button type="button" 
-                            id="platform-toggle"
-                            onClick={() => setPlatformOpen((prev) => !prev)}
-                            className="relative inline-block bg-button hover:bg-buttonHover text-nowrap transition overflow-hidden px-5 py-2.5 rounded-xl w-[150px]">
-                            {profile.AccountData?.platform == "WINDOWS" ? "Xbox (PC)" : 
-                                profile.AccountData?.platform == "XBOX" ? "Xbox (Console)" : capitalize(profile.AccountData?.platform ?? "")}
-                        </button>
-                        <div className={`absolute z-10 top-12 w-[200px] bg-button shadow-md overflow-hidden rounded-lg ${platformOpen ? "" : "hidden"}`} id="platform-menu">
-                            <button onClick={() => update} type="button" id="platform-btn"
-                                    className="flex items-center gap-2 hover:bg-buttonHover px-3 py-3 w-full">
-                                <SteamIcon height={26}/>
-                                Steam
-                            </button>
-                            <button onClick={() => {}} type="button" id="platform-btn"
-                                    className="flex items-center gap-2 hover:bg-buttonHover px-3 py-3 w-full">
-                                <XboxIcon height={26}/>
-                                Xbox &#40;Console&#41;
-                            </button>
-                            <button onClick={() => {}} type="button" id="platform-btn"
-                                    className="flex items-center gap-2 hover:bg-buttonHover px-3 py-3 w-full">
-                                <XboxIcon height={26}/>
-                                Xbox &#40;PC&#41;
-                            </button>
-                            <button onClick={() => {}} type="button" id="platform-btn"
-                                    className="flex items-center gap-2 hover:bg-buttonHover px-3 py-3 w-full">
-                                <PlaystationIcon height={26}/>
-                                Playstation
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col lg:flex-row lg:items-center gap-3 w-full">
-                        <div className="w-full relative">
-                            <TagIcon height={22} className="absolute top-3 left-3 text-white/50"/>
-                            <input 
-                                type="text" 
-                                name="platform_name"
-                                className="bg-black/20 rounded-xl w-full px-5 py-3 !ps-10"
-                                placeholder="Platform ID"
-                                defaultValue={userData.AccountData?.platform_name ?? ""}/>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="flex gap-3 text-sm text-white/60 w-full">
-                    <div className="text-nowrap">
-                        Platform Url:
-                    </div>
-                    <div className="w-full">
-                        {(profile.AccountData?.platform == "XBOX" || profile.AccountData?.platform == "WINDOWS") && 
-                        <Link target="_blank" 
-                            className="text-info"
-                            rel="nofollow" 
-                            href={`https://www.xbox.com/en-us/play/user/`+(profile.AccountData?.platform_name)}>
-                                https://www.xbox.com/en-us/play/user/{profile.AccountData?.platform_name ?? "[platformId]"}
-                        </Link>}
-
-                        {profile.AccountData?.platform  == "STEAM" && 
-                        <Link target="_blank" 
-                            className="text-info"
-                            rel="nofollow" 
-                            href={`https://steamcommunity.com/id/`+(profile.AccountData?.platform_name)}>
-                                https://steamcommunity.com/id/{profile.AccountData?.platform_name ?? "[platformId]"}
-                        </Link>}
-
-                        {profile.AccountData?.platform == "PLAYSTATION" && 
-                        <Link target="_blank" 
-                            className="text-info"
-                            rel="nofollow" 
-                            href={`https://psnprofiles.com/`+(profile.AccountData?.platform_name)}>
-                                https://psnprofiles.com/{profile.AccountData?.platform_name ?? "[platformId]"}
-                        </Link>}
-                    </div>
-                </div>*/}
             </div>
             
             <CarSelector />
 
             <button 
-                disabled={showBanner == true} 
+                disabled={showBanner == true || loading} 
                 type="submit"
                 className="bg-button hover:bg-infodark transition disabled:opacity-50 disabled:hover:bg-button rounded-xl px-7 py-4 flex items-center gap-3">
                 <CheckIcon height={20}/>

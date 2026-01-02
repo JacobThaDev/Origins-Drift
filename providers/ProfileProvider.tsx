@@ -37,6 +37,7 @@ export function ProfileContextProvider({ children }:ProfileContextProps) {
 
     const updateProfile = async(formData:any[]) => {
         try {
+            setLoading(true);
             // post request to update endpoint
             let result:any = await LocalApi.post("profile", formData).then(r => r.data);
 
@@ -52,7 +53,8 @@ export function ProfileContextProvider({ children }:ProfileContextProps) {
                 setTimeout(() => setShowBanner(false), 2500);
                 console.log(result)
                 setProfile(account_data);
-                setSelectedCar(undefined)
+                setSelectedCar(undefined);
+                setLoading(false);
             }
         } catch (e:any) {
             console.error(e);
