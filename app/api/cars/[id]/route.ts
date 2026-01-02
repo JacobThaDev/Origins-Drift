@@ -1,4 +1,3 @@
-import CarsFH5 from '@/cfg/CarsFH5';
 import db from '@/models';
 
 /**

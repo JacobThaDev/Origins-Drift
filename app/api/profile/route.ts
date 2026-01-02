@@ -1,5 +1,7 @@
 import db from '@/models';
 import LocalApi from '@/services/LocalApi';
+import { CarsDetailsTypes } from '@/utils/types/CarsDetailsTypes';
+import { UsersTypes } from '@/utils/types/UsersTypes';
 
 /**
  * Get all users for game mode
@@ -38,14 +40,16 @@ export async function GET(req: any, res:any) {
             include: [
                 {
                     model: db.accountData,
-                    as: "AccountData"
+                    as: "AccountData",
+                    include: {
+                        model: db.cars_fh5,
+                        as: "fav_car",
+                    }
                 },
                 {
                     model: db.account,
                     as: "Account",
-                    attributes: [
-                        "accountId", "providerId"
-                    ]
+                    attributes: ["accountId", "providerId"]
                 }
             ]
         })
@@ -57,4 +61,172 @@ export async function GET(req: any, res:any) {
             error: e.message
         });
     }
+}
+
+/**
+ * POST Endpoint to update profile information.
+ * @param req 
+ * @param res 
+ */
+// eslint-disable-next-line
+export async function POST(req: any, res:any) {
+    try {
+        if (req.headers.get("cookie") == "" || req.headers.get("cookie") == undefined) {
+            return Response.json({ error: "Please log in to use this endpoint."});
+        }
+
+        const { data: session } = await LocalApi.get("/auth/get-session", {
+            headers: {
+                cookie: req.headers.get("cookie") || "",
+            },
+        });
+
+        if (!session) {
+            return Response.json({ 
+                error: "Please log in to use this endpoint."
+            });
+        }
+
+        const user_id = session.user.id;
+
+        const user:UsersTypes = await db.users.findOne({
+            attributes: [
+                "id", "name", "image", "role", "createdAt"
+            ],
+            where: {
+                id: user_id
+            },
+            include: [
+                {
+                    model: db.accountData,
+                    as: "AccountData"
+                },
+                {
+                    model: db.account,
+                    as: "Account",
+                    attributes: [
+                        "accountId", "providerId"
+                    ]
+                }
+            ]
+        });
+
+        if (!user) {
+             return Response.json({ 
+                error: "Could not find profile"
+            });
+        }
+
+        const body = await req.json();
+
+        const { 
+            about_me, display_name, favorite_car, platform, platform_name
+        }:RequestTypes = body;
+
+        let car:CarsDetailsTypes|undefined;
+            
+        if (favorite_car != -1 && favorite_car != undefined) {
+            car = await db.cars_fh5.findOne({
+                where:{
+                    id: favorite_car
+                }
+            });
+
+            if (!car) {
+                return Response.json({ 
+                    error: "Invalid car id."
+                });
+            }
+        }
+
+        if (!user.AccountData) {
+            try {
+                const created = await db.accountData.create({
+                    user_id: user.id,
+                    display_name: display_name,
+                    platform: platform,
+                    platform_name: platform_name,
+                    fav_car_fh5: car ? car.id : null,
+                    about_me: about_me
+                });
+
+                return Response.json({ 
+                    message: "New entry created at index "+created.id+""
+                });
+            } catch (e:any) {
+                console.error(e);
+                return Response.json({ 
+                    error: e.message
+                });
+            }
+        }
+
+        try {
+            const updated = await user.AccountData.update({
+                user_id: user.id,
+                display_name: display_name,
+                platform: platform,
+                platform_name: platform_name,
+                fav_car_fh5: car ? car.id : user.AccountData.fav_car_fh5,
+                about_me: about_me
+            });
+
+            if (updated) {
+                //refetch user to pull new complete data.
+                const freshUser:UsersTypes = await db.users.findOne({
+                    attributes: [
+                        "id", "name", "image", "role", "createdAt"
+                    ],
+                    where: {
+                        id: user_id
+                    },
+                    include: [
+                        {
+                            model: db.accountData,
+                            as: "AccountData",
+                            include: {
+                                model: db.cars_fh5,
+                                as: "fav_car",
+                            }
+                        },
+                        {
+                            model: db.account,
+                            as: "Account",
+                            attributes: [
+                                "accountId", "providerId"
+                            ]
+                        }
+                    ]
+                });
+                
+                return Response.json({
+                    success: true,
+                    message: "Profile updated!",
+                    account: freshUser,
+                });
+            }
+
+            return Response.json({
+                error: "Failed to update profile."
+            });
+        } catch (e:any) {
+            console.error(e);
+            return Response.json({
+                error: e.message
+            })
+        }
+    } catch (e:any) {
+        console.error(e);
+        return Response.json({ 
+            message: e.message
+        });
+    }
+}
+
+interface RequestTypes {
+    about_me: string;
+    display_name: string;
+    favorite_car: number;
+    platform: string;
+    platform_name: string;
 }

@@ -20,8 +20,8 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
             defaultValue: null
         },
-        favorite_car: {
-            type: DataTypes.STRING,
+        fav_car_fh5: {
+            type: DataTypes.INTEGER,
             allowNull: true,
             defaultValue: null
         },

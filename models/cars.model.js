@@ -1,5 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
     const carsfh5 = sequelize.define("cars_fh5", {
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        },
         make: {
             type: DataTypes.STRING,
             allowNull: false

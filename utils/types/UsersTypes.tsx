@@ -16,4 +16,5 @@ export interface UsersTypes {
     banExpires: string;
     AccountData?: AccountDataTypes;
     Account: AccountTypes;
+    update: (...args:any[]) => void
 }

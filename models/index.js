@@ -113,6 +113,13 @@ db.accountData.belongsTo(db.users, {
     onDelete: "NO ACTION"
 });
 
+db.accountData.belongsTo(db.cars_fh5, {
+    targetKey: "id",
+    foreignKey: 'fav_car_fh5',
+    onDelete: "NO ACTION",
+    as: "fav_car",
+});
+
 try {
     db.sequelize.sync();
 } catch (e) {

@@ -1,42 +1,40 @@
+"use client"
+
 import { DiscordIcon } from "@/components/icons/DiscordIcon";
 import { PlaystationIcon } from "@/components/icons/PlaystationIcon";
 import { SteamIcon } from "@/components/icons/SteamIcon";
 import { XboxIcon } from "@/components/icons/XboxIcon";
 import Container from "@/components/layout/Container";
 import ProfileFields from "@/components/profile/ProfileFields";
-import LocalApi from "@/services/LocalApi";
-import { UsersTypes } from "@/utils/types/UsersTypes";
-import { headers } from "next/headers";
+import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvider";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function Profile() {
+export default function Profile() {
 
-    const header = await headers();
+    const { profile }:ProfileContextTypes = useProfileContext();
 
-    const userData:UsersTypes = await LocalApi.get("/profile", {
-        headers: {
-            cookie: header.get("cookie")
-        },
-    }).then(r => r.data);
+    if (!profile) {
+        return null;
+    }
 
-    const platform   = userData.AccountData?.platform;
-    const platformId = userData.AccountData?.platform_name;
+    const platform   = profile.AccountData?.platform;
+    const platformId = profile.AccountData?.platform_name;
 
     return (
         <>
             <div className={`bg-header bg-black w-full min-h-[350px] max-h-[350px] lg:min-h-[400px] lg:max-h-[400px] pt-36 flex justify-center items-center text-white`}/>
 
             <Container>
-                <div className="flex flex-col lg:flex-row relative gap-7 items-start justify-center lg:justify-start w-full pb-[50px]">
+                <div className="flex flex-col lg:flex-row gap-7 items-start justify-center lg:justify-start w-full pb-[50px]">
                     <div className="mt-[-82px] w-[200px] inline-block mx-auto">
                         <div className="relative mb-7">
                             <div className="flex justify-center w-full">
-                                <Image unoptimized src={userData.image} width={175} height={175} alt="" 
+                                <Image unoptimized src={profile.image} width={175} height={175} alt="" 
                                     className="rounded-full p-3 bg-background"/>
                             </div>
                             <Link 
-                                href={`https://discord.com/users/${userData.Account.accountId}`} 
+                                href={`https://discord.com/users/${profile.Account.accountId}`} 
                                 target="_blank"
                                 rel="nofollow"
                                 className="absolute -bottom-3 left-1/2 -ml-7 w-14 h-14 bg-button hover:bg-buttonHover transition border-4 border-background rounded-full inline-flex items-center justify-center">
@@ -87,17 +85,17 @@ export default async function Profile() {
                         </div>}
 
                         <p className="text-white/50 mb-3 text-center text-sm">
-                            Joined {new Date(userData.createdAt).toLocaleDateString()}
+                            Joined {new Date(profile.createdAt).toLocaleDateString()}
                         </p>
                     </div>
                     <div className="w-full">
-                        <div className="lg:mt-[-64px] mb-10">
+                        <div className="lg:mt-[-64px] mb-10 relative">
                             <p className="text-5xl font-bold">
-                                My Profile
+                                My Profile | {profile.AccountData?.display_name ?? ""}
                             </p>
                         </div>
                         <div>
-                            <ProfileFields userData={userData}/>
+                            <ProfileFields userData={profile}/>
                         </div>
                     </div>
                 </div>

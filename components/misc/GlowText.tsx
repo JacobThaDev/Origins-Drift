@@ -1,13 +1,14 @@
 
 interface GlowTextTypes { 
-    text?: string
+    text?: string;
+    enableGlow?: boolean
 }
 
-const GlowText = ({ text }: GlowTextTypes) => {
+const GlowText = ({ text, enableGlow = true }: GlowTextTypes) => {
     return(
         <span className="highlight leading-[1.3em] overflow-visible">
             <span className="highlight-text overflow-visible">{text}</span>
-            <span className="highlight-glow">{text}</span>
+            {enableGlow && <span className="highlight-glow">{text}</span>}
         </span> 
     )
 }

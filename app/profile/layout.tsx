@@ -1,3 +1,5 @@
+import { CarsContextProvider } from "@/providers/CarsProvider";
+import { ProfileContextProvider } from "@/providers/ProfileProvider";
 import type { Metadata } from "next";
 
 interface RootLayoutTypes {
@@ -22,9 +24,11 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }: RootLayoutTypes) {
 
     return (
-        <>
-            {children}
-        </>
+        <CarsContextProvider>
+            <ProfileContextProvider>
+                {children}
+            </ProfileContextProvider>
+        </CarsContextProvider>
     );
     
 }
