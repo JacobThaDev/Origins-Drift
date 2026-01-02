@@ -5,6 +5,7 @@ import { PlaystationIcon } from "@/components/icons/PlaystationIcon";
 import { SteamIcon } from "@/components/icons/SteamIcon";
 import { XboxIcon } from "@/components/icons/XboxIcon";
 import Container from "@/components/layout/Container";
+import PlatformIcon from "@/components/leaderboards/PlatformIcon";
 import ProfileFields from "@/components/profile/ProfileFields";
 import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvider";
 import Image from "next/image";
@@ -43,13 +44,14 @@ export default function Profile() {
                         </div>
 
                         {platform && platformId && 
+                        
                         <div className="mb-3">
                             {platform == "XBOX" && 
                             <Link target="_blank" 
                                 className="rounded-full relative inline-flex p-3 bg-button hover:bg-buttonHover w-full gap-3 text-sm items-center transition"
                                 rel="nofollow" 
                                 href={`https://www.xbox.com/en-us/play/user/`+(platformId)}>
-                                   <XboxIcon height={32} />
+                                   <PlatformIcon platform={"XBOX"}/>
                                    <span>{platformId}</span>
                             </Link>}
 
@@ -58,11 +60,8 @@ export default function Profile() {
                                 className="rounded-full relative inline-flex p-3 bg-button hover:bg-buttonHover w-full gap-3 text-sm items-center transition"
                                 rel="nofollow" 
                                 href={`https://www.xbox.com/en-us/play/user/`+(platformId)}>
-                                    <XboxIcon height={32} />
+                                    <PlatformIcon platform={"WINDOWS"}/>
                                     <span>{platformId}</span>
-                                    <div className="absolute font-black bg-black rounded-full text-[9px] h-[14px] w-[20px] bottom-2 left-[38px] ml-[-20px] flex items-center justify-center">
-                                        PC
-                                    </div>
                             </Link>}
 
                             {platform == "STEAM" && 
@@ -70,7 +69,7 @@ export default function Profile() {
                                 className="rounded-full relative inline-flex p-3 bg-button hover:bg-buttonHover w-full gap-3 text-sm items-center transition"
                                 rel="nofollow" 
                                 href={`https://steamcommunity.com/id/`+(platformId)}>
-                                   <SteamIcon height={32} />
+                                   <PlatformIcon platform={"STEAM"}/>
                                    <span>{platformId}</span>
                             </Link>}
 
@@ -79,7 +78,7 @@ export default function Profile() {
                                 className="rounded-full relative inline-flex p-3 bg-button hover:bg-buttonHover w-full gap-3 text-sm items-center transition"
                                 rel="nofollow" 
                                 href={`https://psnprofiles.com/`+(platformId)}>
-                                    <PlaystationIcon height={32} />
+                                    <PlatformIcon platform={"PLAYSTATION"}/>
                                     <span>{platformId}</span>
                             </Link>}
                         </div>}
