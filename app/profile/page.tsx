@@ -1,9 +1,6 @@
 "use client"
 
 import { DiscordIcon } from "@/components/icons/DiscordIcon";
-import { PlaystationIcon } from "@/components/icons/PlaystationIcon";
-import { SteamIcon } from "@/components/icons/SteamIcon";
-import { XboxIcon } from "@/components/icons/XboxIcon";
 import Container from "@/components/layout/Container";
 import PlatformIcon from "@/components/leaderboards/PlatformIcon";
 import ProfileFields from "@/components/profile/ProfileFields";
