@@ -140,81 +140,68 @@ export async function POST(req: any, res:any) {
         }
 
         if (!user.AccountData) {
-            try {
-                const created = await db.accountData.create({
-                    user_id: user.id,
-                    display_name: display_name,
-                    platform: platform,
-                    platform_name: platform_name,
-                    fav_car_fh5: car ? car.id : null,
-                    about_me: about_me
-                });
-
-                return Response.json({ 
-                    message: "New entry created at index "+created.id+""
-                });
-            } catch (e:any) {
-                console.error(e);
-                return Response.json({ 
-                    error: e.message
-                });
-            }
-        }
-
-        try {
-            const updated = await user.AccountData.update({
+            const created = await db.accountData.create({
                 user_id: user.id,
                 display_name: display_name,
                 platform: platform,
                 platform_name: platform_name,
+                fav_car_fh5: car ? car.id : null,
+                about_me: about_me
+            });
+
+            if (!created) {
+                return Response.json({
+                    error: "Failed to create entry."
+                });
+            }
+        } else {
+            const updated = await user.AccountData.update({
+                user_id: user.id,
+                display_name: display_name,
+                platform:  platform == "" || platform == undefined ? null : platform,
+                platform_name: platform == "" || platform == undefined || platform_name == "" ? null : platform_name,
                 fav_car_fh5: car ? car.id : user.AccountData.fav_car_fh5,
                 about_me: about_me
             });
 
-            if (updated) {
-                //refetch user to pull new complete data.
-                const freshUser:UsersTypes = await db.users.findOne({
-                    attributes: [
-                        "id", "name", "image", "role", "createdAt"
-                    ],
-                    where: {
-                        id: user_id
-                    },
-                    include: [
-                        {
-                            model: db.accountData,
-                            as: "AccountData",
-                            include: {
-                                model: db.cars_fh5,
-                                as: "fav_car",
-                            }
-                        },
-                        {
-                            model: db.account,
-                            as: "Account",
-                            attributes: [
-                                "accountId", "providerId"
-                            ]
-                        }
-                    ]
-                });
-                
+            if (!updated) {
                 return Response.json({
-                    success: true,
-                    message: "Profile updated!",
-                    account: freshUser,
+                    error: "Failed to update profile."
                 });
             }
-
-            return Response.json({
-                error: "Failed to update profile."
-            });
-        } catch (e:any) {
-            console.error(e);
-            return Response.json({
-                error: e.message
-            })
         }
+
+        const freshUser:UsersTypes = await db.users.findOne({
+            attributes: [
+                "id", "name", "image", "role", "createdAt"
+            ],
+            where: {
+                id: user_id
+            },
+            include: [
+                {
+                    model: db.accountData,
+                    as: "AccountData",
+                    include: {
+                        model: db.cars_fh5,
+                        as: "fav_car",
+                    }
+                },
+                {
+                    model: db.account,
+                    as: "Account",
+                    attributes: [
+                        "accountId", "providerId"
+                    ]
+                }
+            ]
+        });
+        
+        return Response.json({
+            success: true,
+            message: "Profile updated!",
+            account: freshUser,
+        });
     } catch (e:any) {
         console.error(e);
         return Response.json({ 
