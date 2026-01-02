@@ -17,9 +17,13 @@ To install:
 For databasing, I prefer MySQL. I use [TiDBCloud](https://www.pingcap.com/tidb-cloud-serverless-vs-amazon-rds) as it offers a generous free tier.
 
 For Vercel deployments:
-- After importing from github, you need environment variables. **Do NOT publish an edited .env file to a public repo. you will expose your private keys!**
+- After importing from github, you need environment variables.
+  - **Do NOT publish your .env file to the repo.**
+    While Vercel can read the env files normally if on the repo, anyone else that has access to the repo will then have your keys. (especially if it's open source as such).
+    I work solo but I have this set up as best I can for a team, but easy enough for a solo developer like myself. So, in my experience, something that worked was using
+    Vercel's environment variables settings, and just ditch the one on the repo and setup a default to edit for local development and building.
 - Click on the project, and hit "Settings" at the top to find environment variables.
-- You can copy and paste the entire contents of the env file to get everything set instantly. Vercel makes this pretty easy.
+- You can copy and paste the entire contents of the env file to get everything set instantly. Vercel makes this pretty easy and straight-forward.
   
 ### Credits:
 Cars API endpoint data provided from here then coverted and stored in a SQL database:
