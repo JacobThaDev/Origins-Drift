@@ -1,19 +1,42 @@
 "use client"
 
 import { DiscordIcon } from "@/components/icons/DiscordIcon";
+import { LoadingIcon } from "@/components/icons/LoadingIcon";
 import Container from "@/components/layout/Container";
 import PlatformIcon from "@/components/leaderboards/PlatformIcon";
 import ProfileFields from "@/components/profile/ProfileFields";
 import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvider";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Profile() {
 
-    const { profile }:ProfileContextTypes = useProfileContext();
+    const { profile, loading, error }:ProfileContextTypes = useProfileContext();
 
-    if (!profile) {
-        return null;
+    if (!profile || loading || error != null) {
+
+        if (error) {
+            return(
+               <div className="w-full h-full flex  flex-col gap-10 items-center justify-center">
+                    <XMarkIcon height={80} strokeWidth={4}/>
+                    <div className="text-center">
+                        <p className="text-sm text-muted">An error occured</p>
+                        <p>{error}</p>
+                    </div>
+                </div> 
+            )
+        }
+
+        return <>
+            <div className="w-full h-full flex  flex-col gap-10 items-center justify-center">
+                <LoadingIcon height={80}/>
+                <div className="text-center">
+                    <p className="text-muted text-sm">Please wait</p>
+                    <p>Loading profile.</p>
+                </div>
+            </div>
+        </>
     }
 
     const platform   = profile.AccountData?.platform;
