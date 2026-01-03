@@ -51,7 +51,6 @@ const LeaderEntry = ({ score, rank } : { score: LeadersTypes, rank: number }) =>
 
             <div className="flex justify-center items-center gap-2 pe-2 lg:pe-3">
                 <PlatformIcon platform={score.User?.AccountData?.platform} />
-                {score.class == "A" ? <ClassABadge/> : <ClassS1Badge/>}
             </div>
         </div>
     )

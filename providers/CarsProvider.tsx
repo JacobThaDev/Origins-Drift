@@ -2,7 +2,6 @@
 
 import LocalApi from '@/services/LocalApi';
 import { CarsDetailsTypes } from '@/utils/types/CarsDetailsTypes';
-import { CarsTypes } from '@/utils/types/CarsTypes';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 const CarsContext = createContext<any>(undefined);
