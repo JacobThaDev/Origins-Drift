@@ -29,7 +29,7 @@ export default function Profile() {
         }
 
         return <>
-            <div className="w-full h-full flex  flex-col gap-10 items-center justify-center">
+            <div className="absolute top-0 left-0 bg-background w-full h-full flex flex-col gap-10 items-center justify-center z-[1050]">
                 <LoadingIcon height={80}/>
                 <div className="text-center">
                     <p className="text-muted text-sm">Please wait</p>
@@ -110,7 +110,7 @@ export default function Profile() {
                     <div className="w-full">
                         <div className="lg:mt-[-64px] mb-10 relative">
                             <p className="text-5xl font-bold">
-                                My Profile | {profile.AccountData?.display_name ?? ""}
+                                {profile.AccountData?.display_name ?? profile.name}
                             </p>
                         </div>
                         <div>
