@@ -8,9 +8,11 @@ import Link from "next/link";
 import { TropyIcon } from "../icons/TrophyIcon";
 import Meteors from "../misc/Meteors";
 import { SparklesIcon } from '@heroicons/react/24/solid'
+import { useTracksContext } from "@/providers/TracksProvider";
 
-const TracksSection = ({ tracks }: { tracks:TracksTypes[] }) => {
+const TracksSection = () => {
 
+    const { tracks } = useTracksContext();
     const [ showAll, setShowAll ] = useState<boolean>(false);
 
     return(
@@ -34,7 +36,9 @@ const TracksSection = ({ tracks }: { tracks:TracksTypes[] }) => {
                                 {track.favorite && 
                                 <div className="absolute top-0 left-0 z-[4] bg-black/20 backdrop-blur flex gap-2 items-center px-4 pe-5 py-2 rounded-br-2xl">
                                     <SparklesIcon height={20} className="text-info" />
-                                    <p className="text-sm font-bold">Top Track</p>
+                                    <p className="text-sm font-bold">
+                                        Top Track
+                                    </p>
                                 </div>}
                                 <Image 
                                     src={track.track_image} 

@@ -1,6 +1,7 @@
 "use client"
 
 import { LeaderboardContextProvider } from '@/providers/LeaderboardProvider';
+import { TracksContextProvider } from '@/providers/TracksProvider';
 import { AppProgressProvider as ProgressProvider } from '@bprogress/next';
 
 
@@ -17,9 +18,11 @@ export default function Providers({ children }: {  children: React.ReactNode }) 
           color="#08B0F0"
           options={{ showSpinner: true }}
           shallowRouting>
-            <LeaderboardContextProvider>
-                {children}
-            </LeaderboardContextProvider>
+            <TracksContextProvider>
+                <LeaderboardContextProvider>
+                    {children}
+                </LeaderboardContextProvider>
+            </TracksContextProvider>
         </ProgressProvider>
     )
 }

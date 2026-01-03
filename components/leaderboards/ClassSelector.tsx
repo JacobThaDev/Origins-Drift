@@ -7,7 +7,7 @@ const ClassSelector = () => {
     const { classFilter, setClassFilter, loading }:LeaderboardContextTypes = useLeaderboardContext();
 
     return(
-        <div className="flex items-center justify-start mb-3 gap-3">
+        <div className="flex items-center justify-start gap-3">
             
             <button onClick={() => setClassFilter(classFilter == "a" ? "s1" : "a")}
                 disabled={loading}

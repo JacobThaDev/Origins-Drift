@@ -5,4 +5,5 @@ export interface GamesTypes {
     symbol: string;
     name: string;
     tracks: TracksTypes[];
+    error?: string;
 }
