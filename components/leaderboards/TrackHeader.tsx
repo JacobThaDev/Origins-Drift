@@ -2,7 +2,6 @@
 
 import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
 import Container from "../layout/Container";
-import Image from "next/image";
 
 const TrackHeader = () => {
 

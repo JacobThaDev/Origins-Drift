@@ -18,7 +18,11 @@ export async function GET(req: any, res:any) {
             include: [
                 {
                     model: db.tracks,
-                    as: 'tracks'
+                    as: 'tracks',
+                    include: [{
+                        model: db.games,
+                        as: 'Game'
+                    }],
                 },
             ],
             order: [

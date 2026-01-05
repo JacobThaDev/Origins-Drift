@@ -1,6 +1,5 @@
 import { LeadersTypes } from "@/utils/types/LeadersTypes";
 import { formatNumber } from "@/utils/Functions";
-import { ClassABadge, ClassS1Badge } from "../misc/ClassBadges";
 import PlatformIcon from "./PlatformIcon";
 import Image from "next/image";
 import Link from "next/link";
