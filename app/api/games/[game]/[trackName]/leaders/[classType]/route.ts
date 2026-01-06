@@ -16,7 +16,7 @@ export async function GET(req: any, res:any) {
 
         if (classType != "a" && classType != "s1") {
              return Response.json({
-                error: "Invalid class type. Allowed: A or S1"
+                error: "Invalid class type. Allowed: 'a' or 's1'"
             });
         }
         
@@ -46,7 +46,7 @@ export async function GET(req: any, res:any) {
 
         const scores = await db.scores.findAll({
             attributes: [
-                "username", "class", "score", "verified", "proof_url", "createdAt"
+                "class", "score", "verified", "proof_url", "createdAt"
             ],
             where: {
                 id: {

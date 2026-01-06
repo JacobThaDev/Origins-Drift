@@ -1,7 +1,6 @@
 import { UsersTypes } from "./UsersTypes";
 
 export interface LeadersTypes {
-    username: string;
     class: string;
     score: number;
     verified: boolean;

@@ -24,7 +24,7 @@ export function TracksContextProvider({ children }:TracksContextProps) {
 
     async function loadTracks() {
         let trackData:GamesTypes = await LocalApi.get("games/"+game+"").then(r => r.data);
-
+        
         if (trackData.error) {
             setError(trackData.error);
             return;
