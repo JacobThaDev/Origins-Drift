@@ -241,3 +241,18 @@
 .table tbody tr:nth-of-type(even) {
     background-color: transparent !important;
 }
+
+select.custom-select {
+    /* Standard property for modern browsers */
+    appearance: none;
+    -webkit-appearance: none; /* For Chrome, Safari, Opera */
+    -moz-appearance: none;    /* For Firefox */
+    
+    /* Optional: ensure text isn't cut off if you add a custom arrow */
+    padding-right: 1px;
+}
+
+/* Optional: specific fix for Internet Explorer 10+ */
+select.custom-select::-ms-expand {
+    display: none;
+}

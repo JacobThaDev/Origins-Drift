@@ -6,7 +6,7 @@ import LeaderEntry from "./LeaderEntry";
 
 const LeaderTable = () => {
     
-    const { scores, loading }:LeaderboardContextTypes = useLeaderboardContext();
+    const { scores }:LeaderboardContextTypes = useLeaderboardContext();
     
     return(
         <div className="flex flex-col gap-4">

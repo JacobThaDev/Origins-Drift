@@ -33,6 +33,11 @@ const nextConfig =  {
         remotePatterns: [
             {
                 protocol: 'https',
+                hostname: 'i.imgur.com',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
                 hostname: 'robohash.org',
                 port: '',
                 pathname: '/**',

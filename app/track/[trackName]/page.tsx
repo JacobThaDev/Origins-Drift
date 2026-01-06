@@ -29,7 +29,8 @@ export default function TrackLeaderboard({ params }: { params: Promise<{ trackNa
         
         // reset active track when leaving the page.
         return () => setActiveTrack(undefined);
-    }, [tracks]);
+    },// eslint-disable-next-line  
+    [tracks]);
 
     if (!activeTrack) {
         return null;
