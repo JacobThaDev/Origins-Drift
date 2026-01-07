@@ -16,7 +16,7 @@ const LeaderEntry = ({ score, rank } : { score: LeadersTypes, rank: number }) =>
     }
 
     return(
-        <div className="bg-card rounded-2xl p-2 lg:p-3 !py-5 flex items-center relative z-[50] gap-3">
+        <div className="bg-card rounded-2xl p-2 lg:p-3 !py-3 flex items-center relative z-[50] gap-3">
             <div className="w-[70px] rounded-xl flex items-center justify-center font-black">
                 {rank + 1}
             </div>
@@ -29,11 +29,11 @@ const LeaderEntry = ({ score, rank } : { score: LeadersTypes, rank: number }) =>
                 </div>
                 <div>
                     <Link href={`/profile/${score.User?.name?.toLowerCase().replace(" ", "_")}`} 
-                        target="_blank" className="font-bold text-lg text-warning hover:underline">
+                        target="_blank" className="font-bold lg:text-lg text-warning hover:underline">
                         {displayName}
                     </Link>
                     <div className="flex gap-1 items-center group">
-                        <p>{formatNumber(score.score, 0)}</p>
+                        <p className="text-sm lg:text-base">{formatNumber(score.score, 0)}</p>
                         {score.verified && <>
                             <div className="relative">
                                 <CheckBadgeIcon height={20} strokeWidth={2} className="text-info"/>
