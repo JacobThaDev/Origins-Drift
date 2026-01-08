@@ -3,7 +3,7 @@ import { betterAuth } from "better-auth";
 import {
 	bearer,
 	multiSession,
-	oneTap,
+	//oneTap,
 	oAuthProxy,
 	openAPI,
 	customSession,
@@ -57,6 +57,10 @@ export const auth = betterAuth({
         discord: {
 			clientId: process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID || "",
 			clientSecret: process.env.DISCORD_CLIENT_SECRET || "",
+		},
+        google: {
+			clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "",
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
 		}
 	},
 	plugins: [
@@ -66,13 +70,10 @@ export const auth = betterAuth({
 		multiSession(),
 		oAuthProxy(),
 		nextCookies(),
-		oneTap(),
+		//oneTap(),
 		customSession(async (session) => {
             const user_id = session.user.id;
             const userData:UsersTypes = await LocalApi.get("/profile/"+user_id).then(r => r.data);
-
-            //console.log(session);
-            //console.log(userData);
 
 			return {
 				...session,

@@ -4,7 +4,9 @@ import { DiscordIcon } from "@/components/icons/DiscordIcon";
 import { LoadingIcon } from "@/components/icons/LoadingIcon";
 import Container from "@/components/layout/Container";
 import PlatformIcon from "@/components/leaderboards/PlatformIcon";
+import LoginBox from "@/components/login/LoginBox";
 import ProfileFields from "@/components/profile/ProfileFields";
+import { CarsContextProvider } from "@/providers/CarsProvider";
 import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvider";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
@@ -13,18 +15,6 @@ import Link from "next/link";
 export default function Profile() {
 
     const { profile, loading, error }:ProfileContextTypes = useProfileContext();
-
-     if (error) {
-        return(
-            <div className="w-full h-full flex  flex-col gap-10 items-center justify-center">
-                <XMarkIcon height={80} strokeWidth={4}/>
-                <div className="text-center">
-                    <p className="text-sm text-muted">An error occured</p>
-                    <p>{error}</p>
-                </div>
-            </div> 
-        )
-    }
 
     if (loading) {
         return <>
@@ -38,11 +28,27 @@ export default function Profile() {
         </>
     }
 
+    if (error) {
+        return(
+            <div className="w-full h-full flex  flex-col gap-10 items-center justify-center">
+                <XMarkIcon height={80} strokeWidth={4}/>
+                <div className="text-center">
+                    <p className="text-sm text-muted">An error occured</p>
+                    <p>{error}</p>
+                </div>
+            </div> 
+        )
+    }
+
+    if (!profile) {
+        return (<LoginBox/>);
+    }
+
     const platform   = profile.AccountData?.platform;
     const platformId = profile.AccountData?.platform_name;
 
     return (
-        <>
+        <CarsContextProvider>
             <div className={`bg-header bg-black w-full min-h-[350px] max-h-[350px] lg:min-h-[400px] lg:max-h-[400px] pt-36 flex justify-center items-center text-white`}/>
 
             <Container>
@@ -119,7 +125,7 @@ export default function Profile() {
                 </div>
             </Container>
             
-        </>
+        </CarsContextProvider>
     );
 
 }

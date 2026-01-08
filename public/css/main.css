@@ -256,3 +256,15 @@ select.custom-select {
 select.custom-select::-ms-expand {
     display: none;
 }
+
+.login-bg {
+    background: url(../img/login_bg.jpg) center right;
+    background-size: cover;
+    opacity: 70%;
+}
+
+.divider {
+    margin: 0 auto;
+    height: 1px;
+    width: 100px;
+}

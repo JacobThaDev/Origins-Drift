@@ -38,7 +38,7 @@ const nextConfig =  {
             },
             {
                 protocol: 'https',
-                hostname: 'robohash.org',
+                hostname: 'lh3.googleusercontent.com',
                 port: '',
                 pathname: '/**',
             },

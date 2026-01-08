@@ -1,22 +1,20 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { PowerIcon } from '@heroicons/react/24/outline'
 import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvider";
 import { client } from '@/lib/auth-client';
 
 const SignOutButton = () => {
 
-    const router = useRouter();
     const { setSession, setProfile }:ProfileContextTypes = useProfileContext();
 
     const logout = async() => {
         await client.signOut({
             fetchOptions: {
                 onSuccess: () => {
+                    //router.push("/");
                     setProfile(null);
                     setSession(null);
-                    router.push("/");
                 },
                 onError: (err:any) => {
                     console.log(err);

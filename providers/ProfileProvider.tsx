@@ -16,7 +16,7 @@ interface ProfileContextProps {
 export function ProfileContextProvider({ children }:ProfileContextProps) {
 
     const [ loading, setLoading ] = useState<boolean>(true);
-    const { data } = client.useSession();
+    const { data, isPending } = client.useSession();
 
     const [ session, setSession ] = useState<SessionsTypes|null>();
     const [ profile, setProfile ] = useState<UsersTypes>();
@@ -27,6 +27,10 @@ export function ProfileContextProvider({ children }:ProfileContextProps) {
 
     useEffect(() => {
         if (!data) {
+            if (!isPending) {
+                setLoading(false);
+                console.log("not pending")
+            }
             return;
         }
 
@@ -35,7 +39,7 @@ export function ProfileContextProvider({ children }:ProfileContextProps) {
         setSession(session);
         setProfile(session.user);
         setLoading(false);
-    }, [data]);
+    }, [data, isPending]);
 
     const updateProfile = async(formData:any[]) => {
         try {
@@ -70,7 +74,7 @@ export function ProfileContextProvider({ children }:ProfileContextProps) {
     return (
         <ProfileContext.Provider value={{ 
             loading, setLoading, profile, setProfile, updateProfile, selectedCar, setSelectedCar, error, setError, 
-            showBanner, setShowBanner, session, setSession
+            showBanner, setShowBanner, session, setSession, isPending
         }}>
             {children}
         </ProfileContext.Provider>
@@ -92,6 +96,7 @@ export interface ProfileContextTypes {
     setShowBanner: (arg1: boolean) => void;
     session?: SessionsTypes;
     setSession: (arg1: SessionsTypes|null|undefined) => void;
+    isPending: boolean;
 }
 
 export const useProfileContext = () => useContext(ProfileContext);
