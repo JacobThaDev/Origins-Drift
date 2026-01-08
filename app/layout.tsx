@@ -39,9 +39,10 @@ export default async function RootLayout({ children }: RootLayoutTypes) {
     return (
         <html lang="en">
             <body className={`bg-background antialiased overflow-x-hidden`}>
-                <SocialBar/>
-                <Navigation/>
                 <Providers>
+                    <SocialBar/>
+                    <Navigation/>
+                
                     {children}
                 </Providers>
                 <Toaster />

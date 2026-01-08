@@ -40,7 +40,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
 	matcher: [
         "/",
-        "/profile",
         "/api/imgur/upload",
         "/api/imgur/delete/[deleteHash]",
         "/dashboard",

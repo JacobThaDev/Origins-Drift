@@ -11,7 +11,7 @@ import {
 } from "better-auth/client/plugins";
 
 import { toast } from "sonner";
-import { passkey } from "@better-auth/passkey";
+import { passkeyClient } from "@better-auth/passkey/client";
 
 export const client = createAuthClient({
 	plugins: [
@@ -21,7 +21,7 @@ export const client = createAuthClient({
 				window.location.href = "/two-factor";
 			},
 		}),
-		passkey(),
+		passkeyClient(),
 		adminClient(),
 		multiSessionClient(),
 		oneTapClient({

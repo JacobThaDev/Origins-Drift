@@ -1,23 +1,22 @@
+"use client"
+
 import Link from "next/link";
 import { DiscordIcon } from "../icons/DiscordIcon";
 import Container from "../layout/Container";
 import { YoutubeIcon } from "../icons/YoutubeIcon";
 import { GithubIcon } from "../icons/GithubIcon";
 import SignInButton from "./SignInButton";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 import SignOutButton from "./SignOutButton";
 import ProfileButton from "./ProfileButton";
+import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvider";
 
-const SocialBar = async() => {
+const SocialBar = () => {
 
     const DISCORD_URL  = process.env.NEXT_PUBLIC_DISCORD_URL as string;
     const YOUTUBE_URL  = process.env.NEXT_PUBLIC_YOUTUBE_URL as string;
     const GITHUB_URL   = process.env.NEXT_PUBLIC_GITHUB_URL as string;
 
-    const session = await auth.api.getSession({
-        headers: await headers()
-    });
+    const { session }:ProfileContextTypes = useProfileContext();
 
     return(
         <div className="py-3 bg-black/40 z-[1000] absolute top-0 left-0 w-full backdrop-blur">
@@ -52,7 +51,7 @@ const SocialBar = async() => {
                     <div className="flex gap-3 items-center">
                         {session ? 
                         <>
-                            <ProfileButton session={session} />
+                            <ProfileButton />
                             <SignOutButton /> 
                         </>
                         : <SignInButton />}

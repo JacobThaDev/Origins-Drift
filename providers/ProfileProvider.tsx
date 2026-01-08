@@ -1,7 +1,9 @@
 'use client'
 
+import { client } from '@/lib/auth-client';
 import LocalApi from '@/services/LocalApi';
 import { CarsDetailsTypes } from '@/utils/types/CarsDetailsTypes';
+import { SessionsTypes } from '@/utils/types/SessionsTypes';
 import { UsersTypes } from '@/utils/types/UsersTypes';
 import { createContext, useContext, useEffect, useState } from 'react';
 
@@ -13,27 +15,27 @@ interface ProfileContextProps {
 
 export function ProfileContextProvider({ children }:ProfileContextProps) {
 
-    const [ loading, setLoading ] = useState<boolean>(false);
+    const [ loading, setLoading ] = useState<boolean>(true);
+    const { data } = client.useSession();
+
+    const [ session, setSession ] = useState<SessionsTypes|null>();
     const [ profile, setProfile ] = useState<UsersTypes>();
-    const [ mounted, setMounted ] = useState<boolean>(false);
 
-    const [ selectedCar, setSelectedCar ]   = useState<CarsDetailsTypes|undefined>();
-    const [ error, setError ]               = useState<string>();
-    const [ showBanner, setShowBanner ]     = useState<boolean>(false);
+    const [ selectedCar, setSelectedCar ] = useState<CarsDetailsTypes|undefined>();
+    const [ error, setError ]             = useState<string>();
+    const [ showBanner, setShowBanner ]   = useState<boolean>(false);
 
-    useEffect(() => setMounted(true), []);
-    
     useEffect(() => {
-        if (!mounted) {
+        if (!data) {
             return;
         }
-        loadProfile();
-    }, [mounted])
-    
-    async function loadProfile() {
-        const userData:UsersTypes = await LocalApi.get("/profile").then(r => r.data);
-        setProfile(userData);
-    }
+
+        const session = data as unknown as SessionsTypes;
+
+        setSession(session);
+        setProfile(session.user);
+        setLoading(false);
+    }, [data]);
 
     const updateProfile = async(formData:any[]) => {
         try {
@@ -68,7 +70,7 @@ export function ProfileContextProvider({ children }:ProfileContextProps) {
     return (
         <ProfileContext.Provider value={{ 
             loading, setLoading, profile, setProfile, updateProfile, selectedCar, setSelectedCar, error, setError, 
-            showBanner, setShowBanner
+            showBanner, setShowBanner, session, setSession
         }}>
             {children}
         </ProfileContext.Provider>
@@ -78,7 +80,7 @@ export function ProfileContextProvider({ children }:ProfileContextProps) {
 
 export interface ProfileContextTypes {
     profile: UsersTypes;
-    setProfile: (arg1: UsersTypes) => void,
+    setProfile: (arg1: UsersTypes|undefined|null) => void,
     updateProfile: (arg1: any[]) => void,
     loading: boolean;
     setLoading: (arg1: boolean) => void;
@@ -88,6 +90,8 @@ export interface ProfileContextTypes {
     setError: (arg1: string) => void;
     showBanner: boolean;
     setShowBanner: (arg1: boolean) => void;
+    session?: SessionsTypes;
+    setSession: (arg1: SessionsTypes|null|undefined) => void;
 }
 
 export const useProfileContext = () => useContext(ProfileContext);

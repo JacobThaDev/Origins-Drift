@@ -1,10 +1,15 @@
+"use client" 
+
+import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvider";
 import Image from "next/image";
 import Link from "next/link";
 
-const ProfileButton = async({ session }: { session: any; }) => {
+const ProfileButton = () => {
+
+    const { session }:ProfileContextTypes = useProfileContext();
 
     if (!session) {
-        return <></>;
+        return null;
     }
 
     return (

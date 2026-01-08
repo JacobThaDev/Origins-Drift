@@ -12,6 +12,8 @@ import {
 import { Pool, createPool } from "mysql2/promise";
 import { nextCookies } from "better-auth/next-js";
 import { passkey } from "@better-auth/passkey";
+import LocalApi from "@/services/LocalApi";
+import { UsersTypes } from "@/utils/types/UsersTypes";
 
 const globalForDb = global as unknown as { conn: Pool | undefined };
 
@@ -66,12 +68,15 @@ export const auth = betterAuth({
 		nextCookies(),
 		oneTap(),
 		customSession(async (session) => {
+            const user_id = session.user.id;
+            const userData:UsersTypes = await LocalApi.get("/profile/"+user_id).then(r => r.data);
+
+            //console.log(session);
+            //console.log(userData);
+
 			return {
 				...session,
-				user: {
-					...session.user,
-					dd: "test",
-				},
+				user: userData,
 			};
 		})
 	]

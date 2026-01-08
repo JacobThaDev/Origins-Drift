@@ -4,8 +4,8 @@ import { AccountTypes } from "./AccountTypes";
 export interface UsersTypes {
     id: string;
     name: string;
-    email:string;
-    emailVerified: boolean;
+    emai?:string;
+    emailVerified?: boolean;
     image: string;
     createdAt: string;
     updatedAt: string;
@@ -14,7 +14,7 @@ export interface UsersTypes {
     banned: boolean;
     banReason: string;
     banExpires: string;
-    AccountData?: AccountDataTypes;
+    AccountData: AccountDataTypes;
     Account: AccountTypes;
-    update: (...args:any[]) => void
+    //update: (...args:any[]) => void
 }

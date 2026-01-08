@@ -14,20 +14,19 @@ export default function Profile() {
 
     const { profile, loading, error }:ProfileContextTypes = useProfileContext();
 
-    if (!profile || loading || error != null) {
+     if (error) {
+        return(
+            <div className="w-full h-full flex  flex-col gap-10 items-center justify-center">
+                <XMarkIcon height={80} strokeWidth={4}/>
+                <div className="text-center">
+                    <p className="text-sm text-muted">An error occured</p>
+                    <p>{error}</p>
+                </div>
+            </div> 
+        )
+    }
 
-        if (error) {
-            return(
-               <div className="w-full h-full flex  flex-col gap-10 items-center justify-center">
-                    <XMarkIcon height={80} strokeWidth={4}/>
-                    <div className="text-center">
-                        <p className="text-sm text-muted">An error occured</p>
-                        <p>{error}</p>
-                    </div>
-                </div> 
-            )
-        }
-
+    if (loading) {
         return <>
             <div className="absolute top-0 left-0 bg-background w-full h-full flex flex-col gap-10 items-center justify-center z-[1050]">
                 <LoadingIcon height={80}/>

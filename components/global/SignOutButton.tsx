@@ -1,20 +1,22 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { createAuthClient } from "better-auth/client";
 import { PowerIcon } from '@heroicons/react/24/outline'
-
-const authClient = createAuthClient();
+import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvider";
+import { client } from '@/lib/auth-client';
 
 const SignOutButton = () => {
 
     const router = useRouter();
+    const { setSession, setProfile }:ProfileContextTypes = useProfileContext();
 
     const logout = async() => {
-        await authClient.signOut({
+        await client.signOut({
             fetchOptions: {
                 onSuccess: () => {
-                    router.push("/"); // redirect to login page
+                    setProfile(null);
+                    setSession(null);
+                    router.push("/");
                 },
                 onError: (err:any) => {
                     console.log(err);
