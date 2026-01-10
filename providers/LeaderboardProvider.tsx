@@ -27,7 +27,7 @@ export function LeaderboardContextProvider({ children }:LeaderboardContextProps)
         return() => setScores(undefined);
     }, [activeTrack, classFilter])
 
-     async function loadScores() { 
+    async function loadScores() { 
         setLoading(true);
         const trackData:ScoresTypes = await LocalApi.get("games/fh5/"+activeTrack.short_name+"/leaders/"+classFilter).then(r => r.data);;
         setScores(trackData.scores);

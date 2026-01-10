@@ -1,22 +1,61 @@
-import { ArrowUpTrayIcon, PlusIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowUpTrayIcon, CheckIcon, PlusIcon, PresentationChartBarIcon, QuestionMarkCircleIcon, TrashIcon, TrophyIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Meteors from "../misc/Meteors";
 import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
 import Image from "next/image";
 import TrackSelector from "./TrackSelector";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {useDropzone} from 'react-dropzone'
 import LocalApi from "@/services/LocalApi";
 import { ImgurDataTypes } from "@/utils/types/ImgurDataTypes";
 import Link from "next/link";
+import { LeaderboardContextTypes, useLeaderboardContext } from "@/providers/LeaderboardProvider";
+import { client } from "@/lib/auth-client";
+import { SessionsTypes } from "@/utils/types/SessionsTypes";
+import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvider";
+import { formatNumber } from "@/utils/Functions";
 
 const SubmitButton = () => {
 
     const { activeTrack }:TracksContextTypes = useTracksContext();
+    const { profile }:ProfileContextTypes = useProfileContext();
+
     const [ imgurData, setImgurData ] = useState<ImgurDataTypes>();
-    const [ error, setError ] = useState<string>();
+    const [ error, setError ]         = useState<string>();
     const [ modalOpen, setModalOpen ] = useState<boolean>(false);
     const [ uploading, setUploading ] = useState<boolean>(false);
-    const [ progress, setProgress ] = useState<number>(0);
+    const [ progress, setProgress ]   = useState<number>(0);
+    const [ score, setScore ]         = useState<number>(0);
+    const [ showConfirm, setShowConfirm ] = useState<boolean>(false);
+
+
+     const { 
+        classFilter, setClassFilter, loading 
+    }:LeaderboardContextTypes = useLeaderboardContext();
+
+    const submitData = async() => {
+        if (!showConfirm) {
+            setShowConfirm(true);
+            return;
+        }
+
+        const postData = {
+            user_id: profile.id,
+            game: "fh5",
+            track: activeTrack.short_name,
+            class: classFilter,
+            score: score as number, // TODO:
+            proof_url: imgurData?.link,
+        }
+        
+        const result = await LocalApi.post( "games/fh5/"+activeTrack.short_name, postData)
+            .then(r => r.data);
+
+        console.log(result);
+
+
+        //setShowConfirm(false);
+        //console.log(postData);
+    }
 
     const onDrop = useCallback((acceptedFiles:File[]) => {
         if (uploading) {
@@ -47,8 +86,6 @@ const SubmitButton = () => {
                 setError('Image can not exceed 10mb.');
                 return;
             }
-            
-            console.log("File Size: "+file.size);
 
             setError(undefined);
             setUploading(true);
@@ -83,6 +120,10 @@ const SubmitButton = () => {
         reader.readAsDataURL(acceptedFiles[0])
     },// eslint-disable-next-line 
     []);
+
+    useEffect(() => {
+        return () => document.body.classList.remove('overflow-y-hidden')
+    }, []);
     
     const { getRootProps, getInputProps } = useDropzone({onDrop})
     
@@ -135,21 +176,55 @@ const SubmitButton = () => {
         {modalOpen && 
         <div className="flex fixed justify-center items-center top-0 left-0 w-full h-full z-[1001] bg-black/30 backdrop-blur-sm px-[2em] overflow-y-auto py-5">
             <div className="bg-card rounded-2xl w-full max-w-[400px]">
-                <Image src={activeTrack.track_image} 
+                {!showConfirm && <Image src={activeTrack.track_image} 
                     className="rounded-2xl"
                     width={450} 
-                    height={150} alt=""/>
-                <div className="p-7">
+                    height={150} alt=""/>}
+
+                {showConfirm && <div className="p-7">
+                    <div className="text-center mb-5">
+                        <p className="text-white/60">Confirm Entry</p>
+                        <p className="mb-3 text-xl">{activeTrack.name} &#40;Class {classFilter.toUpperCase()}-{classFilter.toUpperCase() == "A" ? 800 : 900}&#41;</p> 
+                        <div className="flex items-center justify-center gap-3 text-2xl font-black">
+                            <PresentationChartBarIcon height={30} className="text-warning"/>
+                            {formatNumber(score, 0)}
+                        </div>  
+                    </div>
+                    
+                    {imgurData && 
+                    <div className="mb-5">
+                        <Link href={`https://imgur.com/${imgurData.id}`} className="text-sm text-center mb-5" target="_blank">
+                            <Image src={imgurData.link} width={400} height={150} alt="" className="rounded-xl"/>
+                        </Link>
+                    </div>}
+                    
+                    <div className="flex gap-3">
+                        <button onClick={() => setShowConfirm(false)} className="px-5 py-3 bg-danger/30 hover:bg-danger transition-all rounded-xl text-nowrap">
+                            Go back
+                        </button>
+                        
+                        <button onClick={() => submitData()} className="flex items-center justify-center gap-2 px-5 py-3 bg-success/30 hover:bg-success  transition-all w-full rounded-xl">
+                            <CheckIcon height={20} strokeWidth={4} /> Confirm
+                        </button>
+                    </div>
+                </div>}
+
+                {!showConfirm && <div className="p-7">
                     <TrackSelector/>
 
                     <div className="flex mb-3">
                         <div className="rounded-l-xl w-[120px]">
-                            <select className="bg-button custom-select text-white py-4 w-full outline-0 text-center rounded-l-xl">
+                            <select 
+                                onChange={(e:any) => setClassFilter(e.target.value)}
+                                className="bg-button custom-select text-white py-4 w-full outline-0 text-center rounded-l-xl">
                                 <option value="a">A-800</option>
-                                <option value="a">S1-900</option>
+                                <option value="s1">S1-900</option>
                             </select>
                         </div>
-                        <input type="number" min={1} max={2000000} className="bg-button outline-0 rounded-r-xl w-full ps-3 border-l-2 border-l-card"
+                        <input 
+                            onChange={(e:any) => setScore(e.target.value as number)}
+                            defaultValue={score}
+                            type="number" min={1} max={2000000} className="bg-button outline-0 rounded-r-xl w-full ps-3 border-l-2 border-l-card"
                             placeholder="Type your score here" required/>
                     </div>
 
@@ -194,12 +269,12 @@ const SubmitButton = () => {
                             Cancel
                         </button>
                         <button 
-                            onClick={() => {}} 
+                            onClick={() => submitData()} 
                             className="bg-success/70 hover:bg-success rounded-xl w-full">
                             Submit Score
                         </button>
                     </div>
-                </div>
+                </div>}
             </div>
         </div>}
         </>

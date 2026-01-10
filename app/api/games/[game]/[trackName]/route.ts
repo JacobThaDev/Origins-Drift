@@ -1,4 +1,6 @@
 import db from '@/models/index';
+import { GamesTypes } from '@/utils/types/GamesTypes';
+import { TracksTypes } from '@/utils/types/TracksTypes';
 
 /**
  * Get all users for game mode
@@ -15,6 +17,10 @@ export async function GET(req: any, res:any) {
         const game = await db.games.findOne({
             where: {
                 symbol: gameType
+            },
+            include: {
+                model: db.tracks,
+                as: "tracks"
             }
         });
 
@@ -24,24 +30,97 @@ export async function GET(req: any, res:any) {
             });
         }
 
-        const track = await db.tracks.findOne({
-            where: {
-                short_name: trackName
-            }
-        });
+        let trackData:TracksTypes|undefined = game.tracks.find((track:TracksTypes) => 
+            track.short_name.toLowerCase() == trackName.toLowerCase()
+        );
 
-         if (!track) {
+        if (!trackData || trackData.length == 0) {
             return Response.json({
-                error: "Track not found in "+game.name+""
+                error: "Invalid track"
             });
         }
 
-        return Response.json(track);
+        return Response.json(trackData);
     } catch (e:any) {
         console.log(e.message);
         return Response.json({
-            success: false,
-            message: e.message
+            error: e.message
         });
     }
+}
+
+/**
+ * POST endpoint for submitting a score for a specific track
+ * @param req 
+ * @returns 
+ */
+// eslint-disable-next-line
+export async function POST(req: any, res:any) {
+    try {
+        const { 
+            user_id, game, track:trackName, class:classType, score, proof_url 
+        }:RequestTypes = await req.json();
+
+        if (!user_id || !game || !trackName || !classType || !score || !proof_url) {
+             return Response.json({
+                error: "Missing required parameters."
+            });
+        }
+
+        if (classType.toLowerCase() != "a" && classType != "s1") {
+            return Response.json({
+                error: "Invalid class type. Must be A or S1."
+            });
+        }
+
+        if (score < 0) {
+             return Response.json({
+                error: "Score can not be less than 0."
+            });
+        }
+        
+        const gameData:GamesTypes = await db.games.findOne({
+            where: {
+                symbol: game
+            },
+            include: {
+                model: db.tracks,
+                as: "tracks"
+            }
+        });
+
+        if (!gameData) {
+            return Response.json({
+                error: "Game not found"
+            });
+        }
+
+        let trackData:TracksTypes|undefined = gameData.tracks.find((track:TracksTypes) => 
+            track.short_name.toLowerCase() == trackName.toLowerCase()
+        );
+
+        if (!trackData || trackData.length == 0) {
+            return Response.json({
+                error: "Invalid track"
+            });
+        }
+
+        return Response.json({
+            found: trackData
+        });
+    } catch (e:any) {
+        console.log(e.message);
+        return Response.json({
+            error: e.message
+        });
+    }
+}
+
+interface RequestTypes {
+    user_id: string,
+    game: GamesTypes,
+    track: string,
+    class: string,
+    score: number,
+    proof_url: string,
 }
