@@ -15,7 +15,6 @@ export default function TrackLeaderboard({ params }: { params: Promise<{ trackNa
 
     const { trackName } = use(params);
     const { tracks, activeTrack, setActiveTrack }:TracksContextTypes = useTracksContext();
-    //const { loading } = useLeaderboardContext();
 
     useEffect(() => {
         if (!tracks) {

@@ -30,7 +30,7 @@ export async function GET(req: any, res:any) {
             });
         }
 
-        let trackData:TracksTypes|undefined = game.tracks.find((track:TracksTypes) => 
+        const trackData:TracksTypes|undefined = game.tracks.find((track:TracksTypes) => 
             track.short_name.toLowerCase() == trackName.toLowerCase()
         );
 
@@ -95,7 +95,7 @@ export async function POST(req: any, res:any) {
             });
         }
 
-        let trackData:TracksTypes|undefined = gameData.tracks.find((track:TracksTypes) => 
+        const trackData:TracksTypes|undefined = gameData.tracks.find((track:TracksTypes) => 
             track.short_name.toLowerCase() == trackName.toLowerCase()
         );
 

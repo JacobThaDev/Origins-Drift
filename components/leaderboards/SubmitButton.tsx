@@ -1,4 +1,4 @@
-import { ArrowUpTrayIcon, CheckIcon, PlusIcon, PresentationChartBarIcon, QuestionMarkCircleIcon, TrashIcon, TrophyIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowUpTrayIcon, CheckIcon, PlusIcon, PresentationChartBarIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Meteors from "../misc/Meteors";
 import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
 import Image from "next/image";
@@ -9,8 +9,6 @@ import LocalApi from "@/services/LocalApi";
 import { ImgurDataTypes } from "@/utils/types/ImgurDataTypes";
 import Link from "next/link";
 import { LeaderboardContextTypes, useLeaderboardContext } from "@/providers/LeaderboardProvider";
-import { client } from "@/lib/auth-client";
-import { SessionsTypes } from "@/utils/types/SessionsTypes";
 import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvider";
 import { formatNumber } from "@/utils/Functions";
 
@@ -29,7 +27,7 @@ const SubmitButton = () => {
 
 
      const { 
-        classFilter, setClassFilter, loading 
+        classFilter, setClassFilter 
     }:LeaderboardContextTypes = useLeaderboardContext();
 
     const submitData = async() => {
@@ -122,8 +120,10 @@ const SubmitButton = () => {
     []);
 
     useEffect(() => {
+        // fixes a bug with the modal when pressing the back button.
         return () => document.body.classList.remove('overflow-y-hidden')
-    }, []);
+    }, // eslint-disable-next-line
+    []);
     
     const { getRootProps, getInputProps } = useDropzone({onDrop})
     
