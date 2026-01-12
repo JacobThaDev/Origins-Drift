@@ -1,7 +1,9 @@
 import db from '@/models';
 import { unstable_cache } from 'next/cache';
 
-
+/**
+ * gets a full list of cars and caches it
+ */
 const getCars = unstable_cache(
   async () => {
     return await db.cars_fh5.findAll();

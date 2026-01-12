@@ -29,7 +29,6 @@ export function ProfileContextProvider({ children }:ProfileContextProps) {
         if (!data) {
             if (!isPending) {
                 setLoading(false);
-                console.log("not pending")
             }
             return;
         }

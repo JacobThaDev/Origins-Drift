@@ -1,8 +1,9 @@
-import db from "@/models";
 import { UsersTypes } from "@/utils/types/UsersTypes";
+import { getCachedUser } from "../route";
+
 
 /**
- * DELETE Endpoint for removing images on Imgur.
+ * Get a user by user id
  * @param req 
  * @param res 
  */
@@ -11,30 +12,10 @@ export async function GET(req: any, res:any) {
     try {
         const { userId }:RequestTypes = await res.params;
 
-        const user:UsersTypes = await db.users.findOne({
-            attributes: [
-                "id", "name", "image", "role", "createdAt"
-            ],
-            where: {
-                id: userId
-            },
-            include: [
-                {
-                    model: db.accountData,
-                    as: "AccountData"
-                },
-                {
-                    model: db.account,
-                    as: "Account",
-                    attributes: [
-                        "accountId", "providerId"
-                    ]
-                }
-            ]
-        });
+        const user:UsersTypes = await getCachedUser(userId);
 
         if (!user) {
-                return Response.json({ 
+            return Response.json({ 
                 error: "Could not find profile"
             });
         }

@@ -34,19 +34,16 @@ const ConfirmBox = ({ score, profile, imgurData, activeTrack, classFilter, reset
         }
 
         setLoading(true);
-
-        const postData = {
-            user_id: profile.id,
-            game: "fh5",
-            track: activeTrack.short_name,
-            class: classFilter,
-            score: score as number, // TODO:
-            proof_url: imgurData?.link,
-        }
         
         try {
-            const result:BasicApiResponseType = await LocalApi.post( "games/fh5/"+activeTrack.short_name, postData)
-                .then(r => r.data);
+            const result:BasicApiResponseType = await LocalApi.post( "games/fh5/"+activeTrack.short_name, {
+                user_id: profile.id,
+                game: "fh5",
+                track: activeTrack.short_name,
+                class: classFilter,
+                score: score as number, // TODO:
+                proof_url: imgurData?.link,
+            }).then(r => r.data);
 
             if (result.error) {
                 setError(result.error);

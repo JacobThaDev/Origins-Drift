@@ -2,9 +2,44 @@ import db from '@/models';
 import LocalApi from '@/services/LocalApi';
 import { CarsDetailsTypes } from '@/utils/types/CarsDetailsTypes';
 import { UsersTypes } from '@/utils/types/UsersTypes';
+import { revalidateTag, unstable_cache } from 'next/cache';
+
+export const getCachedUser = (user_id:string) => unstable_cache(
+    async () => {
+        return await db.users.findOne({
+            attributes: [
+                "id", "name", "image", "role", "createdAt"
+            ],
+            where: {
+                id: user_id
+            },
+            include: [
+                {
+                    model: db.accountData,
+                    as: "AccountData",
+                    include: {
+                        model: db.cars_fh5,
+                        as: "fav_car",
+                    }
+                },
+                {
+                    model: db.account,
+                    as: "Account",
+                    attributes: ["accountId", "providerId"]
+                }
+            ]
+        });
+    },
+    ['users', user_id], {
+        tags: [
+            'users',
+            `users-${user_id}`,
+        ]
+    }
+)();
 
 /**
- * Get all users for game mode
+ * Get a user from a session cookie - must be logged in.
  * @param req 
  * @returns 
  */
@@ -29,30 +64,7 @@ export async function GET(req: any, res:any) {
         }
         
         const user_id = session.user.id;
-
-        const user = await db.users.findOne({
-            attributes: [
-                "id", "name", "image", "role", "createdAt"
-            ],
-            where: {
-                id: user_id
-            },
-            include: [
-                {
-                    model: db.accountData,
-                    as: "AccountData",
-                    include: {
-                        model: db.cars_fh5,
-                        as: "fav_car",
-                    }
-                },
-                {
-                    model: db.account,
-                    as: "Account",
-                    attributes: ["accountId", "providerId"]
-                }
-            ]
-        })
+        const user = await getCachedUser(user_id);
 
         return Response.json(user);
     } catch (e:any) {
@@ -88,30 +100,9 @@ export async function POST(req: any, res:any) {
         }
 
         const user_id = session.user.id;
+        const user:UsersTypes = await getCachedUser(user_id);
 
-        const user:UsersTypes = await db.users.findOne({
-            attributes: [
-                "id", "name", "image", "role", "createdAt"
-            ],
-            where: {
-                id: user_id
-            },
-            include: [
-                {
-                    model: db.accountData,
-                    as: "AccountData"
-                },
-                {
-                    model: db.account,
-                    as: "Account",
-                    attributes: [
-                        "accountId", "providerId"
-                    ]
-                }
-            ]
-        });
-
-        if (!user) {
+        if (!user || user.error) {
              return Response.json({ 
                 error: "Could not find profile"
             });
@@ -154,14 +145,18 @@ export async function POST(req: any, res:any) {
                     error: "Failed to create entry."
                 });
             }
+
+            revalidateTag(`users-${user.id}`);
         } else {
-            const updated = await user.AccountData.update({
-                user_id: user.id,
+            // Use the model directly rather than the cached 'user' instance
+            const updated = await db.accountData.update({
                 display_name: display_name,
-                platform:  platform == "" || platform == undefined ? null : platform,
-                platform_name: platform == "" || platform == undefined || platform_name == "" ? null : platform_name,
+                platform: platform === "" || platform === undefined ? null : platform,
+                platform_name: (platform === "" || platform === undefined || platform_name === "") ? null : platform_name,
                 fav_car_fh5: car ? car.id : user.AccountData.fav_car_fh5,
                 about_me: about_me
+            }, {
+                where: { user_id: user.id } // Target the record by the user's ID
             });
 
             if (!updated) {
@@ -169,33 +164,11 @@ export async function POST(req: any, res:any) {
                     error: "Failed to update profile."
                 });
             }
+
+            revalidateTag(`users-${user.id}`);
         }
 
-        const freshUser:UsersTypes = await db.users.findOne({
-            attributes: [
-                "id", "name", "image", "role", "createdAt"
-            ],
-            where: {
-                id: user_id
-            },
-            include: [
-                {
-                    model: db.accountData,
-                    as: "AccountData",
-                    include: {
-                        model: db.cars_fh5,
-                        as: "fav_car",
-                    }
-                },
-                {
-                    model: db.account,
-                    as: "Account",
-                    attributes: [
-                        "accountId", "providerId"
-                    ]
-                }
-            ]
-        });
+        const freshUser:UsersTypes = await getCachedUser(user.id);
         
         return Response.json({
             success: true,
