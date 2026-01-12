@@ -84,7 +84,7 @@ export const shortenAddress = (string: string) => {
  * @param digits - The number of digits to display after the decimal point.
  * @returns The formatted number as a string.
  */
-export const formatNumber = (number: any, digits: number) => {
+export const formatNumber = (number: any, digits: number = 0) => {
     number = parseFloat(number);
 
     return number.toLocaleString(undefined, {

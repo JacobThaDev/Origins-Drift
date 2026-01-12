@@ -14,6 +14,7 @@ interface LeaderboardContextProps {
 
 export function LeaderboardContextProvider({ children }:LeaderboardContextProps) {
 
+    const [ game, setGame ] = useState<"fh4"|"fh5"|"fh6">("fh5");
     const [ classFilter, setClassFilter ] = useState<"a"|"s1">("a");
     const [ loading, setLoading ] = useState<boolean>(false);
     const [ scores, setScores ]   = useState<LeadersTypes[]>();
@@ -29,13 +30,13 @@ export function LeaderboardContextProvider({ children }:LeaderboardContextProps)
 
     async function loadScores() { 
         setLoading(true);
-        const trackData:ScoresTypes = await LocalApi.get("games/fh5/"+activeTrack.short_name+"/leaders/"+classFilter).then(r => r.data);;
+        const trackData:ScoresTypes = await LocalApi.get("games/"+game+"/"+activeTrack.short_name+"/leaders/"+classFilter).then(r => r.data);;
         setScores(trackData.scores);
         setLoading(false);
     }
 
     return (
-        <LeaderboardContext.Provider value={{ classFilter, setClassFilter, loading, setLoading, scores, setScores, loadScores }}>
+        <LeaderboardContext.Provider value={{ game, setGame, classFilter, setClassFilter, loading, setLoading, scores, setScores, loadScores }}>
             {children}
         </LeaderboardContext.Provider>
     );
@@ -43,6 +44,8 @@ export function LeaderboardContextProvider({ children }:LeaderboardContextProps)
 }
 
 export interface LeaderboardContextTypes {
+    game: string;
+    setGame: (arg1: string) => void;
     loadScores: () => void;
     classFilter: string;
     setClassFilter: (arg1: string) => void;

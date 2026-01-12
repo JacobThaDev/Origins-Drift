@@ -1,5 +1,49 @@
 import db from '@/models/index';
+import { unstable_cache } from 'next/cache';
 import { Op } from 'sequelize';
+
+
+const getCachedScores = (gameId: number, trackId: number, classType: string) => unstable_cache(
+    async () => {
+        return await db.scores.findAll({
+            where: {
+                [Op.and]: {
+                    game: gameId,
+                    track: trackId,
+                    class: classType
+                }
+            },
+            order: [
+                ["id", "DESC"]
+            ],
+            limit: [10],
+            include: [{
+                model: db.users,
+                as: "User",
+                attributes: ["name", "image", "createdAt"],
+                include: [
+                    { 
+                        model: db.accountData, 
+                        as: "AccountData",
+                        attributes: ["display_name", "platform"] 
+                    },
+                    { 
+                        model: db.account, 
+                        as: "Account", 
+                        attributes: ["accountId", "providerId"] 
+                    }
+                ]
+            }]
+        });
+    },
+    ['recent', String(trackId), classType.toUpperCase()], {
+        tags: [
+            'recent',
+            `recent-${trackId}`,
+            `recent-${trackId}-${classType.toUpperCase()}`
+        ]
+    }
+)();
 
 /**
  * Get all users for game mode
@@ -38,18 +82,13 @@ export async function GET(req: any, res:any) {
             });
         }
 
-        const scores = await db.scores.findAll({
-            where: {
-                [Op.and]: {
-                    game: game.id,
-                    track: track.id,
-                    class: classType
-                }
-            },
-            order: [
-                ["created_at", "DESC"]
-            ]
-        });
+        const scores = await getCachedScores(game.id, track.id, classType);
+
+        if (!scores) {
+            return Response.json({
+                error: "no recent scores found"
+            });
+        }
 
         return Response.json(scores);
     } catch (e:any) {

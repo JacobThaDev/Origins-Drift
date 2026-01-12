@@ -3,6 +3,7 @@
 import Container from "@/components/layout/Container";
 import ClassSelector from "@/components/leaderboards/ClassSelector";
 import LeaderTable from "@/components/leaderboards/LeaderTable";
+import RecentEntries from "@/components/leaderboards/RecentEntries";
 import SubmitButton from "@/components/leaderboards/SubmitButton";
 import TrackHeader from "@/components/leaderboards/TrackHeader";
 import TrackSelector from "@/components/leaderboards/TrackSelector";
@@ -61,6 +62,7 @@ export default function TrackLeaderboard({ params }: { params: Promise<{ trackNa
                                 width={950} 
                                 height={150} alt=""/>
                             <SubmitButton/>
+                            <RecentEntries/>
                         </div>
                     </div>
                 </Container>
