@@ -38,8 +38,8 @@ const TrackSelector = () => {
 
     return(
         <>
-            <div className="relative mb-3" ref={dropdownRef}>
-                <button className="bg-button w-full p-4 py-3 rounded-xl text-start flex items-center"
+            <div className="relative" ref={dropdownRef}>
+                <button className={`bg-button w-full p-4 py-3 text-start flex items-center ${menuOpen ? "rounded-t-xl" : "rounded-xl"}`}
                     onClick={() => setMenuOpen(!menuOpen)} id="track-dropdown-button">
                     <div>
                         <p className="text-xs text-white/70">Current Track</p>
@@ -48,7 +48,7 @@ const TrackSelector = () => {
                     <ChevronDownIcon height={20} className="ml-auto"/>
                 </button>
                 
-                <div className={`absolute rounded-xl top-full mt-2 w-full bg-button ${menuOpen ? "flex" : "hidden"} flex-col max-h-[220px] overflow-y-scroll scrollbar z-[50]`} id="track-dropdown">
+                <div className={`absolute rounded-b-xl top-full w-full bg-button ${menuOpen ? "flex" : "hidden"} flex-col max-h-[220px] overflow-hidden overflow-y-auto scrollbar z-[50] border-t-2 border-background shadow-xl shadow-black/30`} id="track-dropdown">
                     {tracks && tracks.map((track:TracksTypes, index:number) => {
                         return(
                             <button key={index} 

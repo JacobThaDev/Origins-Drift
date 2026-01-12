@@ -154,17 +154,17 @@
   
   /* Track */
 .scrollbar::-webkit-scrollbar-track {
-    background: #12151a;
-    border-radius: 0 6px 6px 0;
+    background: #14171d;
+    border-radius: 0 0 6px 0;
     
 }
   
   /* Handle */
 .scrollbar::-webkit-scrollbar-thumb {
     background: #2c3643;
-    border: solid 4px #12151a;
+    border: solid 4px #14171d;
     
-    border-radius: 6px;
+    border-radius: 8px;
 }
   
   /* Handle on hover */

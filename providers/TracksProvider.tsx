@@ -17,7 +17,7 @@ interface TracksContextProps {
 export function TracksContextProvider({ children }:TracksContextProps) {
 
     const [ loading, setLoading ] = useState<boolean>(false);
-    const [ game, setGame ]       = useState<"fh5"|"fh6">("fh5");
+    const [ game, setGame ]       = useState<"fh4"|"fh5"|"fh6">("fh5");
     const [ tracks, setTracks ]   = useState<TracksTypes[]>();
     const [ activeTrack, setActiveTrack ] = useState<TracksTypes>();
     const [ error, setError ]     = useState<string>();

@@ -35,7 +35,7 @@ export function LeaderboardContextProvider({ children }:LeaderboardContextProps)
     }
 
     return (
-        <LeaderboardContext.Provider value={{ classFilter, setClassFilter, loading, setLoading, scores, setScores }}>
+        <LeaderboardContext.Provider value={{ classFilter, setClassFilter, loading, setLoading, scores, setScores, loadScores }}>
             {children}
         </LeaderboardContext.Provider>
     );
@@ -43,6 +43,7 @@ export function LeaderboardContextProvider({ children }:LeaderboardContextProps)
 }
 
 export interface LeaderboardContextTypes {
+    loadScores: () => void;
     classFilter: string;
     setClassFilter: (arg1: string) => void;
     loading: boolean;

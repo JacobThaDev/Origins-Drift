@@ -1,6 +1,40 @@
 import db from '@/models/index';
-import { GamesTypes } from '@/utils/types/GamesTypes';
+import { LeadersTypes } from '@/utils/types/LeadersTypes';
 import { TracksTypes } from '@/utils/types/TracksTypes';
+import { UsersTypes } from '@/utils/types/UsersTypes';
+import { revalidateTag, unstable_cache } from 'next/cache';
+
+/**
+ * Gets a track from a specific game caching the 
+ * result until it's revalidated manually.
+ * @param gameSymbol the game (`fh4`, `fh5`, `fh6`)
+ * @param trackName the name of the track (eg. `lookout`)
+ * @returns track data
+ */
+export const getCachedTrack = (gameSymbol:string, trackName:string) => unstable_cache(
+    async () => {
+        const track = await db.tracks.findOne({
+            where: {
+                short_name: trackName
+            },
+            include: {
+                model: db.games,
+                as: "Game",
+                where: { symbol: gameSymbol }
+            }
+        });
+        
+        return track;
+    },
+    ['tracks', String(gameSymbol), trackName.toLowerCase()], {
+        tags: [
+            'tracks',
+            `tracks-${gameSymbol}`,
+            `tracks-${gameSymbol}-${trackName}`,
+        ]
+    }
+)();
+
 
 /**
  * Get all users for game mode
@@ -14,29 +48,11 @@ export async function GET(req: any, res:any) {
         const gameType  = bodyData?.game.toLowerCase().replace("_", " ");
         const trackName = bodyData?.trackName.toLowerCase().replace("_", " ");
         
-        const game = await db.games.findOne({
-            where: {
-                symbol: gameType
-            },
-            include: {
-                model: db.tracks,
-                as: "tracks"
-            }
-        });
+        const trackData:TracksTypes|undefined = await getCachedTrack(gameType, trackName);
 
-        if (!game) {
+        if (!trackData || trackData.error) {
             return Response.json({
-                error: "Game not found"
-            });
-        }
-
-        const trackData:TracksTypes|undefined = game.tracks.find((track:TracksTypes) => 
-            track.short_name.toLowerCase() == trackName.toLowerCase()
-        );
-
-        if (!trackData || trackData.length == 0) {
-            return Response.json({
-                error: "Invalid track"
+                error: trackData ? trackData.error : "Track not found."
             });
         }
 
@@ -67,7 +83,7 @@ export async function POST(req: any, res:any) {
             });
         }
 
-        if (classType.toLowerCase() != "a" && classType != "s1") {
+        if (classType.toUpperCase() != "A" && classType.toUpperCase() != "S1") {
             return Response.json({
                 error: "Invalid class type. Must be A or S1."
             });
@@ -78,35 +94,49 @@ export async function POST(req: any, res:any) {
                 error: "Score can not be less than 0."
             });
         }
-        
-        const gameData:GamesTypes = await db.games.findOne({
+
+        const user:UsersTypes = await db.users.findOne({
             where: {
-                symbol: game
-            },
-            include: {
-                model: db.tracks,
-                as: "tracks"
+                id: user_id
             }
         });
 
-        if (!gameData) {
+        if (!user) {
             return Response.json({
-                error: "Game not found"
+                error: "User not found."
+            });
+        }
+        
+        const trackData:TracksTypes|undefined = await getCachedTrack(game, trackName);
+
+        if (!trackData || trackData.error) {
+            return Response.json({
+                error: trackData ? trackData.error : "Track not found."
             });
         }
 
-        const trackData:TracksTypes|undefined = gameData.tracks.find((track:TracksTypes) => 
-            track.short_name.toLowerCase() == trackName.toLowerCase()
-        );
+        const result = await db.scores.create({
+            user_id: user.id,
+            game: trackData.game,
+            track: trackData.id,
+            class: classType.toUpperCase(),
+            score: score,
+            proof_url: proof_url
+        }) as LeadersTypes;
 
-        if (!trackData || trackData.length == 0) {
+        if (!result) {
             return Response.json({
-                error: "Invalid track"
+                error: "Failed to insert new entry."
             });
         }
+
+        //update the specific track and class cache
+        revalidateTag(`leaders-${trackData.id}-${classType.toUpperCase()}`);
 
         return Response.json({
-            found: trackData
+            success: true,
+            message: "Your score has been submitted.",
+            result: result
         });
     } catch (e:any) {
         console.log(e.message);
@@ -118,7 +148,7 @@ export async function POST(req: any, res:any) {
 
 interface RequestTypes {
     user_id: string,
-    game: GamesTypes,
+    game: string,
     track: string,
     class: string,
     score: number,

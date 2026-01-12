@@ -54,39 +54,15 @@ export default function TrackLeaderboard({ params }: { params: Promise<{ trackNa
                             <LeaderTable />
                         </div>
 
-                        <div className="w-full lg:max-w-[350px] lg:min-w-[350px] relative">
+                        <div className="flex flex-col gap-3 w-full lg:max-w-[350px] lg:min-w-[350px] relative">
+                            <TrackSelector/>
                             <Image src={activeTrack.track_image} 
-                                className="rounded-2xl mb-3"
+                                className="rounded-xl"
                                 width={950} 
                                 height={150} alt=""/>
-
                             <SubmitButton/>
-                            <TrackSelector/>
                         </div>
                     </div>
-
-                    {/* <div className="flex flex-col-reverse lg:flex-row gap-5">
-                        <div className="w-full">
-                            <div className="flex items-center mb-3 gap-3">
-                                <p className="text-2xl font-bold ">Leaderboard - Top 50</p>
-                                <div className="flex gap-3 justify-end items-center ml-auto">
-                                    <p>Class</p>
-                                    <ClassSelector />
-                                </div>
-                            </div>
-                            <LeaderTable />
-                        </div>
-
-                        <div className="w-full lg:max-w-[350px] relative">
-                            <Image src={activeTrack.track_image} 
-                                className="rounded-2xl mb-3"
-                                width={950} 
-                                height={150} alt=""/>
-
-                            <SubmitButton/>
-                            <TrackSelector/>
-                        </div>
-                    </div> */}
                 </Container>
             </div>
         </>

@@ -28,11 +28,9 @@ const LoginBox = () => {
 
     return(
         <div className="absolute top-0 left-0 bg-background px-[2em] w-full h-full flex flex-col gap-10 items-center justify-center z-[1050]">
-            <div className="bg-card flex flex-col lg:flex-row rounded-2xl w-full max-w-[400px] lg:max-w-[700px] overflow-hidden shadow-2xl shadow-black/50">
-                <div className="hidden lg:inline-block h-[200px] lg:h-[500px] min-w-[300px] login-bg text-3xl lg:text-6xl font-[impact] p-10 text-white/10">
-                    <p>ORIGINS</p>
-                    <p>DRIFT</p>
-                    <p>CLUB</p>
+            <div className="bg-card flex flex-col lg:flex-row rounded-2xl w-full max-w-[400px] lg:max-w-[750px] overflow-hidden shadow-2xl shadow-black/50">
+                <div className="hidden lg:inline-block h-[200px] lg:h-[500px] min-w-[350px] login-bg text-3xl lg:text-6xl font-[impact] p-10 text-white/10">
+                    
                 </div>
                 <div className="w-full bg-card text-center lg:p-10 flex flex-col">
                     <div className="p-10 lg:p-0">

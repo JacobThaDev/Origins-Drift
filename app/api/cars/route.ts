@@ -1,4 +1,16 @@
 import db from '@/models';
+import { unstable_cache } from 'next/cache';
+
+
+const getCars = unstable_cache(
+  async () => {
+    return await db.cars_fh5.findAll();
+  },
+  ['cars-list'], // Unique key for this cache entry
+  { 
+    tags: ['cars'] // This is the label we will "kill" later
+  }
+);
 
 /**
  * Get all users for game mode
@@ -8,7 +20,7 @@ import db from '@/models';
 // eslint-disable-next-line
 export async function GET(req: any, res:any) {
     try {
-        const cars = await db.cars_fh5.findAll();
+        const cars = await getCars();
 
         if (!cars) {
             return Response.json({
@@ -16,7 +28,9 @@ export async function GET(req: any, res:any) {
             });
         }
 
-        return Response.json(cars);
+        return Response.json(cars, {
+            status: 200
+        });
     } catch (e:any) {
         console.log(e.message);
         return Response.json({
