@@ -25,7 +25,7 @@ const RecentEntries = () => {
         }
         
         async function loadRecent() {
-            let recent = await LocalApi.get("/games/"+game+"/"+activeTrack.short_name+"/scores/"+classFilter+"")
+            const recent = await LocalApi.get("/games/"+game+"/"+activeTrack.short_name+"/scores/"+classFilter+"")
                 .then(r => r.data);
             
             if (recent) {
@@ -34,7 +34,8 @@ const RecentEntries = () => {
         }
 
         loadRecent();
-    }, [mounted, activeTrack]);
+    },// eslint-disable-next-line 
+    [mounted, activeTrack]);
 
     return(
         <div className="bg-card rounded-xl overflow-hidden">

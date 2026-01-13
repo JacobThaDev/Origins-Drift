@@ -13,7 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-const ConfirmBox = ({ score, profile, imgurData, activeTrack, classFilter, reset, setShowConfirm }: {
+interface ConfirmBoxTypes {
     score: number|undefined;
     profile: UsersTypes;
     imgurData: ImgurDataTypes|undefined;
@@ -21,7 +21,12 @@ const ConfirmBox = ({ score, profile, imgurData, activeTrack, classFilter, reset
     classFilter: string;
     reset: () => void;
     setShowConfirm: (arg1: boolean) => void;
-}) => {
+}
+
+const ConfirmBox = ({ 
+    score, profile, imgurData, activeTrack, classFilter, reset, setShowConfirm 
+}: ConfirmBoxTypes) => {
+
     const [ loading, setLoading ] = useState<boolean>();
     const [ error, setError ] = useState<string>();
     const [ submitted, setSubmitted ] = useState<LeadersTypes>();
