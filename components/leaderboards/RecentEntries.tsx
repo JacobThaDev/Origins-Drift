@@ -35,7 +35,7 @@ const RecentEntries = () => {
 
         loadRecent();
     },// eslint-disable-next-line 
-    [mounted, activeTrack]);
+    [mounted, activeTrack, classFilter]);
 
     return(
         <div className="bg-card rounded-xl overflow-hidden">
