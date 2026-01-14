@@ -5,12 +5,14 @@ import { LeadersTypes } from "@/utils/types/LeadersTypes";
 import Image from "next/image";
 import Link from "next/link";
 import { formatNumber } from "@/utils/Functions";
-import { CheckBadgeIcon, PhotoIcon } from "@heroicons/react/24/outline";
+import { CheckBadgeIcon } from "@heroicons/react/24/outline";
 import SubmitButton from "./SubmitButton";
+import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvider";
 
 const LeaderTable = () => {
     
     const { scores }:LeaderboardContextTypes = useLeaderboardContext();
+    const { profile }:ProfileContextTypes = useProfileContext();
     
     return(
         <div className="bg-card rounded-xl overflow-hidden shadow-md">
@@ -19,7 +21,7 @@ const LeaderTable = () => {
                     <p>Leaderboard</p>
                     <p className="text-sm text-white/70">Top 25</p>
                 </div>
-                <SubmitButton/>
+                {profile && <SubmitButton/>}
             </div>
 
             <div className="text-sm py-2 flex items-center pe-4 text-white/40 bg-black/10">
@@ -55,9 +57,11 @@ const LeaderTable = () => {
                                     target="_blank" className="text-lg font-bold text-warning hover:underline">
                                     {displayName}
                                 </Link>
-                                <p className="lg:hidden">
+                                {entry.proof_url ?
+                                <Link href={entry.proof_url.replace("i.", "").replace(".png", "").replace(".jpg", "")} target="_blank" rel="nofollow noopener"
+                                    className="underline block lg:hidden">
                                     {formatNumber(entry.score)}
-                                </p>
+                                </Link> : <p>{formatNumber(entry.score)}</p> }
                             </div>
                         </div>
 
@@ -70,11 +74,12 @@ const LeaderTable = () => {
                                     </div>
                                 </div>
                             </>}
-                            <p>{formatNumber(entry.score)}</p>
-                            {entry.proof_url && 
-                            <Link href={entry.proof_url.replace("i.", "").replace(".png", "").replace(".jpg", "")} target="_blank" rel="nofollow noopener">
-                                <PhotoIcon height={24} />
-                            </Link>}
+                            
+                            {entry.proof_url ?
+                            <Link href={entry.proof_url.replace("i.", "").replace(".png", "").replace(".jpg", "")} target="_blank" rel="nofollow noopener"
+                                className="underline">
+                                {formatNumber(entry.score)}
+                            </Link> : <p>{formatNumber(entry.score)}</p> }
                         </div>
                     </div>
                 )

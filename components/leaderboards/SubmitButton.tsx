@@ -158,13 +158,12 @@ const SubmitButton = () => {
     return(
         <>
         <button onClick={() => toggleModal()}
-            className="relative flex overflow-hidden text-center bg-warning/50 hover:bg-warning/80 rounded-lg transition-all duration-500">
-            
+                className="relative flex overflow-hidden text-center glow-button hover:brightness-125 rounded-lg transition-all duration-500">
             <Particles className="absolute h-full w-full" quantity={30}/>
-            <div className="bg-black/10 min-h-full p-2.5">
+            <div className="bg-black/20 min-h-full py-2.5 px-3 flex justify-center items-center">
                 <PlusCircleIcon height={30}/>
             </div>
-           <p className="flex items-center leading-[1em] px-5 lg:justify-center text-white transition-all duration-500 font-bold text-center">
+            <p className="flex items-center leading-[1em] px-5 lg:justify-center text-white transition-all duration-500 text-center font-bold">
                 Add Score
             </p>
         </button>
