@@ -5,13 +5,13 @@ import { LeadersTypes } from "@/utils/types/LeadersTypes";
 import Image from "next/image";
 import Link from "next/link";
 import { formatNumber } from "@/utils/Functions";
-import { CheckBadgeIcon } from "@heroicons/react/24/outline";
+import { CheckBadgeIcon, FlagIcon } from "@heroicons/react/24/outline";
 import SubmitButton from "./SubmitButton";
 import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvider";
 
 const LeaderTable = () => {
     
-    const { scores }:LeaderboardContextTypes = useLeaderboardContext();
+    const { scores, loading }:LeaderboardContextTypes = useLeaderboardContext();
     const { profile }:ProfileContextTypes = useProfileContext();
     
     return(
@@ -30,7 +30,7 @@ const LeaderTable = () => {
                 <div className="ml-auto hidden lg:inline-block">Score</div>
             </div>
             
-            {scores && scores.map((entry:LeadersTypes, index:number) => {
+            {scores && scores.length > 0 ? scores.map((entry:LeadersTypes, index:number) => {
 
                 let displayName = entry.User?.name;
 
@@ -83,7 +83,14 @@ const LeaderTable = () => {
                         </div>
                     </div>
                 )
-            })}
+            }) 
+            : !loading && <>
+                <div className="py-5 text-center">
+                    <FlagIcon height={50} className="mx-auto mb-3"/>
+                    <p className="text-xl font-bold">No legends here... yet</p>
+                    <p className="text-white/60 mb-4">This track is waiting for its first high score. Will it be yours?</p>
+                </div>
+            </>}
         </div>
     )
 }
