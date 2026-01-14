@@ -39,7 +39,7 @@ const TrackSelector = () => {
     return(
         <>
             <div className="relative" ref={dropdownRef}>
-                <button className={`bg-button w-full p-4 py-3 text-start flex items-center ${menuOpen ? "rounded-t-xl" : "rounded-xl"}`}
+                <button className={`bg-button w-full p-4 h-[60px] text-start flex items-center ${menuOpen ? "rounded-t-xl" : "rounded-xl"}`}
                     onClick={() => setMenuOpen(!menuOpen)} id="track-dropdown-button">
                     <div>
                         <p className="text-xs text-white/70">Current Track</p>

@@ -11,7 +11,7 @@ const PlatformIcon = ({ platform }: { platform: GamingPlatform|undefined|null })
 
     switch(platform) {
         case "STEAM": 
-            return <SteamIcon height={32} />;
+            return <SteamIcon height={26} />;
         case "WINDOWS": 
             return (<div className="relative w-8 h-8">
                 <XboxIcon height={32} />

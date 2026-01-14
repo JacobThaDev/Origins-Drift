@@ -4,7 +4,6 @@ import Container from "@/components/layout/Container";
 import ClassSelector from "@/components/leaderboards/ClassSelector";
 import LeaderTable from "@/components/leaderboards/LeaderTable";
 import RecentEntries from "@/components/leaderboards/RecentEntries";
-import SubmitButton from "@/components/leaderboards/SubmitButton";
 import TrackHeader from "@/components/leaderboards/TrackHeader";
 import TrackSelector from "@/components/leaderboards/TrackSelector";
 import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
@@ -43,25 +42,29 @@ export default function TrackLeaderboard({ params }: { params: Promise<{ trackNa
             <div className="py-16">
                 <Container>
 
-                    <div className="flex gap-5 flex-col-reverse lg:flex-row">
-                        <div className="w-full">
-                            <div className="w-full flex flex-col lg:flex-row justify-center lg:justify-between items-center mb-3 gap-3">
-                                <p className="text-2xl font-bold ">Leaderboard - Top 50</p>
-                                <div className="flex gap-3 justify-end items-center">
-                                    <p>Class</p>
-                                    <ClassSelector />
+                    <div className="flex gap-3 flex-col lg:flex-row">
+                        <Image 
+                            src={activeTrack.track_image} 
+                            className="rounded-xl lg:hidden"
+                            width={950} 
+                            height={150} alt=""/>
+
+                        <div className="flex flex-col gap-3 w-full">
+                            <div className="flex flex-col lg:flex-row items-center gap-3">
+                                <ClassSelector />
+                                <div className="w-full lg:max-w-[300px]">
+                                    <TrackSelector/>
                                 </div>
                             </div>
                             <LeaderTable />
                         </div>
 
                         <div className="flex flex-col gap-3 w-full lg:max-w-[350px] lg:min-w-[350px] relative">
-                            <TrackSelector/>
-                            <Image src={activeTrack.track_image} 
-                                className="rounded-xl"
+                            <Image 
+                                src={activeTrack.track_image} 
+                                className="rounded-xl hidden lg:inline-block"
                                 width={950} 
                                 height={150} alt=""/>
-                            <SubmitButton/>
                             <RecentEntries/>
                         </div>
                     </div>

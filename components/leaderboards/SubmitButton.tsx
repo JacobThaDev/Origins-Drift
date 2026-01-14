@@ -1,5 +1,4 @@
-import { ArrowUpTrayIcon, PlusIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import Meteors from "../misc/Meteors";
+import { ArrowUpTrayIcon, PlusCircleIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
 import Image from "next/image";
 import TrackSelector from "./TrackSelector";
@@ -11,6 +10,7 @@ import Link from "next/link";
 import { LeaderboardContextTypes, useLeaderboardContext } from "@/providers/LeaderboardProvider";
 import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvider";
 import ConfirmBox from "./ConfirmBox";
+import Particles from "../misc/Particles";
 
 const SubmitButton = () => {
 
@@ -158,17 +158,15 @@ const SubmitButton = () => {
     return(
         <>
         <button onClick={() => toggleModal()}
-            className="relative overflow-hidden inline-block text-center bg-infodark/70 hover:bg-infodark w-full rounded-xl transition-all duration-500">
-            <Meteors />
-
-            <div className="flex items-center gap-3">
-                <p className="text-white transition-all duration-500 font-bold text-center w-full">
-                    Add New Score
-                </p>
-                <div className=" bg-black/20 min-w-[60px] h-[60px] flex items-center justify-center ml-auto">
-                    <PlusIcon height={24} />
-                </div>
+            className="relative flex overflow-hidden text-center bg-warning/50 hover:bg-warning/80 rounded-lg transition-all duration-500">
+            
+            <Particles className="absolute h-full w-full" quantity={30}/>
+            <div className="bg-black/10 min-h-full p-2.5">
+                <PlusCircleIcon height={30}/>
             </div>
+           <p className="flex items-center leading-[1em] px-5 lg:justify-center text-white transition-all duration-500 font-bold text-center">
+                Add Score
+            </p>
         </button>
 
         {modalOpen && 
