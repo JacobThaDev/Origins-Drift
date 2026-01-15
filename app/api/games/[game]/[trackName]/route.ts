@@ -150,11 +150,19 @@ export async function POST(req: any, res:any) {
                 };
                 
                 // send the embed payload
-                await fetch(trackData.webhook_url, {
+                const discordRes = await fetch(trackData.webhook_url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(embedPayload),
                 });
+
+                if (!discordRes.ok) {
+                    const errorText = await discordRes.text();
+                    console.error("Discord Webhook Error:", errorText);
+                    return Response.json({
+                        error: "Webhook error: "+errorText
+                    })
+                }
             } catch(err:any) {
                 console.log(err);
                 return Response.json({
