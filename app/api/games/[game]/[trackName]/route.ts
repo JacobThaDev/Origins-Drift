@@ -99,7 +99,7 @@ export async function POST(req: any, res:any) {
             const { max_score }:{ max_score: number } = await getUserRecord(user.id, trackData.id, classType.toUpperCase());
             const broken = score > max_score;
 
-            if (broken) {
+            if (broken && max_score) {
                 old_score  = max_score;
                 new_record = true;
                 revalidateTag(`user-record-${trackData.id}-${classType.toUpperCase()}-${user_id}`);
@@ -131,7 +131,7 @@ export async function POST(req: any, res:any) {
                                 },
                                 !max_score ? null : {
                                     name: new_record ? "Previous Record" : "Record",
-                                    value: formatNumber(new_record ? old_score : max_score),
+                                    value: formatNumber(new_record ? old_score : (max_score ? max_score : score)),
                                     inline: true,
                                 },
                             ],
@@ -182,8 +182,6 @@ export async function POST(req: any, res:any) {
         revalidateTag(`leaders-${trackData.id}-${classType.toUpperCase()}`);
         //update the recent entries cache
         revalidateTag(`recent-${trackData.id}-${classType.toUpperCase()}`);
-
-        revalidateTag(`tracks`);// temp
         
         return Response.json({
             success: true,
