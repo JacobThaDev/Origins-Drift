@@ -1,11 +1,11 @@
-import { getCachedTrack, getUserRecord } from '@/app/api/data';
-import { getCachedUser } from '@/app/api/profile/route';
+import { getCachedTrack, getCachedUser, getUserRecord } from '@/app/api/data';
 import db from '@/models/index';
 import { formatNumber } from '@/utils/Functions';
 import { LeadersTypes } from '@/utils/types/LeadersTypes';
 import { TracksTypes } from '@/utils/types/TracksTypes';
 import { UsersTypes } from '@/utils/types/UsersTypes';
 import { revalidateTag } from 'next/cache';
+import { Sequelize } from 'sequelize';
 
 /**
  * Get all users for game mode
@@ -84,6 +84,12 @@ export async function POST(req: any, res:any) {
             });
         }
 
+        if (user.banned) {
+            return Response.json({
+                error: "You are blocked from submitting new scores."
+            });
+        }
+
         revalidateTag(`track-${game.toUpperCase()}-${trackName.toLowerCase()}`);
         
         const trackData:TracksTypes|undefined = await getCachedTrack(game, trackName);
@@ -95,20 +101,19 @@ export async function POST(req: any, res:any) {
         }
 
         if (trackData.webhook_url) {
-            let new_record:boolean = false;
-            let old_score = 0;
+            let personal_best = await db.scores.findOne({
+                attributes: [
+                    [Sequelize.fn('MAX', Sequelize.col('score')), 'score'] // Use an alias for the result
+                ],
+                where: {
+                    user_id: user_id,
+                    track: trackData.id,
+                    class: classType
+                }
+            });
 
-            let { max_score }:{ max_score: number } = await getUserRecord(user.id, trackData.id, classType.toUpperCase());
-            
-            if (max_score == undefined)
-                max_score = score;
-
-            const broken = score > max_score;
-
-            if (broken) {
-                old_score  = max_score;
-                new_record = true;
-                revalidateTag(`user-record-${trackData.id}-${classType.toUpperCase()}-${user_id}`);
+            if (!personal_best) {
+                personal_best.score = score;
             }
 
             try {
@@ -121,7 +126,7 @@ export async function POST(req: any, res:any) {
                             },
                             //title: "🏆 Score Added",
                             description: 
-                                (new_record 
+                                (score > personal_best.score 
                                     ? `**<@${user.Account.accountId}>** has hit a new ✨personal best✨ of **${formatNumber(score)}** 🥳!`
                                     : `**<@${user.Account.accountId}>** has posted a score of **${formatNumber(score)}**!`),
                             fields: [
@@ -136,8 +141,8 @@ export async function POST(req: any, res:any) {
                                     inline: true,
                                 },
                                 {
-                                    name: new_record ? "Previous Record" : "Record",
-                                    value: formatNumber(new_record ? old_score : (max_score ? max_score : score)),
+                                    name: "Personal Best",
+                                    value: formatNumber(personal_best.score),
                                     inline: true,
                                 },
                             ],

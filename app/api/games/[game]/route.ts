@@ -1,46 +1,13 @@
-import db from '@/models/index';
-import { unstable_cache } from 'next/cache';
+
+
+import { getCachedGames } from "../../data";
 
 /**
- * Gets a list of games and all tracks for each game.
- * @param gameSymbol the games symbol. (`fh4`, `fh5`, `fh6`)
- * @returns a list of games and available tracks for each game
- */
-const getCachedGames = (gameSymbol:string) => unstable_cache(
-    async () => {
-        return await db.games.findOne({
-            where: {
-                symbol: gameSymbol
-            },
-            include: [
-                {
-                    model: db.tracks,
-                    as: 'tracks',
-                    include: [{
-                        model: db.games,
-                        as: 'Game'
-                    }],
-                },
-            ],
-            order: [
-                ['tracks', 'favorite', 'DESC'],
-                ['tracks', 'id', 'ASC']
-            ]
-        });
-    },
-    ['games', String(gameSymbol)], {
-        tags: [
-            'games',
-            `games-${gameSymbol}`
-        ] 
-    }
-)();
-
-/**
- * Get all users for game mode
+ * Get a game
  * @param req 
  * @returns 
  */
+
 // eslint-disable-next-line
 export async function GET(req: any, res:any) {
     try {

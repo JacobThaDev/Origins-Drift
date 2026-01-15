@@ -2,41 +2,8 @@ import db from '@/models';
 import LocalApi from '@/services/LocalApi';
 import { CarsDetailsTypes } from '@/utils/types/CarsDetailsTypes';
 import { UsersTypes } from '@/utils/types/UsersTypes';
-import { revalidateTag, unstable_cache } from 'next/cache';
-
-export const getCachedUser = (user_id:string) => unstable_cache(
-    async () => {
-        return await db.users.findOne({
-            attributes: [
-                "id", "name", "image", "role", "createdAt"
-            ],
-            where: {
-                id: user_id
-            },
-            include: [
-                {
-                    model: db.accountData,
-                    as: "AccountData",
-                    include: {
-                        model: db.cars_fh5,
-                        as: "fav_car",
-                    }
-                },
-                {
-                    model: db.account,
-                    as: "Account",
-                    attributes: ["accountId", "providerId"]
-                }
-            ]
-        });
-    },
-    ['users', user_id], {
-        tags: [
-            'users',
-            `users-${user_id}`,
-        ]
-    }
-)();
+import { revalidateTag } from 'next/cache';
+import { getCachedUser } from '../data';
 
 /**
  * Get a user from a session cookie - must be logged in.

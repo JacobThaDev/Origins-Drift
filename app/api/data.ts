@@ -114,3 +114,72 @@ export const getCachedScores = (trackId: number, classType: string) => unstable_
         ]
     }
 )();
+
+/**
+ * Gets a list of games and all tracks for each game.
+ * @param gameSymbol the games symbol. (`fh4`, `fh5`, `fh6`)
+ * @returns a list of games and available tracks for each game
+ */
+export const getCachedGames = (gameSymbol:string) => unstable_cache(
+    async () => {
+        return await db.games.findOne({
+            where: {
+                symbol: gameSymbol
+            },
+            include: [
+                {
+                    model: db.tracks,
+                    as: 'tracks',
+                    include: [{
+                        model: db.games,
+                        as: 'Game'
+                    }],
+                },
+            ],
+            order: [
+                ['tracks', 'favorite', 'DESC'],
+                ['tracks', 'id', 'ASC']
+            ]
+        });
+    },
+    ['games', String(gameSymbol)], {
+        tags: [
+            'games',
+            `games-${gameSymbol}`
+        ] 
+    }
+)();
+
+export const getCachedUser = (user_id:string) => unstable_cache(
+    async () => {
+        return await db.users.findOne({
+            attributes: [
+                "id", "name", "image", "role", "createdAt"
+            ],
+            where: {
+                id: user_id
+            },
+            include: [
+                {
+                    model: db.accountData,
+                    as: "AccountData",
+                    include: {
+                        model: db.cars_fh5,
+                        as: "fav_car",
+                    }
+                },
+                {
+                    model: db.account,
+                    as: "Account",
+                    attributes: ["accountId", "providerId"]
+                }
+            ]
+        });
+    },
+    ['users', user_id], {
+        tags: [
+            'users',
+            `users-${user_id}`,
+        ]
+    }
+)();

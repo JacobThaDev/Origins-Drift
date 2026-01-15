@@ -1,5 +1,5 @@
 import { UsersTypes } from "@/utils/types/UsersTypes";
-import { getCachedUser } from "../route";
+import { getCachedUser } from "../../data";
 
 
 /**
