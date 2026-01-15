@@ -131,12 +131,12 @@ export async function POST(req: any, res:any) {
                                     value: formatNumber(score),
                                     inline: true,
                                 },
-                                !max_score ? null : {
+                                max_score ? {
                                     name: new_record ? "Previous Record" : "Record",
                                     value: formatNumber(new_record ? old_score : (max_score ? max_score : score)),
                                     inline: true,
-                                },
-                            ],
+                                } : null,
+                            ].filter(Boolean),
                             thumbnail: {
                                 url: process.env.PREVIEW_URL + trackData.track_image,
                             },
