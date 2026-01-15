@@ -1,4 +1,4 @@
-import { getCachedTrack, getCachedUser, getUserRecord } from '@/app/api/data';
+import { getCachedTrack, getCachedUser } from '@/app/api/data';
 import db from '@/models/index';
 import { formatNumber } from '@/utils/Functions';
 import { LeadersTypes } from '@/utils/types/LeadersTypes';
@@ -116,7 +116,7 @@ export async function POST(req: any, res:any) {
                 personal_best.score = score;
             }
             
-            let difference = score - (personal_best ? personal_best.score : 0);
+            const difference = score - (personal_best ? personal_best.score : 0);
 
             try {
                 const embedPayload = {
