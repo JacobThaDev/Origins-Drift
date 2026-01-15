@@ -23,11 +23,11 @@ export const getCachedTrack = (gameSymbol:string, trackName:string) => unstable_
         
         return track;
     },
-    ['track', String(gameSymbol), trackName.toLowerCase()], {
+    ['tracks', gameSymbol, trackName.toLowerCase()], {
         tags: [
-            'track',
-            `track-${gameSymbol}`,
-            `track-${gameSymbol}-${trackName}`,
+            'tracks',
+            `track-${gameSymbol.toUpperCase()}`,
+            `track-${gameSymbol.toUpperCase()}-${trackName.toLowerCase()}`,
         ]
     }
 )();

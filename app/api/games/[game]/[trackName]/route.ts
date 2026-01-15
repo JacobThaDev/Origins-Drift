@@ -83,6 +83,8 @@ export async function POST(req: any, res:any) {
                 error: "User not found."
             });
         }
+
+        revalidateTag(`track-${game.toUpperCase()}-${trackName.toLowerCase()}`);
         
         const trackData:TracksTypes|undefined = await getCachedTrack(game, trackName);
 
@@ -184,6 +186,7 @@ export async function POST(req: any, res:any) {
         //update the recent entries cache
         revalidateTag(`recent-${trackData.id}-${classType.toUpperCase()}`);
         
+
         return Response.json({
             success: true,
             message: "Your score has been submitted.",
