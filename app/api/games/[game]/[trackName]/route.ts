@@ -157,8 +157,9 @@ export async function POST(req: any, res:any) {
                 });
             } catch(err:any) {
                 console.log(err);
-                // no need to return here cause it still needs to update the
-                // caches and send the response regardless.
+                return Response.json({
+                    error: err.message
+                }, { status: 500 });
             }
         }
 
