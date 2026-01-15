@@ -101,7 +101,7 @@ export async function POST(req: any, res:any) {
         }
 
         if (trackData.webhook_url) {
-            let personal_best = await db.scores.findOne({
+            const personal_best = await db.scores.findOne({
                 attributes: [
                     [Sequelize.fn('MAX', Sequelize.col('score')), 'score'] // Use an alias for the result
                 ],
