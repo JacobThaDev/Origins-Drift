@@ -98,15 +98,19 @@ export async function POST(req: any, res:any) {
             let new_record:boolean = false;
             let old_score = 0;
 
-            const { max_score }:{ max_score: number } = await getUserRecord(user.id, trackData.id, classType.toUpperCase());
+            let { max_score }:{ max_score: number } = await getUserRecord(user.id, trackData.id, classType.toUpperCase());
+            
+            if (!max_score)
+                max_score = score;
+
             const broken = score > max_score;
 
-            if (broken && max_score) {
+            if (broken) {
                 old_score  = max_score;
                 new_record = true;
                 revalidateTag(`user-record-${trackData.id}-${classType.toUpperCase()}-${user_id}`);
             }
-       
+
             try {
                 const embedPayload = {
                     embeds: [
@@ -131,12 +135,12 @@ export async function POST(req: any, res:any) {
                                     value: formatNumber(score),
                                     inline: true,
                                 },
-                                max_score ? {
+                                {
                                     name: new_record ? "Previous Record" : "Record",
                                     value: formatNumber(new_record ? old_score : (max_score ? max_score : score)),
                                     inline: true,
-                                } : null,
-                            ].filter(Boolean),
+                                },
+                            ],
                             thumbnail: {
                                 url: process.env.PREVIEW_URL + trackData.track_image,
                             },
