@@ -115,6 +115,8 @@ export async function POST(req: any, res:any) {
             if (!personal_best) {
                 personal_best.score = score;
             }
+            
+            let difference = score - (personal_best ? personal_best.score : 0);
 
             try {
                 const embedPayload = {
@@ -143,6 +145,11 @@ export async function POST(req: any, res:any) {
                                 {
                                     name: "Personal Best",
                                     value: formatNumber(personal_best.score),
+                                    inline: true,
+                                },
+                                {
+                                    name: "Performance",
+                                    value: `${difference > 0 ? "⬆️ +" : "⬇️ "}`+formatNumber(difference),
                                     inline: true,
                                 },
                             ],
