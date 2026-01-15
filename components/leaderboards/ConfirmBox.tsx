@@ -51,6 +51,8 @@ const ConfirmBox = ({
                 delete_hash: imgurData?.deletehash
             }).then(r => r.data);
 
+            console.log(result);
+
             if (result.error) {
                 setError(result.error);
             } else if (result.success) {
