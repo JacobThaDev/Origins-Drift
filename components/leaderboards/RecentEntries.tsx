@@ -2,7 +2,6 @@
 
 import { LeaderboardContextTypes, useLeaderboardContext } from "@/providers/LeaderboardProvider";
 import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
-import LocalApi from "@/services/LocalApi";
 import { formatNumber } from "@/utils/Functions";
 import { LeadersTypes } from "@/utils/types/LeadersTypes";
 import Image from "next/image";
@@ -11,10 +10,9 @@ import { useEffect, useState } from "react";
 
 const RecentEntries = () => {
     
-    const { game, classFilter }:LeaderboardContextTypes = useLeaderboardContext();
+    const { recent, loadRecent, classFilter }:LeaderboardContextTypes = useLeaderboardContext();
     const { activeTrack }:TracksContextTypes = useTracksContext();
 
-    const [ recent, setRecent ]   = useState<LeadersTypes[]>();
     const [ mounted, setMounted ] = useState<boolean>();
 
     useEffect(() => setMounted(true), []);
@@ -22,15 +20,6 @@ const RecentEntries = () => {
     useEffect(() => {
         if (!mounted) {
             return;
-        }
-        
-        async function loadRecent() {
-            const recent = await LocalApi.get("/games/"+game+"/"+activeTrack.short_name+"/scores/"+classFilter+"")
-                .then(r => r.data);
-            
-            if (recent) {
-                setRecent(recent);
-            }
         }
 
         loadRecent();

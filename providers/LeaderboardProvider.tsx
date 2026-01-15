@@ -19,6 +19,7 @@ export function LeaderboardContextProvider({ children }:LeaderboardContextProps)
     const [ loading, setLoading ] = useState<boolean>(false);
     const [ scores, setScores ]   = useState<LeadersTypes[]>();
     const { activeTrack }:TracksContextTypes = useTracksContext();
+    const [ recent, setRecent ]   = useState<LeadersTypes[]>();
 
     useEffect(() => {
         if (!activeTrack) {
@@ -26,7 +27,16 @@ export function LeaderboardContextProvider({ children }:LeaderboardContextProps)
         }
         loadScores();
         return() => setScores(undefined);
-    }, [activeTrack, classFilter])
+    }, [activeTrack, classFilter]);
+
+    async function loadRecent() {
+        const recent = await LocalApi.get("/games/"+game+"/"+activeTrack.short_name+"/scores/"+classFilter+"")
+            .then(r => r.data);
+        
+        if (recent) {
+            setRecent(recent);
+        }
+    }
 
     async function loadScores() { 
         setLoading(true);
@@ -36,7 +46,10 @@ export function LeaderboardContextProvider({ children }:LeaderboardContextProps)
     }
 
     return (
-        <LeaderboardContext.Provider value={{ game, setGame, classFilter, setClassFilter, loading, setLoading, scores, setScores, loadScores }}>
+        <LeaderboardContext.Provider value={{ 
+            game, setGame, classFilter, setClassFilter, loading, setLoading, scores, setScores, loadScores,
+            recent, loadRecent
+            }}>
             {children}
         </LeaderboardContext.Provider>
     );
@@ -53,6 +66,8 @@ export interface LeaderboardContextTypes {
     setLoading: (arg1: boolean) => void;
     scores: LeadersTypes[];
     setScores: (arg1: LeadersTypes[]) => void;
+    recent: LeadersTypes[];
+    loadRecent: () => void;
 }
 
 export const useLeaderboardContext = () => useContext(LeaderboardContext);

@@ -8,10 +8,12 @@ import { ImgurDataTypes } from "@/utils/types/ImgurDataTypes";
 import { LeadersTypes } from "@/utils/types/LeadersTypes";
 import { TracksTypes } from "@/utils/types/TracksTypes";
 import { UsersTypes } from "@/utils/types/UsersTypes";
-import { CheckCircleIcon, CheckIcon, PresentationChartBarIcon } from "@heroicons/react/24/outline";
+import { CheckIcon, PresentationChartBarIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import PersonalBestBox from "./PersonalBestBox";
+import ScoreSavedBox from "./ScoreSavedBox";
 
 interface ConfirmBoxTypes {
     score: number|undefined;
@@ -27,12 +29,13 @@ const ConfirmBox = ({
     score, profile, imgurData, activeTrack, classFilter, reset, setShowConfirm 
 }: ConfirmBoxTypes) => {
 
-    const [ loading, setLoading ] = useState<boolean>();
+    const [ loading, setLoading ] = useState<boolean>(false);
     const [ error, setError ] = useState<string>();
     const [ submitted, setSubmitted ] = useState<LeadersTypes>();
 
-    const { loadScores }:LeaderboardContextTypes = useLeaderboardContext();
-    
+    const { loadScores, loadRecent }:LeaderboardContextTypes = useLeaderboardContext();
+    const [ isPersonalBest, setIsPersonalBest ] = useState<boolean>(false);
+
     const submitData = async() => {
         if (loading) {
             return;
@@ -46,22 +49,23 @@ const ConfirmBox = ({
                 game: "fh5",
                 track: activeTrack.short_name,
                 class: classFilter,
-                score: score as number, // TODO:
+                score: score as number,
                 proof_url: imgurData?.link,
                 delete_hash: imgurData?.deletehash
             }).then(r => r.data);
 
-            console.log(result);
-
             if (result.error) {
                 setError(result.error);
-            } else if (result.success) {
-                setSubmitted(result.result as LeadersTypes);
-            }
+                return;
+            } 
 
             console.log(error);
+            
+            setIsPersonalBest(result.new_pb ? result.new_pb : false);
+            setSubmitted(result.result as LeadersTypes);
             setLoading(false);
             loadScores();
+            loadRecent();
         } catch (err:any) {
             setError(err.message);
             setLoading(false);
@@ -72,27 +76,33 @@ const ConfirmBox = ({
         reset();
     }
 
+    if (submitted) {
+        if (isPersonalBest) {
+            return (
+                <PersonalBestBox 
+                    score={submitted.score} 
+                    track={activeTrack} 
+                    submitted={submitted} 
+                    continueBtn={continueButton}/>
+            )
+        } else {
+            return (
+                <ScoreSavedBox 
+                    track={activeTrack} 
+                    loading={loading} 
+                    data={submitted} 
+                    continueBtn={continueButton}/>
+            )
+        }
+    }
+
     return (
-        <div className="p-7">
-            {submitted ? 
-            <div className="text-center">
-                <CheckCircleIcon height={80} className="mx-auto mb-5 text-success"/>
-                <p className="text-white/60">Score saved!</p>
-                <p className="mb-3 text-xl">{activeTrack.name} ({submitted.class}-Class)</p> 
-
-                <p className="text-3xl font-black mb-5">
-                    {formatNumber(submitted.score, 0)}
-                </p>
-
-                <button 
-                    disabled={loading}
-                    onClick={() => continueButton()} className="flex items-center justify-center gap-2 px-5 py-3 bg-success/70 hover:bg-success  transition-all w-full rounded-xl">
-                    <CheckIcon height={20} strokeWidth={4} /> Continue
-                </button>
-            </div> : 
-            <>
+        <div>
+            <div className="p-7">
                 <div className="text-center mb-5">
-                    <p className="text-white/60">Confirm Entry</p>
+                    <p className="text-white/60">
+                        Confirm Entry
+                    </p>
                     <p className="mb-3 text-xl">{activeTrack.name} &#40;Class {classFilter.toUpperCase()}-{classFilter.toUpperCase() == "A" ? 800 : 900}&#41;</p> 
                     <div className="flex items-center justify-center gap-3 text-2xl font-black">
                         <PresentationChartBarIcon height={30} className="text-warning"/>
@@ -120,8 +130,7 @@ const ConfirmBox = ({
                         <CheckIcon height={20} strokeWidth={4} /> Confirm
                     </button>
                 </div>
-            </>
-            }
+            </div>
         </div>
     )
 }

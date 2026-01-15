@@ -128,7 +128,7 @@ export const getCachedRecentScores = (gameId: number, trackId: number, classType
             order: [
                 ["id", "DESC"]
             ],
-            limit: [10],
+            limit: [7],
             include: [{
                 model: db.users,
                 as: "User",
