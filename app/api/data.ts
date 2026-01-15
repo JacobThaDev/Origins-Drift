@@ -43,7 +43,7 @@ export const getUserRecord = (user_id:string, trackId: number, classType: string
     async () => {
         return await db.scores.findOne({
             attributes: [
-                [Sequelize.fn('MAX', Sequelize.col('score')), 'max_score'] // Use an alias for the result
+                [Sequelize.fn('MAX', Sequelize.col('score')), 'score'] // Use an alias for the result
             ],
             where: {
                 user_id: user_id,

@@ -45,7 +45,8 @@ export async function GET(req: any, res:any) {
         revalidateTag(`user-records`);
         revalidateTag(`tracks`);
         revalidateTag(`leaders`);
-
+        revalidateTag(`recent`);
+        
         return Response.json({ 
             message: "Revalidated caches."
         });

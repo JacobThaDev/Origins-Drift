@@ -1,11 +1,10 @@
-import { getCachedTrack, getCachedUser } from '@/app/api/data';
+import { getCachedTrack, getCachedUser, getUserRecord } from '@/app/api/data';
 import db from '@/models/index';
 import { formatNumber } from '@/utils/Functions';
 import { LeadersTypes } from '@/utils/types/LeadersTypes';
 import { TracksTypes } from '@/utils/types/TracksTypes';
 import { UsersTypes } from '@/utils/types/UsersTypes';
 import { revalidateTag } from 'next/cache';
-import { Sequelize } from 'sequelize';
 
 /**
  * Get all users for game mode
@@ -99,24 +98,18 @@ export async function POST(req: any, res:any) {
                 error: trackData ? trackData.error : "Track not found."
             });
         }
+        
+        let new_pb = false;
 
         if (trackData.webhook_url) {
-            const personal_best = await db.scores.findOne({
-                attributes: [
-                    [Sequelize.fn('MAX', Sequelize.col('score')), 'score'] // Use an alias for the result
-                ],
-                where: {
-                    user_id: user_id,
-                    track: trackData.id,
-                    class: classType
-                }
-            });
-
+            const personal_best = await getUserRecord(user.id, trackData.id, classType);
+            
             if (!personal_best) {
                 personal_best.score = score;
             }
             
             const difference = score - (personal_best ? personal_best.score : 0);
+            new_pb = difference > 0;
 
             try {
                 const embedPayload = {
@@ -179,6 +172,11 @@ export async function POST(req: any, res:any) {
                         error: "Webhook error: "+errorText
                     })
                 }
+
+                if (difference > 0) {
+                    // update the users record
+                    revalidateTag(`user-record-${trackData.id}-${classType.toUpperCase()}-${user_id}`);
+                }
             } catch(err:any) {
                 console.log(err);
                 return Response.json({
@@ -212,6 +210,7 @@ export async function POST(req: any, res:any) {
         return Response.json({
             success: true,
             message: "Your score has been submitted.",
+            new_pb: new_pb,
             result: result
         });
     } catch (e:any) {
