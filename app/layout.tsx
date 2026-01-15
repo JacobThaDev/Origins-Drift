@@ -7,6 +7,7 @@ import { Toaster } from "sonner";
 import Providers from "./providers";
 import SocialBar from "@/components/global/SocialBar";
 import Navigation from "@/components/global/Navigation";
+import { Analytics } from "@vercel/analytics/next"
 
 export async function generateMetadata(): Promise<Metadata> {
 
@@ -45,6 +46,7 @@ export default async function RootLayout({ children }: RootLayoutTypes) {
                     {children}
                 </Providers>
                 <Toaster />
+                <Analytics/>
             </body>
         </html>
     );

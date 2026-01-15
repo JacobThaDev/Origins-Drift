@@ -115,6 +115,48 @@ export const getCachedScores = (trackId: number, classType: string) => unstable_
     }
 )();
 
+export const getCachedRecentScores = (gameId: number, trackId: number, classType: string) => unstable_cache(
+    async () => {
+        return await db.scores.findAll({
+            where: {
+                [Op.and]: {
+                    game: gameId,
+                    track: trackId,
+                    class: classType
+                }
+            },
+            order: [
+                ["id", "DESC"]
+            ],
+            limit: [10],
+            include: [{
+                model: db.users,
+                as: "User",
+                attributes: ["name", "image", "createdAt"],
+                include: [
+                    { 
+                        model: db.accountData, 
+                        as: "AccountData",
+                        attributes: ["display_name", "platform"] 
+                    },
+                    { 
+                        model: db.account, 
+                        as: "Account", 
+                        attributes: ["accountId", "providerId"] 
+                    }
+                ]
+            }]
+        });
+    },
+    ['recent', String(trackId), classType.toUpperCase()], {
+        tags: [
+            'recent',
+            `recent-${trackId}`,
+            `recent-${trackId}-${classType.toUpperCase()}`
+        ]
+    }
+)();
+
 /**
  * Gets a list of games and all tracks for each game.
  * @param gameSymbol the games symbol. (`fh4`, `fh5`, `fh6`)
