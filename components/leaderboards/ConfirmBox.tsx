@@ -48,6 +48,7 @@ const ConfirmBox = ({
                 class: classFilter,
                 score: score as number, // TODO:
                 proof_url: imgurData?.link,
+                delete_hash: imgurData?.deletehash
             }).then(r => r.data);
 
             if (result.error) {
@@ -55,6 +56,8 @@ const ConfirmBox = ({
             } else if (result.success) {
                 setSubmitted(result.result as LeadersTypes);
             }
+
+            console.log(error);
             setLoading(false);
             loadScores();
         } catch (err:any) {

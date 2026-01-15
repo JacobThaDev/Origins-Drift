@@ -10,4 +10,5 @@ export interface TracksTypes {
     favorite: boolean;
     track_image: string;
     error?: string;
+    webhook_url: string|null;
 }

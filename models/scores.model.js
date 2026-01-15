@@ -31,6 +31,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
             defaultValue: null
         },
+        proof_delete_hash: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: null
+        },
         verified: {
             type: DataTypes.BOOLEAN,
             allowNull: false,

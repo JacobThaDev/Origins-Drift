@@ -147,10 +147,10 @@ const SubmitButton = () => {
             return;
         }
 
-        if (!imgurData || !imgurData.link) {
+        /*if (!imgurData || !imgurData.link) {
             setError("You must provide a proof image.");
             return;
-        }
+        }*/
 
         setShowConfirm(true);
     }

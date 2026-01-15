@@ -1,40 +1,11 @@
+import { getCachedTrack, getUserRecord } from '@/app/api/data';
+import { getCachedUser } from '@/app/api/profile/route';
 import db from '@/models/index';
+import { formatNumber } from '@/utils/Functions';
 import { LeadersTypes } from '@/utils/types/LeadersTypes';
 import { TracksTypes } from '@/utils/types/TracksTypes';
 import { UsersTypes } from '@/utils/types/UsersTypes';
-import { revalidateTag, unstable_cache } from 'next/cache';
-
-/**
- * Gets a track from a specific game caching the 
- * result until it's revalidated manually.
- * @param gameSymbol the game (`fh4`, `fh5`, `fh6`)
- * @param trackName the name of the track (eg. `lookout`)
- * @returns track data
- */
-export const getCachedTrack = (gameSymbol:string, trackName:string) => unstable_cache(
-    async () => {
-        const track = await db.tracks.findOne({
-            where: {
-                short_name: trackName
-            },
-            include: {
-                model: db.games,
-                as: "Game",
-                where: { symbol: gameSymbol }
-            }
-        });
-        
-        return track;
-    },
-    ['tracks', String(gameSymbol), trackName.toLowerCase()], {
-        tags: [
-            'tracks',
-            `tracks-${gameSymbol}`,
-            `tracks-${gameSymbol}-${trackName}`,
-        ]
-    }
-)();
-
+import { revalidateTag } from 'next/cache';
 
 /**
  * Get all users for game mode
@@ -48,11 +19,21 @@ export async function GET(req: any, res:any) {
         const gameType  = bodyData?.game.toLowerCase().replace("_", " ");
         const trackName = bodyData?.trackName.toLowerCase().replace("_", " ");
         
-        const trackData:TracksTypes|undefined = await getCachedTrack(gameType, trackName);
+        const trackData:TracksTypes|undefined = await db.tracks.findOne({
+            attributes: ["id", "name", "short_name", "length", "game", "favorite", "track_image"],
+            where: {
+                short_name: trackName
+            },
+            include: {
+                model: db.games,
+                as: "Game",
+                where: { symbol: gameType }
+            }
+        });
 
-        if (!trackData || trackData.error) {
+        if (!trackData) {
             return Response.json({
-                error: trackData ? trackData.error : "Track not found."
+                error: "Track not found."
             });
         }
 
@@ -74,10 +55,10 @@ export async function GET(req: any, res:any) {
 export async function POST(req: any, res:any) {
     try {
         const { 
-            user_id, game, track:trackName, class:classType, score, proof_url 
+            user_id, game, track:trackName, class:classType, score, proof_url, delete_hash
         }:RequestTypes = await req.json();
 
-        if (!user_id || !game || !trackName || !classType || !score || !proof_url) {
+        if (!user_id || !game || !trackName || !classType || !score) {
              return Response.json({
                 error: "Missing required parameters."
             });
@@ -95,11 +76,7 @@ export async function POST(req: any, res:any) {
             });
         }
 
-        const user:UsersTypes = await db.users.findOne({
-            where: {
-                id: user_id
-            }
-        });
+        const user:UsersTypes = await getCachedUser(user_id);
 
         if (!user) {
             return Response.json({
@@ -115,13 +92,84 @@ export async function POST(req: any, res:any) {
             });
         }
 
+        if (trackData.webhook_url) {
+            let new_record:boolean = false;
+            let old_score = 0;
+
+            const { max_score }:{ max_score: number } = await getUserRecord(user.id, trackData.id, classType.toUpperCase());
+            const broken = score > max_score;
+
+            if (broken) {
+                old_score  = max_score;
+                new_record = true;
+                revalidateTag(`user-record-${trackData.id}-${classType.toUpperCase()}-${user_id}`);
+            }
+       
+            try {
+                const embedPayload = {
+                    embeds: [
+                        {
+                            author: {
+                                name: trackData.name+" | Origins Drift",
+                                url: process.env.PREVIEW_URL + "/track/"+trackData.short_name
+                            },
+                            //title: "🏆 Score Added",
+                            description: 
+                                (new_record 
+                                    ? `**<@${user.Account.accountId}>** has hit a new ✨personal best✨ of **${formatNumber(score)}** 🥳!`
+                                    : `**<@${user.Account.accountId}>** has posted a score of **${formatNumber(score)}**!`),
+                            fields: [
+                                {
+                                    name: "Class",
+                                    value: classType.toUpperCase() + (classType.toUpperCase() == "A" ? "-800" : "-900"),
+                                    inline: true,
+                                },
+                                {
+                                    name: "Score",
+                                    value: formatNumber(score),
+                                    inline: true,
+                                },
+                                !max_score ? null : {
+                                    name: new_record ? "Previous Record" : "Record",
+                                    value: formatNumber(new_record ? old_score : max_score),
+                                    inline: true,
+                                },
+                            ],
+                            thumbnail: {
+                                url: process.env.PREVIEW_URL + trackData.track_image,
+                            },
+                            footer: {
+                                text: "Origins Drift Club"
+                            },
+                            image: proof_url ? {
+                                url: proof_url,
+                            } : null,
+                            timestamp: new Date().toISOString(),
+                        }
+                    ]
+                };
+                
+                // send the embed payload
+                await fetch(trackData.webhook_url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(embedPayload),
+                });
+            } catch(err:any) {
+                console.log(err);
+                // no need to return here cause it still needs to update the
+                // caches and send the response regardless.
+            }
+        }
+
         const result = await db.scores.create({
             user_id: user.id,
             game: trackData.game,
             track: trackData.id,
             class: classType.toUpperCase(),
             score: score,
-            proof_url: proof_url
+            proof_url: proof_url,
+            proof_delete_hash: delete_hash
         }) as LeadersTypes;
 
         if (!result) {
@@ -130,9 +178,11 @@ export async function POST(req: any, res:any) {
             });
         }
 
-        //update the specific track and class cache
+        //update the leaderboards for this specific track and class
         revalidateTag(`leaders-${trackData.id}-${classType.toUpperCase()}`);
-
+        //update the recent entries cache
+        revalidateTag(`recent-${trackData.id}-${classType.toUpperCase()}`);
+        
         return Response.json({
             success: true,
             message: "Your score has been submitted.",
@@ -153,4 +203,5 @@ interface RequestTypes {
     class: string,
     score: number,
     proof_url: string,
+    delete_hash: string;
 }

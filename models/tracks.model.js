@@ -33,6 +33,11 @@ module.exports = (sequelize, DataTypes) => {
         track_image: {
             type: DataTypes.STRING,
             allowNull: true
+        },
+        webhook_url: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: null
         }
     }, {
         freezeTableName: true,
