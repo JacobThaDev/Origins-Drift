@@ -100,7 +100,7 @@ export async function POST(req: any, res:any) {
 
             let { max_score }:{ max_score: number } = await getUserRecord(user.id, trackData.id, classType.toUpperCase());
             
-            if (!max_score)
+            if (max_score == undefined)
                 max_score = score;
 
             const broken = score > max_score;
