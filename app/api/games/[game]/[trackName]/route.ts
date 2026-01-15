@@ -143,9 +143,7 @@ export async function POST(req: any, res:any) {
                             footer: {
                                 text: "Origins Drift Club"
                             },
-                            image: proof_url ? {
-                                url: proof_url,
-                            } : null,
+                            ...(proof_url && { image: { url: proof_url } }),
                             timestamp: new Date().toISOString(),
                         }
                     ]
