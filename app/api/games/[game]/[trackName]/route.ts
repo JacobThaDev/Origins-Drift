@@ -182,6 +182,8 @@ export async function POST(req: any, res:any) {
         revalidateTag(`leaders-${trackData.id}-${classType.toUpperCase()}`);
         //update the recent entries cache
         revalidateTag(`recent-${trackData.id}-${classType.toUpperCase()}`);
+
+        revalidateTag(`tracks`);// temp
         
         return Response.json({
             success: true,
