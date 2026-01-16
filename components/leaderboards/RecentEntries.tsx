@@ -51,7 +51,7 @@ const RecentEntries = () => {
                                 className="rounded-full border-[2px] border-black/30" />}
                         </div>
                         <div>
-                            <Link href={`/profile/${entry.User?.name?.toLowerCase().replace(" ", "_")}`} 
+                            <Link href={`/profile/${entry.User?.Account.accountId}`} 
                                 target="_blank" className="text-warning hover:underline">
                                 {displayName}
                             </Link>

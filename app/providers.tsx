@@ -7,7 +7,6 @@ import { TracksContextProvider } from '@/providers/TracksProvider';
 import { AppProgressProvider as ProgressProvider } from '@bprogress/next';
 import { usePathname } from 'next/navigation';
 
-
 /**
  * Out of sight, out of mind. A place for all the scaffolding
  * @param {React.ReactNode} children 
@@ -20,7 +19,7 @@ export default function Providers({ children }: {  children: React.ReactNode }) 
 
     const isLoginPath = pathname === "/login";
 
-    if (isLoginPath || pathname === "/profile" && !session) {
+    if (isLoginPath || (pathname === "/profile" && !session) || pathname == "/members") {
         return(
             <ProgressProvider 
                 height="4px"

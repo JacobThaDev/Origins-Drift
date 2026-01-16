@@ -12,6 +12,7 @@ import { unstable_cache } from "next/cache";
 import db from "@/models";
 import { Op } from "sequelize";
 import { AccountTypes } from "@/utils/types/AccountTypes";
+import { UsersTypes } from "@/utils/types/UsersTypes";
 
 const BOT_TOKEN   = process.env.DISCORD_BOT_TOKEN;
 const GUILD_ID    = process.env.DISCORD_GUILD_ID;
@@ -46,7 +47,10 @@ const getCachedUsers = () => unstable_cache(
             const members:DiscordMemberTypes[]   = await guildMembers.json();
             const roles:DiscordRoleTypes[]       = await guildRoles.json();
 
+            console.log(members)
+
             const leaders:DiscordUserTypes[]     = [];
+            const coleaders:DiscordUserTypes[]   = [];
             const membersList:DiscordUserTypes[] = [];
             const others:DiscordUserTypes[]      = [];
             
@@ -91,7 +95,7 @@ const getCachedUsers = () => unstable_cache(
                     return role ? [role] : [];
                 });
 
-                const dbData:AccountTypes = accountMap.get(member_id) as AccountTypes;
+                const dbData:UsersTypes = accountMap.get(member_id) as UsersTypes;
 
                 const extension = avatarHash 
                     && avatarHash.startsWith("a_") ? "gif" : "png";
@@ -105,12 +109,15 @@ const getCachedUsers = () => unstable_cache(
                     username: m.user.username,
                     displayName: m.nick || m.user.global_name || m.user.username,
                     avatar_url: avatarUrl,
+                    joined: m.joined_at,
                     roles: mappedRoles,
                     account: dbData
                 }
-
-                if (m.roles.includes(LEADER_ROLE)) {
+                
+                if (m.roles.includes("1461604022913073152")) {
                     leaders.push(userData);
+                } else if (m.roles.includes(LEADER_ROLE)) {
+                    coleaders.push(userData);
                 } else if (m.roles.includes(MEMBER_ROLE)) {
                     membersList.push(userData);
                 } else {
@@ -120,6 +127,7 @@ const getCachedUsers = () => unstable_cache(
             
             return {
                 leaders: leaders,
+                coleaders: coleaders,
                 members: membersList,
                 users: others
             }

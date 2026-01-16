@@ -3,7 +3,7 @@ import { PlaystationIcon } from "../icons/PlaystationIcon";
 import { SteamIcon } from "../icons/SteamIcon";
 import { XboxIcon } from "../icons/XboxIcon";
 
-const PlatformIcon = ({ platform }: { platform: GamingPlatform|undefined|null }) => {
+const PlatformIcon = ({ platform, size=26 }: { platform: GamingPlatform|undefined|null, size?:number }) => {
 
     if (platform == undefined) {
         return null;
@@ -11,21 +11,14 @@ const PlatformIcon = ({ platform }: { platform: GamingPlatform|undefined|null })
 
     switch(platform) {
         case "STEAM": 
-            return <SteamIcon height={26} />;
-        case "WINDOWS": 
-            return (<div className="relative w-8 h-8">
-                <XboxIcon height={32} />
-                <div className="absolute font-black bg-black rounded-full text-[9px] h-[14px] w-[20px] -bottom-[3px] left-1/2 ml-[-10px] flex items-center justify-center">
-                    PC
-                </div>
-            </div>);
+            return <SteamIcon height={size} />;
         case "PLAYSTATION": 
-            return <PlaystationIcon height={32} />;
+            return <PlaystationIcon height={size} />;
         case "XBOX": 
-            return <XboxIcon height={32} />;
+        case "WINDOWS": 
+            return <XboxIcon height={size} />;
     }
 
-    return null;
 }
 
 export default PlatformIcon;

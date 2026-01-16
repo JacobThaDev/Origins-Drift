@@ -53,7 +53,7 @@ const LeaderTable = () => {
                                     className="rounded-full border-[5px] border-black/30" />}
                             </div>
                             <div>
-                                <Link href={`/profile/${entry.User?.name?.toLowerCase().replace(" ", "_")}`} 
+                                <Link href={`/profile/${entry.User?.Account.accountId}`} 
                                     target="_blank" className="text-lg font-bold text-warning hover:underline">
                                     {displayName}
                                 </Link>

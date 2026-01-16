@@ -1,16 +1,15 @@
 "use client"
 
 import Container from "@/components/layout/Container";
+import MembersCard from "@/components/members/MembersCard";
 import LocalApi from "@/services/LocalApi";
 import { DiscordUserTypes } from "@/utils/types/discord/DiscordUserTypes";
-import { MemberListTypes } from "@/utils/types/discord/MemberListTypes";
-import Image from "next/image";
-import Link from "next/link";
+import { MemberListTypes } from "@/utils/types/discord/MemberListTypes"; 
 import { useEffect, useState } from "react";
 
 export default function Members() {
     
-    const [ members, setMembers ] = useState<MemberListTypes>();
+    const [ memberList, setMemberList ] = useState<MemberListTypes>();
     const [ mounted, setMounted ] = useState<boolean>(false);
 
     useEffect(() => setMounted(true), []);
@@ -22,7 +21,7 @@ export default function Members() {
 
         async function loadMembersList() {
             const list:MemberListTypes = await LocalApi.get("discord/members").then(r=>r.data);
-            setMembers(list);
+            setMemberList(list);
         }
 
         loadMembersList();
@@ -35,50 +34,57 @@ export default function Members() {
                     <div className="flex items-center gap-10">
                         <div>
                             <p className="text-3xl lg:text-5xl font-bold mb-3">
-                                Origins Crew Members
+                                Origins Members List
                             </p>
                         </div>
                     </div>
                 </Container>
             </div>
 
-            <div className="w-full pt-24">
+            <div className="w-full py-24">
                 <Container>
-                    <p className="text-2xl">Leaders</p>
-                    <p className="mb-10 text-sm text-white/70">
-                        Our group leaders that organize everything
-                    </p>
 
-                    <div className="grid grid-cols-5 gap-3">
-                        {members && members.leaders.map((member:DiscordUserTypes, memberIdx:number) => {
+
+                    <div className="mb-10">
+                        <p className="text-3xl mb-2">The Crew</p>
+                        <p className="text-sm text-white/70">
+                            Our group leaders that organize everything
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 mb-20">
+                        {memberList && memberList.leaders.map((member:DiscordUserTypes, memberIdx:number) => {
                             return(
-                                <div className="bg-card rounded-xl pt-7 w-full text-center overflow-hidden" 
-                                        key={`leader-${memberIdx}`}>
-                                    <div className="pb-7">
-                                        <Image src={member.avatar_url} 
-                                            width={110} 
-                                            height={110} 
-                                            alt="" 
-                                            className="rounded-full border-8 border-background mx-auto mb-4"/>
-                                        
-                                        <Link href={`/profile/${member.displayName.replaceAll("", "")}`} className="text-xl font-bold text-warning">
-                                            {member.displayName}
-                                        </Link>
-
-                                        <p className="text-sm text-white/60">
-                                            {member.username}
-                                        </p>
-                                    </div>
-
-                                    <div className="w-full">
-                                        <Link href="" className="inline-block px-5 py-3 bg-button hover:bg-buttonHover w-full">
-                                            View Profile
-                                        </Link>
-                                    </div>
-                                </div>
+                                <MembersCard member={member} key={`leader-${memberIdx}`}/>
+                            )
+                        })}
+                        {memberList && memberList.coleaders.map((member:DiscordUserTypes, memberIdx:number) => {
+                            return(
+                                <MembersCard member={member} key={`coleader-${memberIdx}`}/>
+                            )
+                        })}
+                        {memberList && memberList.members.map((member:DiscordUserTypes, memberIdx:number) => {
+                            return(
+                                <MembersCard member={member} key={`leader-${memberIdx}`}/>
                             )
                         })}
                     </div>
+
+                    <div className="mb-10">
+                        <p className="text-3xl mb-2">Members</p>
+                        <p className="text-sm text-white/70">
+                             Members of the Discord server
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 mb-20">
+                        {memberList && memberList.users.map((member:DiscordUserTypes, memberIdx:number) => {
+                            return(
+                                <MembersCard member={member} key={`leader-${memberIdx}`}/>
+                            )
+                        })}
+                    </div>
+
                 </Container>
             </div>
         </>

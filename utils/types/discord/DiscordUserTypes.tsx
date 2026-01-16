@@ -1,4 +1,4 @@
-import { AccountTypes } from "../AccountTypes";
+import { UsersTypes } from "../UsersTypes";
 import { DiscordUserRoleTypes } from "./DiscordUserRoleTypes";
 
 /**
@@ -10,6 +10,7 @@ export interface DiscordUserTypes {
     displayName: string,
     avatar?: string,
     avatar_url: string,
+    joined: string;
     roles: DiscordUserRoleTypes[],
-    account?:AccountTypes;
+    account?:UsersTypes;
 }
