@@ -115,7 +115,7 @@ export default function Profile() {
                     <div className="w-full">
                         <div className="lg:mt-[-64px] mb-10 relative">
                             <p className="text-5xl font-bold">
-                                {profile.AccountData?.display_name ?? profile.name}
+                                {profile.AccountData?.display_name || profile.name}
                             </p>
                         </div>
                         <div>

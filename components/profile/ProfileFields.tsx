@@ -42,17 +42,7 @@ const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
         </div>
 
         <form method="post" id="updateForm" onSubmit={(e:any) => submitForm(e)}>
-            <div className="bg-card/70 p-4 rounded-2xl mb-5">
-                <p className="mb-3 text-sm text-white/50">
-                    Profile display name
-                </p>
-                <input 
-                    type="text"
-                    name="display_name"
-                    className="bg-black/20 rounded-lg w-full px-5 py-3"
-                    defaultValue={profile.AccountData?.display_name ?? ""}/>
-            </div>
-
+            
             <div className="bg-card/70 p-4 rounded-2xl mb-5">
                 <p className="mb-3 text-sm text-white/50">About Me &#40;Max 250 chars.&#41;</p>
                 <textarea 

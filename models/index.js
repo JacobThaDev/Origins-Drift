@@ -80,7 +80,7 @@ db.scores.belongsTo(db.tracks, {
 
 db.scores.hasOne(db.account, {
     targetKey: "user_id",
-    foreignKey: 'user_id',
+    foreignKey: 'id',
     as: 'Account',
     onDelete: "NO ACTION"
 });
@@ -103,6 +103,13 @@ db.users.hasOne(db.account, {
     targetKey: "id",
     foreignKey: 'userId',
     as: 'Account',
+    onDelete: "CASCADE"
+});
+
+db.account.belongsTo(db.users, {
+    targetKey: "id",
+    foreignKey: 'userId',
+    as: 'User',
     onDelete: "CASCADE"
 });
 
