@@ -141,7 +141,6 @@ const getCachedUsers = () => unstable_cache(
 export async function GET(req: any, res:any) {
     try {
         const guildMembers = await getCachedUsers();
-        revalidateTag('discord_users')
 
         return Response.json(guildMembers);
     } catch (e:any) {
