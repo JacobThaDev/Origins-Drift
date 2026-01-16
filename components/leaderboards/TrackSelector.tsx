@@ -3,6 +3,7 @@
 import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
 import { TracksTypes } from "@/utils/types/TracksTypes";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 const TrackSelector = () => {
@@ -51,16 +52,17 @@ const TrackSelector = () => {
                 <div className={`absolute rounded-b-xl top-full w-full bg-button ${menuOpen ? "flex" : "hidden"} flex-col max-h-[220px] overflow-hidden overflow-y-auto scrollbar z-[50] border-t-2 border-background shadow-xl shadow-black/30`} id="track-dropdown">
                     {tracks && tracks.map((track:TracksTypes, index:number) => {
                         return(
-                            <button key={index} 
+                            <Link
+                                href={`/track/${track.short_name}`} 
+                                key={index} 
                                 id="track-button"
-                                className={`flex w-full items-center gap-3 hover:bg-buttonHover px-5 py-2 ${activeTrack == track ? "!bg-infodark" : ""}`} 
-                                onClick={() => changeTrack(track)}>
+                                className={`flex w-full items-center gap-3 hover:bg-buttonHover px-5 py-2 ${activeTrack == track ? "!bg-infodark" : ""}`} >
                                 <div className="text-start">
                                     <p className="text-xs text-white/70" >{track.Game.name}</p>
                                     <p>{track.name}</p>
                                 </div>
                                 <p className="text-sm text-white/70 ml-auto">{track.length} mi</p>
-                            </button>
+                            </Link>
                         )
                     })}
                 </div>
