@@ -8,7 +8,7 @@
 import { DiscordMemberTypes } from "@/utils/types/discord/DiscordMemberTypes";
 import { DiscordRoleTypes } from "@/utils/types/discord/DiscordRoleTypes";
 import { DiscordUserTypes } from "@/utils/types/discord/DiscordUserTypes";
-import { revalidateTag, unstable_cache } from "next/cache";
+import { unstable_cache } from "next/cache";
 import db from "@/models";
 import { Op } from "sequelize";
 import { AccountTypes } from "@/utils/types/AccountTypes";

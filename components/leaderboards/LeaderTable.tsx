@@ -58,10 +58,11 @@ const LeaderTable = () => {
                                     {displayName}
                                 </Link>
                                 {entry.proof_url ?
-                                <Link href={entry.proof_url.replace("i.", "").replace(".png", "").replace(".jpg", "")} target="_blank" rel="nofollow noopener"
-                                    className="underline block lg:hidden">
+                                <Link href={entry.proof_url.replace("i.", "").replace(".png", "").replace(".jpg", "")} 
+                                        target="_blank" rel="nofollow noopener"
+                                        className="underline block lg:hidden">
                                     {formatNumber(entry.score)}
-                                </Link> : <p>{formatNumber(entry.score)}</p> }
+                                </Link> : <p className="lg:block hidden">{formatNumber(entry.score)}</p> }
                             </div>
                         </div>
 
