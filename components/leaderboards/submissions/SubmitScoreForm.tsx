@@ -85,8 +85,7 @@ const SubmitScoreForm = ({
     return (
         <div className="p-7">
             <div className="flex flex-col gap-3">
-                <TrackSelector/>
-
+                
                 <div className="flex">
                     <div className="rounded-l-xl w-[120px]">
                         <select 
