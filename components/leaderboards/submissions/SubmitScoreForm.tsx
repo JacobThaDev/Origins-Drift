@@ -1,7 +1,6 @@
 "use client";
 
 import { LeaderboardContextTypes, useLeaderboardContext } from "@/providers/LeaderboardProvider";
-import TrackSelector from "../TrackSelector";
 import Image from "next/image";
 import { ArrowUpTrayIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -57,7 +56,6 @@ const SubmitScoreForm = ({
             imgurFormData.append("image", base64);
 
             const result = await LocalApi.post("imgur/upload", imgurFormData, {
-                // This is the key part for progress tracking
                 onUploadProgress: (progressEvent) => {
                     if (progressEvent.total) {
                         const percentCompleted = Math.round(
@@ -85,7 +83,7 @@ const SubmitScoreForm = ({
     return (
         <div className="p-7">
             <div className="flex flex-col gap-3">
-                
+
                 <div className="flex">
                     <div className="rounded-l-xl w-[120px]">
                         <select 
