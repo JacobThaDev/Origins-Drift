@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 
 const TrackSelector = () => {
     
-    const { tracks, activeTrack, setActiveTrack }:TracksContextTypes = useTracksContext();
+    const { tracks, activeTrack }:TracksContextTypes = useTracksContext();
     const [ menuOpen, setMenuOpen ] = useState<boolean>(false);
     const [ mounted, setMounted ] = useState<boolean>(false);
 
@@ -30,11 +30,6 @@ const TrackSelector = () => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
             setMenuOpen(false);
         }
-    }
-
-    const changeTrack = (track:TracksTypes) => {
-        setActiveTrack(track)
-        setMenuOpen(false);
     }
 
     return(

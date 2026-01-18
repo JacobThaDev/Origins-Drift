@@ -47,8 +47,6 @@ const getCachedUsers = () => unstable_cache(
             const members:DiscordMemberTypes[]   = await guildMembers.json();
             const roles:DiscordRoleTypes[]       = await guildRoles.json();
 
-            console.log(members)
-
             const leaders:DiscordUserTypes[]     = [];
             const coleaders:DiscordUserTypes[]   = [];
             const membersList:DiscordUserTypes[] = [];

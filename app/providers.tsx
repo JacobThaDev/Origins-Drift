@@ -1,6 +1,5 @@
 "use client"
 
-import { client } from '@/lib/auth-client';
 import { LeaderboardContextProvider } from '@/providers/LeaderboardProvider';
 import { ProfileContextProvider } from '@/providers/ProfileProvider';
 import { TracksContextProvider } from '@/providers/TracksProvider';
@@ -14,12 +13,11 @@ import { usePathname } from 'next/navigation';
  */
 export default function Providers({ children }: {  children: React.ReactNode }) {
     
-    const { data:session } = client.useSession();
     const pathname = usePathname();
 
-    const isLoginPath = pathname === "/login";
-
-    if (isLoginPath || (pathname === "/profile" && !session) || pathname == "/members") {
+    if (pathname == "/login" 
+        || pathname == "/members" 
+        || pathname.startsWith("/profile")) {
         return(
             <ProgressProvider 
                 height="4px"
@@ -32,6 +30,8 @@ export default function Providers({ children }: {  children: React.ReactNode }) 
             </ProgressProvider>
         )
     }
+
+    
     
     return(
         <ProgressProvider 
