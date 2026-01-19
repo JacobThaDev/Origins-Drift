@@ -20,7 +20,7 @@ export default function Home() {
         }
 
         async function loadStats() {
-            const results = await LocalApi.get("/stats").then(r => r.data);
+            const results = await LocalApi.get("/stats");
             setStats(results);
         }
 

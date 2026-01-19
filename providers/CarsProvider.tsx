@@ -29,7 +29,7 @@ export function CarsContextProvider({ children }:CarsContextProps) {
 
     async function loadCars() {
         setLoading(true);
-        const car_details:CarsDetailsTypes[] = await LocalApi.get("cars").then(r => r.data);
+        const car_details:CarsDetailsTypes[] = await LocalApi.get("/cars");
         const makes:string[] = [];
 
         car_details.map((car:CarsDetailsTypes) => {

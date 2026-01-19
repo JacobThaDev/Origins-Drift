@@ -73,7 +73,7 @@ export const auth = betterAuth({
 		//oneTap(),
 		customSession(async (session) => {
             const user_id = session.user.id;
-            const userData:UsersTypes = await LocalApi.get("/profile/"+user_id).then(r => r.data);
+            const userData:UsersTypes = await LocalApi.get("/profile/"+user_id);
 
 			return {
 				...session,

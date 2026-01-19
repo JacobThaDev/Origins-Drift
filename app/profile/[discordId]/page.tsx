@@ -26,8 +26,7 @@ export default function PublicProfile({ params }: { params: Promise<{ discordId:
         async function getUserData() {
             setLoading(true);
 
-            const result:ProfileTypes = await LocalApi.get("/discord/member/"+discordId+"")
-                .then(r=>r.data);
+            const result:ProfileTypes = await LocalApi.get("/discord/member/"+discordId+"");
 
             if (result.error) {
                 setError(result.error.message);

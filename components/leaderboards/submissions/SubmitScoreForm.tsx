@@ -56,15 +56,15 @@ const SubmitScoreForm = ({
             imgurFormData.append("image", base64);
 
             const result = await LocalApi.post("imgur/upload", imgurFormData, {
-                onUploadProgress: (progressEvent) => {
+                /*onUploadProgress: (progressEvent) => {
                     if (progressEvent.total) {
                         const percentCompleted = Math.round(
                             (progressEvent.loaded * 100) / progressEvent.total
                         );
                         setProgress(percentCompleted);
                     }
-                }
-            }).then(r => r.data);
+                }*/
+            });
 
             if (result.success && result.status == 200) {
                 setImgurData(result.data);

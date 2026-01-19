@@ -43,7 +43,7 @@ export function ProfileContextProvider({ children }:ProfileContextProps) {
     const updateProfile = async(formData:any[]) => {
         try {
             // post request to update endpoint
-            let result:any = await LocalApi.post("profile", formData).then(r => r.data);
+            let result:any = await LocalApi.post("profile", formData);
 
             if (result.error) {
                 setError(result.error);
