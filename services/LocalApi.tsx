@@ -1,6 +1,6 @@
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL + "/api";
+const BASE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://127.0.0.1:3000') + "/api";
 
-    const LocalApi = {
+const LocalApi = {
     async request(endpoint: string, options: RequestInit = {}) {
         const url = `${BASE_URL}${endpoint}`;
         
