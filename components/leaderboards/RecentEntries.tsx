@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 const RecentEntries = () => {
     
     const { recent, loadRecent, classFilter }:LeaderboardContextTypes = useLeaderboardContext();
-    const { activeTrack }:TracksContextTypes = useTracksContext();
+    const { current }:TracksContextTypes = useTracksContext();
 
     const [ mounted, setMounted ] = useState<boolean>();
 
@@ -24,7 +24,7 @@ const RecentEntries = () => {
 
         loadRecent();
     },// eslint-disable-next-line 
-    [mounted, activeTrack, classFilter]);
+    [mounted, current, classFilter]);
 
     return(
         <div className="bg-card rounded-xl overflow-hidden">
@@ -35,13 +35,7 @@ const RecentEntries = () => {
             <div className="flex flex-col gap-2">
             {recent && recent.map((entry:LeadersTypes, index:number) => {
 
-                let displayName = entry.User?.name;
-
-                if (entry.User && entry.User.AccountData) {
-                    if (entry.User.AccountData.display_name) {
-                        displayName = entry.User.AccountData.display_name;
-                    }
-                }
+                const displayName = entry.User?.name;
 
                 return(
                     <div className={`flex gap-3 items-center ${index % 2 == 0 && "bg-black/10"} py-2 px-5`} key={"recent-"+index}>

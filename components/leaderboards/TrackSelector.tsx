@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 
 const TrackSelector = () => {
     
-    const { tracks, activeTrack }:TracksContextTypes = useTracksContext();
+    const { tracks, current }:TracksContextTypes = useTracksContext();
     const [ menuOpen, setMenuOpen ] = useState<boolean>(false);
     const [ mounted, setMounted ] = useState<boolean>(false);
 
@@ -39,7 +39,7 @@ const TrackSelector = () => {
                     onClick={() => setMenuOpen(!menuOpen)} id="track-dropdown-button">
                     <div>
                         <p className="text-xs text-white/70">Current Track</p>
-                        <p>{activeTrack.name} Circuit</p>
+                        <p>{current.name} Circuit</p>
                     </div>
                     <ChevronDownIcon height={20} className="ml-auto"/>
                 </button>
@@ -51,7 +51,7 @@ const TrackSelector = () => {
                                 href={`/track/${track.short_name}`} 
                                 key={index} 
                                 id="track-button"
-                                className={`flex w-full items-center gap-3 hover:bg-buttonHover px-5 py-2 ${activeTrack == track ? "!bg-infodark" : ""}`} >
+                                className={`flex w-full items-center gap-3 hover:bg-buttonHover px-5 py-2 ${current == track ? "!bg-infodark" : ""}`} >
                                 <div className="text-start">
                                     <p className="text-xs text-white/70" >{track.Game.name}</p>
                                     <p>{track.name}</p>

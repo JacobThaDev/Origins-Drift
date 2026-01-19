@@ -1,6 +1,5 @@
 "use client"
 
-import { MenuIcon } from "../icons/MenuIcon";
 import Container from "../layout/Container";
 import Link from "next/link";
 import links from '@/cfg/NavLinks';
@@ -9,6 +8,7 @@ import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvi
 import Image from "next/image";
 import SignOutButton from "./SignOutButton";
 
+
 const Navigation = () => {
 
     const [ menuOpen, setMenuOpen ] = useState<boolean>(false);
@@ -16,14 +16,14 @@ const Navigation = () => {
     
     return(
         <>
-        <div className="bg-black/20 absolute w-full z-[1000] top-[64px] h-[110px] flex items-center backdrop-blur">
-            <Container>
-                <div className="flex">
-                    <div className="max-w-[250px] min-w-[250px] lg:h-[110px] relative flex items-center">
-                         <p className="font-black text-3xl hidden lg:inline-block">Origins</p>
-                         <p className="font-black text-3xl lg:hidden">Origins</p>
-                     </div>
-                    <div className="hidden w-full lg:flex justify-start gap-1">
+        <div className="bg-background/80 fixed w-full z-[1000] h-[80px] flex items-center backdrop-blur-md border-b-2 border-b-border top-0">
+            <Container className="flex h-full items-center justify-center">
+                
+                <div className="flex items-center h-full w-full">
+                    <div className="min-w-[250px]">
+                        <p className="text-2xl font-black">Origins</p>
+                    </div>
+                    <div className="flex items-center justify-center w-full ">
                         {links.map((link:any, index:number) => {
                             return(
                                 <NavLink key={index} url={link.url}>
@@ -31,10 +31,23 @@ const Navigation = () => {
                                 </NavLink>
                             )
                         })}
-                     </div>
-                     <button onClick={() => setMenuOpen(true)} className="lg:hidden flex items-center ml-auto">
-                        <MenuIcon height={30}/>
-                     </button>
+                    </div>
+                    <div className="min-w-[250px] flex justify-center">
+                       <Link href={session ? "/profile" : "/login"} className="hover:bg-info px-4 py-3 rounded-md">
+                            {session && 
+                            
+                            <div className="flex gap-3 items-center">
+                                <Image 
+                                    className="rounded-full"
+                                    src={session.user.image}
+                                    width={24}
+                                    height={24}
+                                    alt=""/>
+                                    My Profile
+                                </div>
+                            }
+                       </Link>
+                    </div>
                 </div>
             </Container>
         </div>
@@ -102,7 +115,7 @@ const NavLink = ({ children, url, title }: {
     return(
         <Link href={url}
             aria-label={title}
-            className={`text-lg lg:text-xl hover:text-warning flex gap-3 items-center text-white/80 px-7 lg:px-5 py-2 lg:py-3 hover:bg-black/20 lg:hover:bg-transparent lg:bg-transparent transition-all font-bold lg:w-auto w-full`}>
+            className={`hover:text-info flex gap-3 items-center text-white/60 px-7 lg:px-5 py-2 lg:py-3 transition-all lg:w-auto w-full`}>
             {children}
         </Link>
     )

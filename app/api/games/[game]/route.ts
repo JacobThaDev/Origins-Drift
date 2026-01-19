@@ -1,5 +1,3 @@
-
-
 import { getCachedGames } from "../../data";
 
 /**

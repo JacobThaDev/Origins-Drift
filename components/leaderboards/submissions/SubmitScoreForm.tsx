@@ -1,6 +1,5 @@
 "use client";
 
-import { LeaderboardContextTypes, useLeaderboardContext } from "@/providers/LeaderboardProvider";
 import Image from "next/image";
 import { ArrowUpTrayIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -8,13 +7,14 @@ import { useDropzone } from 'react-dropzone';
 import LocalApi from "@/services/LocalApi";
 import { useCallback } from "react";
 import { ImgurDataTypes } from "@/utils/types/ImgurDataTypes";
+import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
 
 const SubmitScoreForm = ({ 
     score, setScore, imgurData, setImgurData, uploading, setUploading, error, setError,
     progress, setProgress, toggleModal, deleteImage, validate
 }: SubmitScoreFormTypes) => {
 
-    const { setClassFilter }:LeaderboardContextTypes = useLeaderboardContext();
+    const { setPerfIndex }:TracksContextTypes = useTracksContext();
 
     const onDrop = useCallback((acceptedFiles:File[]) => {
         if (uploading) {
@@ -87,7 +87,7 @@ const SubmitScoreForm = ({
                 <div className="flex">
                     <div className="rounded-l-xl w-[120px]">
                         <select 
-                            onChange={(e:any) => setClassFilter(e.target.value)}
+                            onChange={(e:any) => setPerfIndex(e.target.value)}
                             className="bg-button custom-select text-white py-4 w-full outline-0 text-center rounded-l-xl">
                             <option value="a">A-800</option>
                             <option value="s1">S1-900</option>

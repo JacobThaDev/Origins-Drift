@@ -18,19 +18,19 @@ export function LeaderboardContextProvider({ children }:LeaderboardContextProps)
     const [ classFilter, setClassFilter ] = useState<"a"|"s1">("a");
     const [ loading, setLoading ] = useState<boolean>(false);
     const [ scores, setScores ]   = useState<LeadersTypes[]>();
-    const { activeTrack }:TracksContextTypes = useTracksContext();
+    const { current }:TracksContextTypes = useTracksContext();
     const [ recent, setRecent ]   = useState<LeadersTypes[]>();
 
     useEffect(() => {
-        if (!activeTrack) {
+        if (!current) {
             return;
         }
         loadScores();
         return() => setScores(undefined);
-    }, [activeTrack, classFilter]);
+    }, [current, classFilter]);
 
     async function loadRecent() {
-        const recent = await LocalApi.get("/games/"+game+"/"+activeTrack.short_name+"/scores/"+classFilter+"")
+        const recent = await LocalApi.get("/games/"+game+"/"+current.short_name+"/scores/"+classFilter+"")
             .then(r => r.data);
         
         if (recent) {
@@ -40,7 +40,7 @@ export function LeaderboardContextProvider({ children }:LeaderboardContextProps)
 
     async function loadScores() { 
         setLoading(true);
-        const trackData:ScoresTypes = await LocalApi.get("games/"+game+"/"+activeTrack.short_name+"/leaders/"+classFilter).then(r => r.data);;
+        const trackData:ScoresTypes = await LocalApi.get("games/"+game+"/"+current.short_name+"/leaders/"+classFilter).then(r => r.data);;
         setScores(trackData.scores);
         setLoading(false);
     }

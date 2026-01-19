@@ -6,7 +6,7 @@ interface ContainerTypes {
 
 const Container = ({ children, id, className }: ContainerTypes) => {
     return(
-        <div id={id} className={`mx-auto w-full max-w-[1350px] px-[2em] ${className}`}>
+        <div id={id} className={`mx-auto w-full max-w-7xl px-[2em] ${className}`}>
             {children}
         </div>
     )
