@@ -2,6 +2,8 @@
  * Just a collection of utility functions i've either found or made over the years
  */
 
+import { GamingPlatform } from "./types/PlatformsTypes";
+
 
 /**
  * Censors a word by replacing all characters except the first and last with asterisks.
@@ -258,4 +260,38 @@ export function getRelativeTime(inputDate:any, locale = 'en') {
             return rtf.format(value, unit.label);
         }
     }
+}
+
+export const getAvatar = (member_id:string, avatarHash:string) => {
+    const extension = avatarHash 
+                && avatarHash.startsWith("a_") ? "gif" : "png";
+            
+    const avatarUrl = avatarHash && avatarHash 
+        ? `https://cdn.discordapp.com/avatars/${member_id}/${avatarHash}.${extension}`
+        : `https://cdn.discordapp.com/embed/avatars/${(BigInt(member_id) >> 22n) % 6n}.png`;
+
+    return avatarUrl;
+}
+
+export const getPlatformName = (platform:string) => {
+    if (platform == "XBOX" || platform == "WINDOWS") {
+        return `Xbox`;
+    } else if (platform == "STEAM") {
+        return `Steam`;
+    } else if (platform == "PLAYSTATION") {
+        return `Playstation`;
+    }
+    return null;
+}
+
+
+export const getPlatformLink = (platform:GamingPlatform|null|undefined, platformName:string|null|undefined) => {
+    if (platform == "XBOX" || platform == "WINDOWS") {
+        return `https://www.xbox.com/en-us/play/user/`+(platformName);
+    } else if (platform == "STEAM") {
+        return `https://steamcommunity.com/id/`+(platformName);
+    } else if (platform == "PLAYSTATION") {
+        return `https://psnprofiles.com/`+(platformName);
+    }
+    return null;
 }

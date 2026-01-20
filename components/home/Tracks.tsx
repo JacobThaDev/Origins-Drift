@@ -74,28 +74,6 @@ const TracksSection = () => {
                                     </Link> 
                                 </div>
                             </div>
-
-                            {/* <Image 
-                                src={track.track_image} 
-                                width={1920}
-                                height={1080}
-                                alt=""
-                                className={`rounded-2xl h-auto w-full relative hover:z-[1] transition-all duration-[450ms]`}/> */}
-
-                            {/* <div className="p-3 pb-1.5">
-                                <Link 
-                                    href={`/track/${track.short_name}`}
-                                    className="relative overflow-hidden inline-block text-center bg-button hover:bg-buttonHover group w-full py-3 rounded-xl transition-all duration-500">
-                                    <Meteors className="hidden group-hover:inline-block"/>
-                                    <TropyIcon 
-                                        height={80}
-                                        className="absolute -top-3 right-3 rotate-[-15deg] text-white/5 group-hover:text-warning/20 transition-all duration-500"/>
-                                    
-                                    <p className="text-white transition-all duration-500">
-                                        Leaderboard
-                                    </p>
-                                </Link>
-                            </div> */}
                         </div>
                     )
                 })}

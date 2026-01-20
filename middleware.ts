@@ -10,13 +10,14 @@ export async function middleware(request: NextRequest) {
     }
 
     try {
-        const { data: session } = await LocalApi.get("/auth/get-session", {
+        const session = await LocalApi.get("/auth/get-session", {
             headers: {
                 cookie: request.headers.get("cookie") || "", // Forward the cookies from the request
             },
         });
 
         const api_paths:string[] = [
+            "/api/revalidate",
             "/api/imgur/upload",
             "/api/imgur/delete/[deleteHash]",
         ];
@@ -40,6 +41,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
 	matcher: [
         "/",
+        "/api/revalidate",
         "/api/imgur/upload",
         "/api/imgur/delete/[deleteHash]",
         "/dashboard",

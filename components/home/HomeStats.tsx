@@ -33,7 +33,7 @@ const HomeStats = ({ stats }: { stats:any }) => {
                                     /> : 0}
                             </p>
                             <p className="text-lg font-bold mb-3">Highest Score</p>
-                            <p className="text-white/60">{stats?.max_score.Track.name} Circuit</p>
+                            <p className="text-muted">{stats?.max_score.Track.name} Circuit</p>
                         </div>
 
                         <div className="bg-card rounded-lg p-7 text-start border-2 border-border hover:border-info/50 transition-all duration-300 hover:scale-110 hover:rotate-[-5deg]">
@@ -51,7 +51,7 @@ const HomeStats = ({ stats }: { stats:any }) => {
                                     /> : 0}
                             </p>
                             <p className="text-lg font-bold mb-3">Total Score</p>
-                            <p className="text-white/60">Sum of all scores submitted</p>
+                            <p className="text-muted">Sum of all scores submitted</p>
                         </div>
 
                         <div className="bg-card rounded-lg p-7 text-start border-2 border-border hover:border-info/50 transition-all duration-300 hover:scale-110 hover:rotate-[-5deg]">
@@ -67,7 +67,7 @@ const HomeStats = ({ stats }: { stats:any }) => {
                                     /> : 0}
                             </p>
                             <p className="text-lg font-bold mb-3">Cars</p>
-                            <p className="text-white/60">Cars we have data for</p>
+                            <p className="text-muted">Cars we have data for</p>
                         </div>
 
                         <div className="bg-card rounded-lg p-7 text-start border-2 border-border hover:border-info/50 transition-all duration-300 hover:scale-110 hover:rotate-[-5deg]">
@@ -83,7 +83,7 @@ const HomeStats = ({ stats }: { stats:any }) => {
                                     /> : 0}
                             </p>
                             <p className="text-lg font-bold mb-3">Average Score</p>
-                            <p className="text-white/60">An average of all scores</p>
+                            <p className="text-muted">An average of all scores</p>
                         </div>
                     </div>
                 </div>

@@ -11,6 +11,10 @@ const LocalApi = {
 
         const response = await fetch(url, {
             ...options,
+            credentials: 'include',
+            /*next: { 
+                revalidate: 0 
+            },*/
             headers: {
                 ...defaultHeaders,
                 ...options.headers,

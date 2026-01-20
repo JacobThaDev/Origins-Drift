@@ -61,7 +61,7 @@ const LeaderTable = () => {
                             </div>
                             <div>
                                 <Link href={`/profile/${entry.User?.Account.accountId}`} 
-                                    target="_blank" className="text-lg font-bold text-info hover:underline">
+                                    className="text-lg font-bold text-info hover:underline">
                                     {displayName}
                                 </Link>
                                 {entry.proof_url ?

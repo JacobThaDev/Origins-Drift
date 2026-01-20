@@ -1,6 +1,7 @@
 import db from "@/models";
 import { AccountTypes } from "@/utils/types/AccountTypes";
 import { DiscordMemberTypes } from "@/utils/types/discord/DiscordMemberTypes";
+import { revalidateTag } from "next/cache";
 import { unstable_cache } from "next/cache";
 import { Sequelize } from "sequelize";
 
@@ -37,7 +38,6 @@ const getDiscordUser = (member_id:string) => unstable_cache(
                 include: {
                     model: db.accountData,
                     as: "AccountData",
-                    attributes: ["user_id", "display_name", "platform", "platform_name", "fav_car_fh5", "about_me"],
                     include: {
                         model: db.cars_fh5,
                         as: "fav_car"
@@ -59,7 +59,7 @@ const getDiscordUser = (member_id:string) => unstable_cache(
         };
     },
     ['discord_user', member_id], {
-        revalidate: 3600,
+        revalidate: 10800,  // 3 hours
         tags: [
             `discord_user_${member_id}`
         ]
@@ -85,23 +85,19 @@ const getUserAllTrackRecords = (user_id: string) => unstable_cache(
             include: {
                 model: db.tracks,
                 as: "Track",
-                attributes: ["name", "short_name", "length", "game", "favorite", "track_image"]
+                attributes: ["id", "name", "short_name", "length", "game", "favorite", "track_image"]
             },
-            group: [
-                'scores.track', 
-                'Track.id', // Ensure this matches your Track model's PK name
-                'scores.class'
-            ], // Group by track to get the MAX for each one
+            group: ['Track.id', 'scores.class'],
+            order: [['class', 'ASC']],
             raw: true,
             nest: true
         });
     },
-    ['user-all-records', user_id], 
-    {
-        revalidate: 3600, // Optional: keep it consistent with your other caches
+    ['user-records', user_id], {
+        revalidate: 10800, // 3 hours
         tags: [
             'user-records',
-            `user-all-records-${user_id}`
+            `user-records-${user_id}`
         ]
     }
 )();
@@ -117,10 +113,6 @@ export async function GET(req: any, res:any) {
         const { memberId }:RequestTypes = await res.params;
 
         const result = await getDiscordUser(memberId);
-        
-        //revalidateTag(`discord_user_${memberId}`);
-        //revalidateTag(`user-records`);
-        //revalidateTag(`user-all-records`);
 
         return Response.json(result);
     } catch (e:any) {

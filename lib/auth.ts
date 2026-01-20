@@ -74,6 +74,20 @@ export const auth = betterAuth({
 		customSession(async (session) => {
             const user_id = session.user.id;
             const userData:UsersTypes = await LocalApi.get("/profile/"+user_id);
+            
+            if (userData) {
+                const discordData = await LocalApi.get(`/discord/member/${userData.Account.accountId}`);
+
+                if (discordData.ok) {
+                    const discord_user = await discordData.json();
+
+                    return {
+                        ...session,
+				        user: userData,
+                        discord: discord_user
+                    }
+                }
+            }
 
 			return {
 				...session,

@@ -39,7 +39,7 @@ export default function Home() {
                             <p className="uppercase text-info font-bold mb-2">Leaderboards</p>
                             <p className="text-3xl font-bold">Compete on Official Tracks</p>
                         </div>
-                        <div className="max-w-lg text-white/70">
+                        <div className="max-w-lg text-muted">
                             <p>Submit your best drift scores and climb the rankings. Each track offers unique challenges for every skill level.</p>
                         </div>
                     </div>

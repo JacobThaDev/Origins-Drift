@@ -1,9 +1,10 @@
 "use client";
 
-import Container from "@/components/layout/Container";
+import DriverStatistics from "@/components/profile/DriverStatistics";
+import PublicProfileHeader from "@/components/profile/PublicProfileHeader";
+import TrackRecords from "@/components/profile/TrackRecords";
 import LocalApi from "@/services/LocalApi";
-import { AccountTypes } from "@/utils/types/AccountTypes";
-import { DiscordMemberTypes } from "@/utils/types/discord/DiscordMemberTypes";
+import { ProfileTypes } from "@/utils/types/ProfileTypes";
 import { use, useEffect, useState } from "react";
 
 export default function PublicProfile({ params }: { params: Promise<{ discordId: string }>}) {
@@ -40,41 +41,18 @@ export default function PublicProfile({ params }: { params: Promise<{ discordId:
 
         getUserData();
     },// eslint-disable-next-line 
-    [mounted])
+    [mounted]);
+
+    if (!member) {
+        return null;
+    }
 
     return (
         <>
-            <div 
-                className={`bg-header w-full min-h-[350px] max-h-[350px] lg:min-h-[400px] lg:max-h-[400px] pt-40 flex items-center text-white`}>
-                <Container>
-                    <div className="flex items-center gap-10">
-                        <div>
-                            <p className="text-3xl lg:text-5xl font-bold mb-3">
-                                {member?.account.User?.name}
-                            </p>
-                            <p>{ loading ? "Fetching Profile..." : error ? error : ""}</p>
-                        </div>
-                    </div>
-                </Container>
-            </div>
-
-            <div className="py-16">
-                <Container>
-                    <div className="flex gap-3 flex-col lg:flex-row">
-                        
-                    </div>
-                </Container>
-            </div>
+            <PublicProfileHeader member={member}/>
+            <DriverStatistics member={member}/>
+            <TrackRecords member={member}/>
         </>
     );
 
-}
-
-interface ProfileTypes {
-    account: AccountTypes,
-    discord: DiscordMemberTypes,
-    error?: { 
-        message: string, 
-        code: number 
-    };
 }

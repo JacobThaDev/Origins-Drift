@@ -16,7 +16,7 @@ const HomeHeader = ({ stats }: { stats:any }) => {
                 The premier destination for <GlowText enableGlow={false} text="authentic"/> drifters
             </h1>
 
-            <p className="text-white/70 text-lg md:text-xl text-muted-foreground max-w-5xl mx-auto mb-10 leading-relaxed text-pretty">
+            <p className="text-muted text-lg md:text-xl text-muted-foreground max-w-5xl mx-auto mb-10 leading-relaxed text-pretty">
                 We are a community of dedicated drifting enthusiasts 
                 from around the world. Compete on legendary tracks, 
                 climb the leaderboards, and prove your skill.

@@ -1,3 +1,4 @@
+import { TracksTypes } from "./TracksTypes";
 import { UsersTypes } from "./UsersTypes";
 
 export interface LeadersTypes {
@@ -9,4 +10,5 @@ export interface LeadersTypes {
     User?: UsersTypes;
     createdAt: string;
     updatedAt: string;
+    Track?: TracksTypes;
 }
