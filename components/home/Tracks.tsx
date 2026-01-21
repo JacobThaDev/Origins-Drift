@@ -5,7 +5,7 @@ import { useState } from "react";
 import { TracksTypes } from "@/utils/types/TracksTypes";
 import { SparklesIcon } from '@heroicons/react/24/solid'
 import { useTracksContext } from "@/providers/TracksProvider";
-import { ChevronRightIcon, TrophyIcon} from "@heroicons/react/24/outline";
+import { ChevronRightIcon, Square3Stack3DIcon, TrophyIcon} from "@heroicons/react/24/outline";
 import { formatNumber } from "@/utils/Functions";
 import { UsersIcon } from "../icons/UsersIcon";
 import Link from "next/link";
@@ -61,9 +61,14 @@ const TracksSection = () => {
                                         <TrophyIcon height={20} className="text-warning" />
                                         <span className="font-bold">{!track.top_score ? 0 : formatNumber(track.top_score)}</span>
                                     </div>
-                                    <div className="flex items-center text-white/60 gap-3">
+                                    <div className="w-[1px] h-8 bg-muted"/>
+                                    <div className="flex items-center text-muted gap-2">
                                         <UsersIcon strokeWidth={2} height={20}/>
                                         <p>{track.user_count}</p>
+                                    </div>
+                                    <div className="flex items-center text-muted gap-2">
+                                        <Square3Stack3DIcon strokeWidth={1.4} height={20}/>
+                                        <p>{track.entries}</p>
                                     </div>
                                 </div>
                                 

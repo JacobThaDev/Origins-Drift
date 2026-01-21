@@ -1,6 +1,5 @@
 "use client";
 
-import { LeaderboardContextTypes, useLeaderboardContext } from "@/providers/LeaderboardProvider";
 import LocalApi from "@/services/LocalApi";
 import { formatNumber } from "@/utils/Functions";
 import { BasicApiResponseType } from "@/utils/types/BasicApiResponseType";
@@ -14,6 +13,7 @@ import Link from "next/link";
 import { useState } from "react";
 import PersonalBestBox from "./PersonalBestBox";
 import ScoreSavedBox from "./ScoreSavedBox";
+import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
 
 interface ConfirmBoxTypes {
     score: number|undefined;
@@ -30,11 +30,12 @@ const ConfirmBox = ({
 }: ConfirmBoxTypes) => {
 
     const [ loading, setLoading ] = useState<boolean>(false);
+    const [ isPersonalBest, setIsPersonalBest ] = useState<boolean>(false);
     const [ error, setError ] = useState<string>();
     const [ submitted, setSubmitted ] = useState<LeadersTypes>();
 
-    const { loadScores, loadRecent }:LeaderboardContextTypes = useLeaderboardContext();
-    const [ isPersonalBest, setIsPersonalBest ] = useState<boolean>(false);
+    const { perfIndex, loadLeaderboard }:TracksContextTypes = useTracksContext();
+    
 
     const submitData = async() => {
         if (loading) {
@@ -44,7 +45,7 @@ const ConfirmBox = ({
         setLoading(true);
         
         try {
-            const result:BasicApiResponseType = await LocalApi.post( "games/fh5/"+activeTrack.short_name, {
+            const result:BasicApiResponseType = await LocalApi.post( "/tracks/"+activeTrack.short_name+"/"+perfIndex, {
                 user_id: profile.id,
                 game: "fh5",
                 track: activeTrack.short_name,
@@ -52,20 +53,17 @@ const ConfirmBox = ({
                 score: score as number,
                 proof_url: imgurData?.link,
                 delete_hash: imgurData?.deletehash
-            }).then(r => r.data);
+            });
 
             if (result.error) {
                 setError(result.error);
                 return;
-            } 
-
-            console.log(error);
+            }
             
             setIsPersonalBest(result.new_pb ? result.new_pb : false);
             setSubmitted(result.result as LeadersTypes);
             setLoading(false);
-            loadScores();
-            loadRecent();
+            loadLeaderboard(false);
         } catch (err:any) {
             setError(err.message);
             setLoading(false);
@@ -94,6 +92,10 @@ const ConfirmBox = ({
                     continueBtn={continueButton}/>
             )
         }
+    }
+
+    if (error) {
+        return null;
     }
 
     return (

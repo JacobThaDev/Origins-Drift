@@ -1,5 +1,6 @@
 "use client"
 
+import LoadingBox from "@/components/global/LoadingBox";
 import { UsersIcon } from "@/components/icons/UsersIcon";
 import Container from "@/components/layout/Container";
 import PageHeader from "@/components/layout/PageHeader";
@@ -11,9 +12,10 @@ import { useEffect, useState } from "react";
 
 export default function Members() {
     
-    const [ memberList, setMemberList ] = useState<MemberListTypes>();
+    const [ memberList, setMemberList ]   = useState<MemberListTypes>();
     const [ memberCount, setMemberCount ] = useState<number>(0);
-    const [ mounted, setMounted ] = useState<boolean>(false);
+    const [ mounted, setMounted ]         = useState<boolean>(false);
+    const [ loading, setLoading ]         = useState<boolean>(true);
 
     useEffect(() => setMounted(true), []);
 
@@ -23,19 +25,26 @@ export default function Members() {
         }
 
         async function loadMembersList() {
+            setLoading(true);
             const list:MemberListTypes = await LocalApi.get("/discord/members");
 
             if (list && list.error) {
+                setLoading(false);
                 return;
             }
 
             setMemberCount(list.leaders.length + list.members.length + list.coleaders.length + list.users.length);
             setMemberList(list);
+            setLoading(false);
         }
 
         loadMembersList();
     }, [mounted])
     
+    if (loading) {
+        return <LoadingBox message="Loading Members List" />
+    }
+
     return (
         <>
             <PageHeader>

@@ -2,6 +2,7 @@
  * The full discord member object
  */
 export interface DiscordMemberTypes {
+    error?:any;
     avatar: string,
     banner: string,
     communication_disabled_until: string,

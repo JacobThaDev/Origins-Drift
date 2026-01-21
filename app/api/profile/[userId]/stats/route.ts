@@ -39,7 +39,7 @@ const getHighestScore = (user_id:string) => db.scores.findOne({
  * @param classType the car class - `a` or `s1`
  * @returns user statistics
  */
-const getUserStats = (user_id:string, classType:string) => unstable_cache(
+const getUserStats = (user_id:string) => unstable_cache(
     async () => {
         const [ entries, max_score, total_score ] = await Promise.all([
             getEntries(user_id),
@@ -81,7 +81,7 @@ export async function GET(req: any, res:any) {
             });
         }
 
-        const stats = await getUserStats(userId, 'a');
+        const stats = await getUserStats(userId);
 
         return Response.json(stats);
     } catch (e:any) {

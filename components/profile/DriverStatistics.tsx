@@ -12,10 +12,7 @@ import CountUp from "react-countup";
 const DriverStatistics = ({ member }:  { member: ProfileTypes }) => {
 
     const [ stats, setStats ] = useState<any>();
-
     const [ mounted, setMounted ] = useState<boolean>();
-    const [ error, setError ]     = useState<string>();
-    const [ loading, setLoading ] = useState<boolean>();
 
     useEffect(() => setMounted(true), []);
 
@@ -25,18 +22,13 @@ const DriverStatistics = ({ member }:  { member: ProfileTypes }) => {
         }
 
         async function getUserData() {
-            setLoading(true);
-
             const result:ProfileStatsTypes = await LocalApi.get("/profile/"+member.account.User?.id+"/stats");
             
             if (result.error) {
-                setError(result.error.message);
-                setLoading(false);
                 return;
             }
 
             setStats(result);
-            setLoading(false);
         }
 
         getUserData();

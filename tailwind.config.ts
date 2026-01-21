@@ -13,7 +13,7 @@ const config: Config = {
             background: "#0F1419",
             alt: "#371C51",
             card: "#16202A",
-            border: "#1F2830",
+            border: "#2E3A46",
             button: "#2C3440",
             buttonHover: "#343F4C",
             primary: "#191919",
@@ -40,6 +40,7 @@ const config: Config = {
         extend: {
             animation: {
                 meteor: "meteor 5s linear infinite",
+                "spin-reverse": 'spin-reverse 1s linear infinite'
             },
             keyframes: {
                 meteor: {
@@ -55,6 +56,14 @@ const config: Config = {
                         opacity: "0",
                     },
                 },
+                'spin-reverse': {
+                    from: {
+                        transform: 'rotate(360deg)',
+                    },
+                    to: {
+                        transform: 'rotate(0deg)',
+                    },
+                }
             },
         },
     },

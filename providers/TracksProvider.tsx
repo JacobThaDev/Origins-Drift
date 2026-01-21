@@ -18,7 +18,7 @@ interface TracksContextProps {
 export function TracksContextProvider({ children }:TracksContextProps) {
 
     const [ mounted, setMounted ] = useState<boolean>(false);
-    const [ loading, setLoading ] = useState<boolean>(false);
+    const [ loading, setLoading ] = useState<boolean>(true);
 
     const [ tracks, setTracks ]           = useState<TracksTypes[]>();
     const [ current, setCurrent ]         = useState<TracksTypes>();
@@ -40,8 +40,6 @@ export function TracksContextProvider({ children }:TracksContextProps) {
     }, [ mounted ]);
 
     const loadTracks = async() => {
-        setLoading(true);
-
         let results = await LocalApi.get("/tracks/");
         
         if (!results || results.error) {
@@ -51,7 +49,6 @@ export function TracksContextProvider({ children }:TracksContextProps) {
         }
 
         setTracks(results);
-        setLoading(false);
     }
 
     useEffect(() => {
@@ -62,9 +59,10 @@ export function TracksContextProvider({ children }:TracksContextProps) {
         loadLeaderboard();
     }, [ current, perfIndex ]);
 
-    const loadLeaderboard = async() => {
-        setLoading(true);
-
+    const loadLeaderboard = async(showLoader:boolean = true) => {
+        if (showLoader)
+            setLoading(true);
+        
         let results:LeaderboardTypes = await LocalApi.get(`/tracks/${current?.short_name}/${perfIndex}/leaderboard`);
         
         if (results.error) {
@@ -78,7 +76,7 @@ export function TracksContextProvider({ children }:TracksContextProps) {
     }
 
     return (
-        <TracksContext.Provider value={{ loading, setLoading, current, setCurrent, tracks, error, setError, perfIndex, setPerfIndex, leaderboard, setLeaderboard }}>
+        <TracksContext.Provider value={{ loading, setLoading, loadLeaderboard, current, setCurrent, tracks, error, setError, perfIndex, setPerfIndex, leaderboard, setLeaderboard }}>
             {children}
         </TracksContext.Provider>
     );
@@ -97,6 +95,7 @@ export interface TracksContextTypes {
     setPerfIndex: (arg1: "a"|"s1") => void;
     leaderboard: LeadersTypes[];
     setLeaderboard: (arg1: LeadersTypes[]|undefined) => void;
+    loadLeaderboard: (arg1?:boolean) => void
 }
 
 export const useTracksContext = () => useContext(TracksContext);

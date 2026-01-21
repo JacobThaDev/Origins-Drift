@@ -1,3 +1,4 @@
+import { DiscordMemberTypes } from "./discord/DiscordMemberTypes";
 import { UsersTypes } from "./UsersTypes"
 
 export interface SessionsTypes {
@@ -12,4 +13,5 @@ export interface SessionsTypes {
         userAgent: string | null;
     },
     user: UsersTypes;
+    discord:DiscordMemberTypes;
 }

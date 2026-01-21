@@ -26,8 +26,7 @@ export async function POST(req: any, res:any) {
             }
         });
 
-        const result = await ImgurApi.post("/image", imgurFormData)
-                .then(r => r.data);
+        const result = await ImgurApi.post("/image", imgurFormData).then(r => r.data)
 
         if (result.status != 200) {
             return Response.json({
@@ -35,9 +34,9 @@ export async function POST(req: any, res:any) {
             })
         }
 
-        return Response.json(result);
+       return Response.json(result);
     } catch (e:any) {
-        console.error(e.response);
+        console.error(e);
         return Response.json({ 
             message: e.message
         });

@@ -28,7 +28,7 @@ const LeaderTable = () => {
     }
 
     return(
-        <div className="bg-card border-2 border-border rounded-xl overflow-hidden">
+        <div className="bg-card border-2 border-border rounded-xl overflow-hidden font-mono">
             <div className="flex items-center justify-between pe-4">
                 <div className="p-5">
                     <p>Leaderboard</p>
@@ -61,7 +61,7 @@ const LeaderTable = () => {
                             </div>
                             <div>
                                 <Link href={`/profile/${entry.User?.Account.accountId}`} 
-                                    className="text-lg font-bold text-info hover:underline">
+                                    className="text-lg font-semibold text-info hover:underline">
                                     {displayName}
                                 </Link>
                                 {entry.proof_url ?
@@ -84,10 +84,12 @@ const LeaderTable = () => {
                                     </div>
                                 </>}
                                 
-                                <p className="font-bold">{formatNumber(entry.score)}</p>
+                                <p className="font-bold font-mono">
+                                    {formatNumber(entry.score)}
+                                </p>
                             </div>
 
-                            <div className="hidden lg:inline-block text-nowrap text-sm text-white/60">
+                            <div className="hidden lg:inline-block text-nowrap text-sm text-white/60 w-[150px]">
                                 {getRelativeTime(entry.createdAt)}
                             </div>
                             

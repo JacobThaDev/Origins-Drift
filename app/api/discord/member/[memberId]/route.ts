@@ -1,8 +1,8 @@
 import db from "@/models";
+import { getAvatar } from "@/utils/Functions";
 import { AccountTypes } from "@/utils/types/AccountTypes";
 import { DiscordMemberTypes } from "@/utils/types/discord/DiscordMemberTypes";
-import { revalidateTag } from "next/cache";
-import { unstable_cache } from "next/cache";
+import { revalidateTag, unstable_cache } from "next/cache";
 import { Sequelize } from "sequelize";
 
 
@@ -49,6 +49,20 @@ const getDiscordUser = (member_id:string) => unstable_cache(
         let records = [];
 
         if (account && account.User) {
+            const newImageLink = getAvatar(memberData.user.id, memberData.user.avatar);
+
+            if (account.User.image != newImageLink) {
+                try {
+                    await account.User.update({
+                        image: newImageLink
+                    })
+                    revalidateTag('leaders');
+                } catch(err:any) {
+                    console.error("Failed to edit image url: "+err.message);
+                }
+                
+            }
+            
             records = await getUserAllTrackRecords(account.User.id);
         }
 

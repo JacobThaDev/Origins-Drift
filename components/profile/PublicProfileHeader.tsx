@@ -62,7 +62,7 @@ const PublicProfileHeader = ({ member } :  { member: ProfileTypes }) => {
                                 </p>
                             </div>
 
-                            <div className="flex gap-5">
+                            <div className="flex flex-col md:flex-row gap-5 gap-y-3">
                                 <Link href={`https://discord.com/users/${member.account.accountId}`} 
                                     target="_blank"
                                     className="px-5 py-3 border-2 border-border hover:bg-info hover:border-info text-white hover:text-black rounded-lg font-semibold flex items-center gap-5 transition-all">
@@ -76,7 +76,7 @@ const PublicProfileHeader = ({ member } :  { member: ProfileTypes }) => {
                                     <Link href={platformLink} 
                                         target="_blank"
                                         className="px-5 py-3 border-2 border-border hover:bg-info hover:border-info text-white hover:text-black rounded-lg font-semibold flex items-center gap-5 transition-all">
-                                        <PlatformIcon platform={platform} size={20}/>
+                                        <PlatformIcon platform={platform} size={24}/>
 
                                         <div className="w-[1px] h-[30px] bg-border"></div>
                                         {getPlatformName(platform)} Profile

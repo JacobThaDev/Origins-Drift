@@ -144,8 +144,6 @@ export async function POST(req: any, res:any) {
                 error: "You are blocked from submitting new scores."
             });
         }
-
-        revalidateTag(`track-${game.toUpperCase()}-${trackName.toLowerCase()}`);
         
         const trackData:TracksTypes|undefined = await getCachedTrack(game, trackName);
 
@@ -264,6 +262,8 @@ export async function POST(req: any, res:any) {
         //update the recent entries cache
         revalidateTag(`recent-${trackData.id}-${classType.toUpperCase()}`);
         
+        if (new_pb) // only revalidate if user has a new pb for this track and class
+            revalidateTag(`user-record-${trackData.id}-${classType.toUpperCase()}-${user_id}`);
 
         return Response.json({
             success: true,
@@ -272,7 +272,7 @@ export async function POST(req: any, res:any) {
             result: result
         });
     } catch (e:any) {
-        console.log(e.message);
+        console.log(e);
         return Response.json({
             error: e.message
         });

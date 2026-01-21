@@ -17,5 +17,5 @@ export interface UsersTypes {
     AccountData: AccountDataTypes;
     Account: AccountTypes;
     error?:string;
-    //update: (...args:any[]) => void
+    update: (...args:any[]) => Promise<any>
 }

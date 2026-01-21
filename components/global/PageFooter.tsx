@@ -4,6 +4,7 @@ import Link from "next/link";
 import Container from "../layout/Container";
 import { DiscordIcon } from "../icons/DiscordIcon";
 import { GithubIcon } from "../icons/GithubIcon";
+import { HeartIcon } from "@heroicons/react/24/solid";
 
 const PageFooter = () => {
 
@@ -78,6 +79,7 @@ const PageFooter = () => {
                         <ul className="space-y-2">
                             <li>
                                 <Link href="https://discord.com/channels/1228471609463930889/1327683453004677210" 
+                                    target="_blank"
                                     rel="nofollow"
                                     className="text-sm text-muted hover:text-info transition-colors">
                                     Tuning Guides
@@ -101,10 +103,22 @@ const PageFooter = () => {
                 </div>
 
                 <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
-                    <p className="text-sm text-muted">
-                        &copy; {new Date().getFullYear()} Origins Drift Club. Not affiliated with Microsoft 
-                        or Playground Games.
-                    </p>
+                    <div>
+                        <p className="text-sm text-muted">
+                            &copy; {new Date().getFullYear()} Origins Drift Club. Not affiliated with Microsoft 
+                            or Playground Games. 
+                        </p>
+                        <p className="text-sm">
+                            Built by hand with <HeartIcon height={16} className="text-danger inline-block"/> by{" "}
+                            <Link 
+                                href="https://jacobtha.dev" 
+                                target="_blank" 
+                                className="text-white/80 hover:text-info">
+                                JacobThaDev
+                            </Link>
+                        </p>
+                    </div>
+
 
                     <div className="flex items-center gap-5">
                         <Link href="/legal/terms" 
@@ -113,7 +127,7 @@ const PageFooter = () => {
                         </Link>
 
                         <div className="w-[2px] h-8 bg-border"/>
-                        
+
                         <Link href="/legal/privacy" 
                             className="text-sm text-muted hover:text-info transition-colors">
                             Privacy Policy

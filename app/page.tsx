@@ -32,7 +32,7 @@ export default function Home() {
             <HomeHeader stats={stats}/>
             <HomeStats stats={stats}/>
 
-            <div className="py-20">
+            <div className="py-20" id="leaderboards">
                 <Container>
                     <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
                         <div>
