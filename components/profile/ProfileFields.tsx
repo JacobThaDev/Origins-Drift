@@ -80,36 +80,36 @@ const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
                         name="platform" value={platform ? platform : "XBOX" } readOnly
                             className="text-black"/>
 
-                    <div className="grid grid-cols-4 mb-5 gap-7">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 mb-5 gap-3 md:gap-7">
                         <button
                             onClick={() => setPlatform("XBOX")}
                             type="button"
-                            className={`p-6 w-full flex flex-col items-center justify-center bg-secondary/30 border-2 border-border rounded-xl text-muted hover:border-info/30 hover:bg-info/10 hover:text-info ${platform == "XBOX" && "!bg-success/10 !border-success/50 !text-success"}`}>
-                            <XboxIcon height={48} className="mb-1"/>
+                            className={`p-6 py-1 md:py-6 w-full flex flex-row md:flex-col items-center md:justify-center gap-x-3 bg-secondary/30 border-2 border-border rounded-xl text-muted hover:border-info/30 hover:bg-info/10 hover:text-info ${platform == "XBOX" && "!bg-success/10 !border-success/50 !text-success"}`}>
+                            <XboxIcon height={48} className="mb-1 max-w-[28px] md:max-w-[48px]"/>
                             <p>Xbox</p>
                         </button>
 
                         <button
                             onClick={() => setPlatform("WINDOWS")}
                             type="button"
-                            className={`p-6 w-full flex flex-col items-center justify-center bg-secondary/30 border-2 border-border rounded-xl text-muted hover:border-info/30 hover:bg-info/10 hover:text-info ${platform == "WINDOWS" && "!bg-success/10 !border-success/50 !text-success"}`}>
-                            <WindowsIcon height={48} className="mb-1"/>
+                            className={`p-6 py-1 md:py-6 w-full flex flex-row md:flex-col items-center md:justify-center gap-x-3 bg-secondary/30 border-2 border-border rounded-xl text-muted hover:border-info/30 hover:bg-info/10 hover:text-info ${platform == "WINDOWS" && "!bg-success/10 !border-success/50 !text-success"}`}>
+                            <WindowsIcon height={48} className="mb-1 max-w-[28px] md:max-w-[48px]"/>
                             <p>Xbox &#40;PC&#41;</p>
                         </button>
 
                         <button
                             onClick={() => setPlatform("STEAM")}
                             type="button"
-                            className={`p-6 w-full flex flex-col items-center justify-center bg-secondary/30 border-2 border-border rounded-xl text-muted hover:border-info/30 hover:bg-info/10 hover:text-info ${platform == "STEAM" && "!bg-success/10 !border-success/50 !text-success"}`}>
-                            <SteamIcon height={48} className="mb-1"/>
+                            className={`p-6 py-1 md:py-6 w-full flex flex-row md:flex-col items-center md:justify-center gap-x-3 bg-secondary/30 border-2 border-border rounded-xl text-muted hover:border-info/30 hover:bg-info/10 hover:text-info ${platform == "STEAM" && "!bg-success/10 !border-success/50 !text-success"}`}>
+                            <SteamIcon height={48} className="mb-1 max-w-[28px] md:max-w-[48px]"/>
                             <p>Steam</p>
                         </button>
 
                         <button
                             onClick={() => setPlatform("PLAYSTATION")}
                             type="button"
-                            className={`p-6 w-full flex flex-col items-center justify-center bg-secondary/30 border-2 border-secondary rounded-xl text-muted hover:border-info/30 hover:bg-info/10 hover:text-info ${platform == "PLAYSTATION" && "!bg-success/10 !border-success/50 !text-success"}`}>
-                            <PlaystationIcon height={48} className="mb-1"/>
+                            className={`p-6 py-1 md:py-6 w-full flex flex-row md:flex-col items-center md:justify-center gap-x-3 bg-secondary/30 border-2 border-secondary rounded-xl text-muted hover:border-info/30 hover:bg-info/10 hover:text-info ${platform == "PLAYSTATION" && "!bg-success/10 !border-success/50 !text-success"}`}>
+                            <PlaystationIcon height={48} className="mb-1 max-w-[28px] md:max-w-[48px]"/>
                             <p>Playstation</p>
                         </button>
                     </div>
@@ -129,7 +129,7 @@ const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
                 </div>
 
                 {platform_link && 
-                <div>
+                <div className="truncate max-w-full">
                     <p className="text-sm text-muted">Platform Url:</p>
                     <Link target="_blank" 
                         className="text-info w-full truncate overflow-hidden max-w-full"

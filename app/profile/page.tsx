@@ -43,7 +43,7 @@ export default function Profile() {
                         <p className="text-muted mb-5">
                             Your Discord avatar and display name synced from your account
                         </p>
-                        <div className="flex gap-10 items-center">
+                        <div className="flex flex-col md:flex-row gap-10 items-center">
                             <div className="flex w-[150px] py-5 flex-col items-center justify-center gap-5">
                                 <Image unoptimized 
                                     src={getAvatar(session.discord.user.id, session.discord.user.avatar)} 
@@ -60,9 +60,11 @@ export default function Profile() {
                                 </p>
 
                                 <p className="text-sm text-muted">This is how other members see you across the platform.</p>
+                                
                                 <hr className="border-border my-3"/>
-                                <div className="flex items-center gap-5">
-                                    <div className="flex items-center gap-5">
+
+                                <div className="flex flex-col md:flex-row md:items-center gap-5">
+                                    <div className="flex flex-col md:flex-row md:items-center gap-x-5">
                                         <p className="text-muted">
                                             Discord
                                         </p>
@@ -71,7 +73,7 @@ export default function Profile() {
                                         </p>
                                     </div>
 
-                                    <div className="flex items-center gap-5">
+                                    <div className="flex flex-col md:flex-row md:items-center gap-x-5">
                                         <p className="text-muted">
                                             Joined
                                         </p>
