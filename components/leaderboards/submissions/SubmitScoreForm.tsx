@@ -54,13 +54,10 @@ const SubmitScoreForm = ({
             const imgurFormData = new FormData();
 
             imgurFormData.append("image", base64);
-            console.log(imgurFormData)
 
             const result = await LocalApi.post("/imgur/upload", { 
                 image: base64
             });
-
-            console.log(result);
 
             if (result.success && result.status == 200) {
                 setImgurData(result.data);

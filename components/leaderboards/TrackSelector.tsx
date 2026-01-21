@@ -49,8 +49,6 @@ const TrackSelector = () => {
                 
                 <div className={`absolute rounded-xl top-full mt-3 w-full bg-secondary ${menuOpen ? "flex" : "hidden"} flex-col max-h-[220px] overflow-hidden overflow-y-auto scrollbar z-[50] shadow-xl shadow-black/30`} id="track-dropdown">
                     {tracks && tracks.map((track:TracksTypes, index:number) => {
-
-                        console.log(track);
                         return(
                             <Link
                                 href={`/track/${track.short_name}`} 

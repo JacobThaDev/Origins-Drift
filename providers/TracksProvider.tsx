@@ -43,7 +43,7 @@ export function TracksContextProvider({ children }:TracksContextProps) {
         let results = await LocalApi.get("/tracks/");
         
         if (!results || results.error) {
-            results.error && setError(results.error);
+            setError(results.error);
             setLoading(false);
             return;
         }
@@ -56,10 +56,10 @@ export function TracksContextProvider({ children }:TracksContextProps) {
             return;
         }
 
-        loadLeaderboard();
+        loadLeaderboard(false);
     }, [ current, perfIndex ]);
 
-    const loadLeaderboard = async(showLoader:boolean = true) => {
+    const loadLeaderboard = async(showLoader:boolean = false) => {
         if (showLoader)
             setLoading(true);
         

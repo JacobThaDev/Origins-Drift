@@ -51,6 +51,8 @@ const Navigation = () => {
                     //router.push("/");
                     setProfile(null);
                     setSession(null);
+                    setMenuOpen(false);
+                    setShowLogout(false);
                 },
                 onError: (err:any) => {
                     console.log(err);

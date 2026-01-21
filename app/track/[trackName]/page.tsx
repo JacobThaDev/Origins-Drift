@@ -19,7 +19,7 @@ export default function TrackLeaderboard({ params }: { params: Promise<{ trackNa
     const { trackName } = use(params);
     
     // eslint-disable-next-line
-    const { tracks, current, setCurrent, perfIndex, loading, setPerfIndex, setError, setLoading }:TracksContextTypes = useTracksContext();
+    const { error, tracks, current, setCurrent, perfIndex, loading, setPerfIndex, setError }:TracksContextTypes = useTracksContext();
 
     useEffect(() => {
         if (!tracks) {
@@ -36,78 +36,28 @@ export default function TrackLeaderboard({ params }: { params: Promise<{ trackNa
         });
 
         if (!currentTrack) {
-            setError("Invalid track");
-        } else {
-            setCurrent(currentTrack);
+            setError("Invalid track")
+            return;
         }
-
-        setLoading(false);
+        
+        setCurrent(currentTrack);
 
         return () => {
-            //setCurrent(undefined);
-            //setLeaderboard(undefined);
-            //setError(undefined);
+            setCurrent(undefined);
+            setError(undefined);
         }
     }, // eslint-disable-next-line
     [ tracks ]);
+
+    if (error) 
+        return (<ErrorBox message={error}/>);
 
     if (loading) {
         return <LoadingBox message="Fetching track data"/>
     }
 
     if (!current) {
-        return <>
-        <PageHeader>
-                <>
-                <div className="relative max-w-full text-start">
-
-                    <div className="flex gap-2 font-bold mb-3 w-full text-nowrap flex-wrap text-xs lg:text-sm">
-                        <div className="bg-warning/20 border-2 border-warning/20 text-warning py-1 px-2 rounded-lg">
-                            Medium
-                        </div>
-                    </div>
-                    
-                    <div className="flex flex-col lg:flex-row justify-between lg:items-center mb-5">
-
-                        <div>
-                            <p className="text-3xl lg:text-6xl font-bold mb-3">Unknown Circuit</p>
-                            <p className="text-white/60 mb-5">Compete for the highest drift scores on this legendary drift circuit.</p>
-                        </div>
-                        <div>
-                            <TrackSelector/>
-                        </div>
-                    </div>
-                        
-                    <div className="flex gap-5">
-                        <div className="flex items-center gap-3 text-info">
-                            <RouteIcon height={18}  strokeWidth={2}/>
-                            <p className="text-white/60">0mi</p>
-                        </div>
-
-                        <div className="w-[1px] bg-border"></div>
-
-                        <div className="flex items-center gap-3 text-info">
-                            <UsersIcon height={18} strokeWidth={2}/>
-                            <p className="text-white/60">0</p>
-                        </div>
-
-                        <div className="w-[1px] bg-border"></div>
-
-                        <button onClick={() => setPerfIndex(perfIndex == "a" ? "s1" : "a")} 
-                                className="flex items-center gap-3 text-info relative">
-                            <SpeedIcon height={18} strokeWidth={2}/>
-                            <div className="text-white flex items-center gap-2">
-                                {perfIndex.toUpperCase()}-{perfIndex == "a" ? 800 : 900}
-                                <ArrowPathRoundedSquareIcon height={16} className="text-white/60 inline-block" strokeWidth={1.5}/>
-                            </div>
-                        </button>
-                    </div>
-                </div>
-                </>
-            </PageHeader>
-
-            <ErrorBox message={"Invalid track"}/>
-        </>;
+        return null;
     }
 
     return(
