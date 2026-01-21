@@ -27,16 +27,12 @@ export default function Home() {
                 setStats(results);
                 setLoading(false);
             } catch (err:any) {
-                
+
             }
         }
 
         loadStats();
     }, [ mounted ]);
-
-    if (loading) {
-        return <LoadingBox message="Loading Stats"/>
-    }
 
     return (
         <>
