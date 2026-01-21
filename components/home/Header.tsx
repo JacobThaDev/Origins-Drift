@@ -37,33 +37,30 @@ const HomeHeader = ({ stats }: { stats:any }) => {
             <div className="flex justify-center gap-20">
                 <div className="text-center">
                     <p className="text-5xl font-black">
-                        {stats ?
                         <CountUp
+                            redraw={true}
                             start={0}
-                            end={stats.users}
-                            /> : 0}
+                            end={stats ? stats.users : 0} />
                     </p>
                     <p>Active Drifters</p>
                 </div>
                 <div className="w-[1px] bg-white/10 hidden lg:inline-block"/>
                 <div className="text-center">
                     <p className="text-5xl font-black">
-                        {stats ?
                         <CountUp
+                            redraw={true}
                             start={0}
-                            end={stats.tracks}
-                            /> : 0}
+                            end={stats ? stats.tracks : 0} />
                     </p>
                     <p>Official Tracks</p>
                 </div>
                 <div className="w-[1px] bg-white/10 hidden lg:inline-block"/>
                 <div className="text-center">
                     <p className="text-5xl font-black">
-                        {stats ?
                         <CountUp
+                            redraw={true}
                             start={0}
-                            end={stats.submitted}
-                            /> : 0}
+                            end={stats ? stats.submitted : 0} />
                     </p>
                     <p>Scores Submitted</p>
                 </div>

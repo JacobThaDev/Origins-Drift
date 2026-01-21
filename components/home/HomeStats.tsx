@@ -76,7 +76,7 @@ const HomeStats = ({ stats }: { stats:any }) => {
                             </div>
 
                             <p className="text-4xl font-black">
-                                 {stats ?
+                                {stats ?
                                 <CountUp
                                     start={0}
                                     end={stats.avg_score}
