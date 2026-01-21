@@ -22,9 +22,13 @@ export default function Home() {
         }
 
         async function loadStats() {
-            const results = await LocalApi.get("/stats");
-            setStats(results);
-            setLoading(false);
+            try {
+                const results = await LocalApi.get("/stats");
+                setStats(results);
+                setLoading(false);
+            } catch (err:any) {
+
+            }
         }
 
         loadStats();

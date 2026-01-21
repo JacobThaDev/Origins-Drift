@@ -10,7 +10,7 @@ const HomeStats = ({ stats }: { stats:any }) => {
     if (!stats) {
         return null;
     }
-    
+
     return(
        <div className="bg-card/50 py-20">
             <Container>
@@ -34,7 +34,7 @@ const HomeStats = ({ stats }: { stats:any }) => {
                                 {stats ?
                                 <CountUp
                                     start={0}
-                                    end={stats.max_score.maxScore}
+                                    end={stats ? stats.max_score.maxScore : 0}
                                     /> : 0}
                             </p>
                             <p className="text-lg font-bold mb-3">Highest Score</p>

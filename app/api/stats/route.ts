@@ -72,7 +72,7 @@ const getTrackRecords = () => db.scores.findAll({
 const getHomepageStats = () => unstable_cache(
     async () => {
         const [ 
-            user_created, submitted, score_sum, tracks, cars, avg_scores, max_score, track_leaders 
+            user_created, submitted, score_sum, tracks, cars, avg_scores, track_leaders 
         ] = await Promise.all([
             getUsersCreated(),
             getScoresCount(),
@@ -80,7 +80,6 @@ const getHomepageStats = () => unstable_cache(
             getTracksCount(),
             getCarsCount(),
             getAverageScore(),
-            getHighestScore(),
             getTrackRecords()
         ]);
         
@@ -91,7 +90,7 @@ const getHomepageStats = () => unstable_cache(
             cars: cars,
             score_sum: score_sum,
             avg_score: parseFloat(avg_scores.averageScore),
-            max_score: max_score,
+            //max_score: max_score,
             track_leaders
         }
     },
