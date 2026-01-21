@@ -14,6 +14,7 @@ import { nextCookies } from "better-auth/next-js";
 import { passkey } from "@better-auth/passkey";
 import LocalApi from "@/services/LocalApi";
 import { UsersTypes } from "@/utils/types/UsersTypes";
+import { DiscordMemberTypes } from "@/utils/types/discord/DiscordMemberTypes";
 
 const globalForDb = global as unknown as { conn: Pool | undefined };
 
@@ -73,11 +74,23 @@ export const auth = betterAuth({
 		//oneTap(),
 		customSession(async (session) => {
             const user_id = session.user.id;
-            const userData:UsersTypes = await LocalApi.get("/profile/"+user_id).then(r => r.data);
+
+            const profile:{ 
+                user:UsersTypes, 
+                discord:DiscordMemberTypes, 
+                error?:string 
+            } = await LocalApi.get("/profile/"+user_id);
+            
+            if (!profile || profile.error) {
+                return {
+                    // return nothing  
+                };
+            }
 
 			return {
 				...session,
-				user: userData,
+				user: profile.user,
+                discord: profile.discord
 			};
 		})
 	]

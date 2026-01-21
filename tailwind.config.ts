@@ -10,15 +10,16 @@ const config: Config = {
     ],
     theme: {
         colors: {
-            background: "#181d23",
+            background: "#0F1419",
             alt: "#371C51",
-            card: "#232A33",
+            card: "#16202A",
+            border: "#2E3A46",
             button: "#2C3440",
             buttonHover: "#343F4C",
             primary: "#191919",
-            secondary: "#292929",
-            muted: "#858585",
-            info:"#08B0F0",
+            secondary: "#1E2A36",
+            muted: "#8B98A5",
+            info:"#22D3EE",
             white: "#FFFFFF",
             black: "#000000",
             danger: "#d2433f",
@@ -39,6 +40,7 @@ const config: Config = {
         extend: {
             animation: {
                 meteor: "meteor 5s linear infinite",
+                "spin-reverse": 'spin-reverse 1s linear infinite'
             },
             keyframes: {
                 meteor: {
@@ -54,6 +56,14 @@ const config: Config = {
                         opacity: "0",
                     },
                 },
+                'spin-reverse': {
+                    from: {
+                        transform: 'rotate(360deg)',
+                    },
+                    to: {
+                        transform: 'rotate(0deg)',
+                    },
+                }
             },
         },
     },

@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import LocalApi from "@/services/LocalApi";
 import { ImgurDataTypes } from "@/utils/types/ImgurDataTypes";
-import { LeaderboardContextTypes, useLeaderboardContext } from "@/providers/LeaderboardProvider";
 import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvider";
 import ConfirmBox from "./submissions/ConfirmBox";
 import Particles from "../misc/Particles";
@@ -12,7 +11,7 @@ import SubmitScoreForm from "./submissions/SubmitScoreForm";
 
 const SubmitButton = () => {
 
-    const { activeTrack }:TracksContextTypes = useTracksContext();
+    const { current, perfIndex }:TracksContextTypes = useTracksContext();
     const { profile }:ProfileContextTypes = useProfileContext();
 
     const [ imgurData, setImgurData ] = useState<ImgurDataTypes>();
@@ -22,8 +21,6 @@ const SubmitButton = () => {
     const [ progress, setProgress ]   = useState<number>(0);
     const [ score, setScore ]         = useState<number>();
     const [ showConfirm, setShowConfirm ] = useState<boolean>(false);
-
-    const { classFilter }:LeaderboardContextTypes = useLeaderboardContext();
 
     useEffect(() => {
         // fixes a bug with the modal when pressing the back button.
@@ -66,7 +63,7 @@ const SubmitButton = () => {
 
         try {
             //deletes image on imgur servers
-            await LocalApi.delete(`imgur/delete/${deleteHash}`).then(r => r.data);
+            await LocalApi.delete(`imgur/delete/${deleteHash}`);
         } catch (err:any) {
             console.log(err);
         }
@@ -104,7 +101,7 @@ const SubmitButton = () => {
             <div className="bg-card rounded-2xl w-full max-w-[400px]">
                 {!showConfirm ? 
                 <>
-                    <Image src={activeTrack.track_image} 
+                    <Image src={current.track_image} 
                         className="rounded-2xl"
                         width={450} 
                         height={150} alt=""/>
@@ -127,8 +124,8 @@ const SubmitButton = () => {
                 <ConfirmBox 
                     score={score}
                     profile={profile}
-                    activeTrack={activeTrack}
-                    classFilter={classFilter}
+                    activeTrack={current}
+                    classFilter={perfIndex}
                     imgurData={imgurData}
                     setShowConfirm={setShowConfirm}
                     reset={reset}/> 

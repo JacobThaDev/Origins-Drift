@@ -2,6 +2,8 @@
  * Just a collection of utility functions i've either found or made over the years
  */
 
+import { GamingPlatform } from "./types/PlatformsTypes";
+
 
 /**
  * Censors a word by replacing all characters except the first and last with asterisks.
@@ -223,4 +225,73 @@ export const isValidUrl = (url_string:string) => {
     } catch (e) {
         return false;
     }
+}
+
+/**
+ * Converts a Date object or timestamp into a relative string (e.g., "5 minutes ago")
+ * @param {Date | number | string} inputDate 
+ * @param {string} locale - Default 'en'
+ */
+export function getRelativeTime(inputDate:any, locale = 'en') {
+    const date = new Date(inputDate);
+    const now  = new Date();
+    
+    // Calculate difference in seconds
+    const seconds = Math.round((date.getTime() - now.getTime()) / 1000);
+
+    // Define time units in seconds
+    const units = [
+        { label: 'year',   seconds: 31536000 },
+        { label: 'month',  seconds: 2592000 },
+        { label: 'week',   seconds: 604800 },
+        { label: 'day',    seconds: 86400 },
+        { label: 'hour',   seconds: 3600 },
+        { label: 'minute', seconds: 60 },
+        { label: 'second', seconds: 1 }
+    ] as const;
+
+    // Initialize the Intl formatter
+    const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
+
+    // Find the first unit where the difference is greater than the unit's value
+    for (const unit of units) {
+        if (Math.abs(seconds) >= unit.seconds || unit.label === 'second') {
+            const value = Math.round(seconds / unit.seconds);
+            return rtf.format(value, unit.label);
+        }
+    }
+}
+
+export const getAvatar = (member_id:string, avatarHash:string) => {
+    const extension = avatarHash 
+                && avatarHash.startsWith("a_") ? "gif" : "png";
+            
+    const avatarUrl = avatarHash && avatarHash 
+        ? `https://cdn.discordapp.com/avatars/${member_id}/${avatarHash}.${extension}`
+        : `https://cdn.discordapp.com/embed/avatars/${(BigInt(member_id) >> 22n) % 6n}.png`;
+
+    return avatarUrl;
+}
+
+export const getPlatformName = (platform:string) => {
+    if (platform == "XBOX" || platform == "WINDOWS") {
+        return `Xbox`;
+    } else if (platform == "STEAM") {
+        return `Steam`;
+    } else if (platform == "PLAYSTATION") {
+        return `Playstation`;
+    }
+    return null;
+}
+
+
+export const getPlatformLink = (platform:GamingPlatform|null|undefined, platformName:string|null|undefined) => {
+    if (platform == "XBOX" || platform == "WINDOWS") {
+        return `https://www.xbox.com/en-us/play/user/`+(platformName);
+    } else if (platform == "STEAM") {
+        return `https://steamcommunity.com/id/`+(platformName);
+    } else if (platform == "PLAYSTATION") {
+        return `https://psnprofiles.com/`+(platformName);
+    }
+    return null;
 }

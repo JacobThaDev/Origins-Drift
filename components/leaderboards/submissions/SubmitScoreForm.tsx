@@ -1,6 +1,5 @@
 "use client";
 
-import { LeaderboardContextTypes, useLeaderboardContext } from "@/providers/LeaderboardProvider";
 import Image from "next/image";
 import { ArrowUpTrayIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -8,13 +7,14 @@ import { useDropzone } from 'react-dropzone';
 import LocalApi from "@/services/LocalApi";
 import { useCallback } from "react";
 import { ImgurDataTypes } from "@/utils/types/ImgurDataTypes";
+import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
 
 const SubmitScoreForm = ({ 
     score, setScore, imgurData, setImgurData, uploading, setUploading, error, setError,
     progress, setProgress, toggleModal, deleteImage, validate
 }: SubmitScoreFormTypes) => {
 
-    const { setClassFilter }:LeaderboardContextTypes = useLeaderboardContext();
+    const { perfIndex }:TracksContextTypes = useTracksContext();
 
     const onDrop = useCallback((acceptedFiles:File[]) => {
         if (uploading) {
@@ -54,17 +54,13 @@ const SubmitScoreForm = ({
             const imgurFormData = new FormData();
 
             imgurFormData.append("image", base64);
+            console.log(imgurFormData)
 
-            const result = await LocalApi.post("imgur/upload", imgurFormData, {
-                onUploadProgress: (progressEvent) => {
-                    if (progressEvent.total) {
-                        const percentCompleted = Math.round(
-                            (progressEvent.loaded * 100) / progressEvent.total
-                        );
-                        setProgress(percentCompleted);
-                    }
-                }
-            }).then(r => r.data);
+            const result = await LocalApi.post("/imgur/upload", { 
+                image: base64
+            });
+
+            console.log(result);
 
             if (result.success && result.status == 200) {
                 setImgurData(result.data);
@@ -83,20 +79,17 @@ const SubmitScoreForm = ({
     return (
         <div className="p-7">
             <div className="flex flex-col gap-3">
-
                 <div className="flex">
-                    <div className="rounded-l-xl w-[120px]">
-                        <select 
-                            onChange={(e:any) => setClassFilter(e.target.value)}
-                            className="bg-button custom-select text-white py-4 w-full outline-0 text-center rounded-l-xl">
-                            <option value="a">A-800</option>
-                            <option value="s1">S1-900</option>
-                        </select>
+                    <div className="rounded-l-xl w-[120px] py-4 bg-secondary text-center">
+                        {perfIndex.toUpperCase()}-{perfIndex == "a" ? "800" : "900"}
                     </div>
                     <input 
                         onChange={(e:any) => setScore(e.target.value as number)}
                         defaultValue={score}
-                        type="number" min={1} max={5000000} className="bg-button outline-0 rounded-r-xl w-full ps-3 border-l-2 border-l-card"
+                        type="number"
+                        min={1} 
+                        max={5000000} 
+                        className="bg-secondary outline-0 rounded-r-xl w-full ps-3 border-l-2 border-l-card"
                         placeholder="Type your score here" required/>
                 </div>
 
@@ -137,7 +130,7 @@ const SubmitScoreForm = ({
                 </div>}
 
                 <div className="flex gap-3">
-                    <button onClick={toggleModal} className="bg-button hover:bg-danger px-5 py-3 rounded-xl">
+                    <button onClick={toggleModal} className="bg-secondary hover:bg-danger px-5 py-3 rounded-xl">
                         Cancel
                     </button>
                     <button 

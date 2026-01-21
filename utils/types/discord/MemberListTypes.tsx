@@ -5,4 +5,5 @@ export interface MemberListTypes {
     coleaders: DiscordUserTypes[];
     members: DiscordUserTypes[];
     users: DiscordUserTypes[];
+    error?: string;
 }

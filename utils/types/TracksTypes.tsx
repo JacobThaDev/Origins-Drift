@@ -11,4 +11,7 @@ export interface TracksTypes {
     track_image: string;
     error?: string;
     webhook_url: string|null;
+    top_score: number|null;
+    user_count: number|null;
+    entries: number|null,
 }

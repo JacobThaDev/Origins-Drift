@@ -54,7 +54,7 @@ export async function POST(req: any, res:any) {
             return Response.json({ error: "Please log in to use this endpoint."});
         }
 
-        const { data: session } = await LocalApi.get("/auth/get-session", {
+        const session = await LocalApi.get("/auth/get-session", {
             headers: {
                 cookie: req.headers.get("cookie") || "",
             },
@@ -114,6 +114,7 @@ export async function POST(req: any, res:any) {
             }
 
             revalidateTag(`users-${user.id}`);
+            revalidateTag(`discord_user_${user.Account.accountId}`);
         } else {
             // Use the model directly rather than the cached 'user' instance
             const updated = await db.accountData.update({
@@ -133,6 +134,7 @@ export async function POST(req: any, res:any) {
             }
 
             revalidateTag(`users-${user.id}`);
+            revalidateTag(`discord_user_${user.Account.accountId}`);
         }
 
         const freshUser:UsersTypes = await getCachedUser(user.id);

@@ -1,7 +1,7 @@
 :root {
     --video-gradient: radial-gradient(transparent 10%, #FAFAFA 60%);
     --button-gradient: linear-gradient(-0.15turn, #089fad 0%, #9750DD 70%);
-    --text-gradient: linear-gradient(-0.15turn, #089fad 0%, #9750DD 70%);
+    --text-gradient: linear-gradient(-0.15turn, #22D3EE 0%, #9750DD 70%);
 }
 
 .bg-gradient {

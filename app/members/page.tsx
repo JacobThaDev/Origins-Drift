@@ -1,6 +1,9 @@
 "use client"
 
+import LoadingBox from "@/components/global/LoadingBox";
+import { UsersIcon } from "@/components/icons/UsersIcon";
 import Container from "@/components/layout/Container";
+import PageHeader from "@/components/layout/PageHeader";
 import MembersCard from "@/components/members/MembersCard";
 import LocalApi from "@/services/LocalApi";
 import { DiscordUserTypes } from "@/utils/types/discord/DiscordUserTypes";
@@ -9,8 +12,10 @@ import { useEffect, useState } from "react";
 
 export default function Members() {
     
-    const [ memberList, setMemberList ] = useState<MemberListTypes>();
-    const [ mounted, setMounted ] = useState<boolean>(false);
+    const [ memberList, setMemberList ]   = useState<MemberListTypes>();
+    const [ memberCount, setMemberCount ] = useState<number>(0);
+    const [ mounted, setMounted ]         = useState<boolean>(false);
+    const [ loading, setLoading ]         = useState<boolean>(true);
 
     useEffect(() => setMounted(true), []);
 
@@ -20,31 +25,50 @@ export default function Members() {
         }
 
         async function loadMembersList() {
-            const list:MemberListTypes = await LocalApi.get("discord/members").then(r=>r.data);
+            setLoading(true);
+            const list:MemberListTypes = await LocalApi.get("/discord/members");
+
+            if (list && list.error) {
+                setLoading(false);
+                return;
+            }
+
+            setMemberCount(list.leaders.length + list.members.length + list.coleaders.length + list.users.length);
             setMemberList(list);
+            setLoading(false);
         }
 
         loadMembersList();
     }, [mounted])
     
+    if (loading) {
+        return <LoadingBox message="Loading Members List" />
+    }
+
     return (
         <>
-        <div className={`bg-header w-full min-h-[350px] max-h-[350px] lg:min-h-[400px] lg:max-h-[400px] pt-48 lg:pt-40 flex items-center text-white`}>
-                <Container>
-                    <div className="flex items-center gap-10">
-                        <div>
-                            <p className="text-3xl lg:text-5xl font-bold mb-3">
-                                Origins Members List
-                            </p>
+            <PageHeader>
+                <>
+                <div className="relative max-w-full text-start">
+
+                    <p className="text-3xl lg:text-6xl font-bold mb-3">Origins Member List</p>
+                    <p className="text-white/60 mb-5">
+                        Our Leaders, crew members, and other drifters.
+                    </p>
+                            
+                    <div className="flex gap-5">
+
+                        <div className="flex items-center gap-3">
+                            <UsersIcon height={18} strokeWidth={2} className="text-info"/>
+                            <p className="text-white/60">{memberCount} Members</p>
                         </div>
                     </div>
-                </Container>
-            </div>
+                </div>
+                </>
+            </PageHeader>
 
-            <div className="w-full py-24">
+            <div className="w-full">
                 <Container>
-
-
                     <div className="mb-10">
                         <p className="text-3xl mb-2">The Crew</p>
                         <p className="text-sm text-white/70">

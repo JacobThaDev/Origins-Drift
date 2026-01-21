@@ -1,7 +1,8 @@
 'use client'
 
 import LocalApi from '@/services/LocalApi';
-import { GamesTypes } from '@/utils/types/GamesTypes';
+import { LeaderboardTypes } from '@/utils/types/LeaderboardTypes';
+import { LeadersTypes } from '@/utils/types/LeadersTypes';
 import { TracksTypes } from '@/utils/types/TracksTypes';
 
 import { 
@@ -16,29 +17,66 @@ interface TracksContextProps {
 
 export function TracksContextProvider({ children }:TracksContextProps) {
 
-    const [ loading, setLoading ] = useState<boolean>(false);
-    const [ game, setGame ]       = useState<"fh4"|"fh5"|"fh6">("fh5");
-    const [ tracks, setTracks ]   = useState<TracksTypes[]>();
-    const [ activeTrack, setActiveTrack ] = useState<TracksTypes>();
-    const [ error, setError ]     = useState<string>();
+    const [ mounted, setMounted ] = useState<boolean>(false);
+    const [ loading, setLoading ] = useState<boolean>(true);
 
-    async function loadTracks() {
-        let trackData:GamesTypes = await LocalApi.get("games/"+game+"").then(r => r.data);
-        
-        if (trackData.error) {
-            setError(trackData.error);
+    const [ tracks, setTracks ]           = useState<TracksTypes[]>();
+    const [ current, setCurrent ]         = useState<TracksTypes>();
+    const [ perfIndex, setPerfIndex ]     = useState<"a"|"s1">("a");
+    const [ leaderboard, setLeaderboard ] = useState<LeadersTypes[]>();
+    const [ error, setError ]             = useState<string>();
+
+    
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (!mounted) {
             return;
         }
 
-        setTracks(trackData.tracks);
+        loadTracks();
+    }, [ mounted ]);
+
+    const loadTracks = async() => {
+        let results = await LocalApi.get("/tracks/");
+        
+        if (!results || results.error) {
+            results.error && setError(results.error);
+            setLoading(false);
+            return;
+        }
+
+        setTracks(results);
     }
 
     useEffect(() => {
-        loadTracks();
-    }, [])
+        if (!current) {
+            return;
+        }
+
+        loadLeaderboard();
+    }, [ current, perfIndex ]);
+
+    const loadLeaderboard = async(showLoader:boolean = true) => {
+        if (showLoader)
+            setLoading(true);
+        
+        let results:LeaderboardTypes = await LocalApi.get(`/tracks/${current?.short_name}/${perfIndex}/leaderboard`);
+        
+        if (results.error) {
+            setError(results.error);
+            setLoading(false);
+            return;
+        }
+        
+        setLeaderboard(results.leaderboard);
+        setLoading(false);
+    }
 
     return (
-        <TracksContext.Provider value={{ loading, setLoading, game, setGame, tracks, error, setError, activeTrack, setActiveTrack}}>
+        <TracksContext.Provider value={{ loading, setLoading, loadLeaderboard, current, setCurrent, tracks, error, setError, perfIndex, setPerfIndex, leaderboard, setLeaderboard }}>
             {children}
         </TracksContext.Provider>
     );
@@ -48,13 +86,16 @@ export function TracksContextProvider({ children }:TracksContextProps) {
 export interface TracksContextTypes {
     loading: boolean;
     setLoading: (arg1: boolean) => void;
-    game: string;
-    setGame: (arg1: string) => void;
     tracks: TracksTypes[];
+    current: TracksTypes;
+    setCurrent: (arg1: TracksTypes|undefined|null) => void;
     error: string;
-    activeTrack: TracksTypes;
-    setActiveTrack: (arg1: TracksTypes|undefined|null) => void;
-    setError: (arg1: string|null) => void;
+    setError: (arg1: string|undefined) => void;
+    perfIndex: "a"|"s1";
+    setPerfIndex: (arg1: "a"|"s1") => void;
+    leaderboard: LeadersTypes[];
+    setLeaderboard: (arg1: LeadersTypes[]|undefined) => void;
+    loadLeaderboard: (arg1?:boolean) => void
 }
 
 export const useTracksContext = () => useContext(TracksContext);

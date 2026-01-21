@@ -3,6 +3,7 @@
 import { client } from '@/lib/auth-client';
 import LocalApi from '@/services/LocalApi';
 import { CarsDetailsTypes } from '@/utils/types/CarsDetailsTypes';
+import { DiscordMemberTypes } from '@/utils/types/discord/DiscordMemberTypes';
 import { SessionsTypes } from '@/utils/types/SessionsTypes';
 import { UsersTypes } from '@/utils/types/UsersTypes';
 import { createContext, useContext, useEffect, useState } from 'react';
@@ -20,6 +21,7 @@ export function ProfileContextProvider({ children }:ProfileContextProps) {
 
     const [ session, setSession ] = useState<SessionsTypes|null>();
     const [ profile, setProfile ] = useState<UsersTypes>();
+    const [ discord, setDiscord ] = useState<DiscordMemberTypes>();
 
     const [ selectedCar, setSelectedCar ] = useState<CarsDetailsTypes|undefined>();
     const [ error, setError ]             = useState<string>();
@@ -37,13 +39,14 @@ export function ProfileContextProvider({ children }:ProfileContextProps) {
 
         setSession(session);
         setProfile(session.user);
+        setDiscord(session.discord);
         setLoading(false);
     }, [data, isPending]);
 
     const updateProfile = async(formData:any[]) => {
         try {
             // post request to update endpoint
-            let result:any = await LocalApi.post("profile", formData).then(r => r.data);
+            let result:any = await LocalApi.post("/profile", formData);
 
             if (result.error) {
                 setError(result.error);
@@ -73,7 +76,7 @@ export function ProfileContextProvider({ children }:ProfileContextProps) {
     return (
         <ProfileContext.Provider value={{ 
             loading, setLoading, profile, setProfile, updateProfile, selectedCar, setSelectedCar, error, setError, 
-            showBanner, setShowBanner, session, setSession, isPending
+            showBanner, setShowBanner, session, setSession, isPending, discord
         }}>
             {children}
         </ProfileContext.Provider>
@@ -83,6 +86,7 @@ export function ProfileContextProvider({ children }:ProfileContextProps) {
 
 export interface ProfileContextTypes {
     profile: UsersTypes;
+    discord: DiscordMemberTypes;
     setProfile: (arg1: UsersTypes|undefined|null) => void,
     updateProfile: (arg1: any[]) => void,
     loading: boolean;

@@ -5,9 +5,9 @@ import "@/public/css/main.css";
 
 import { Toaster } from "sonner";
 import Providers from "./providers";
-import SocialBar from "@/components/global/SocialBar";
 import Navigation from "@/components/global/Navigation";
 import { Analytics } from "@vercel/analytics/next"
+import PageFooter from "@/components/global/PageFooter";
 
 export async function generateMetadata(): Promise<Metadata> {
 
@@ -41,9 +41,9 @@ export default async function RootLayout({ children }: RootLayoutTypes) {
         <html lang="en">
             <body className={`bg-background antialiased overflow-x-hidden`}>
                 <Providers>
-                    <SocialBar/>
                     <Navigation/>
                     {children}
+                    <PageFooter/>
                 </Providers>
                 <Toaster />
                 <Analytics/>

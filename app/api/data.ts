@@ -162,7 +162,7 @@ export const getCachedRecentScores = (gameId: number, trackId: number, classType
  * @param gameSymbol the games symbol. (`fh4`, `fh5`, `fh6`)
  * @returns a list of games and available tracks for each game
  */
-export const getCachedGames = (gameSymbol:string) => unstable_cache(
+export const getCachedGames = (gameSymbol:string, classType:string = 'a') => unstable_cache(
     async () => {
         return await db.games.findOne({
             where: {
@@ -176,6 +176,35 @@ export const getCachedGames = (gameSymbol:string) => unstable_cache(
                         model: db.games,
                         as: 'Game'
                     }],
+                    attributes: {
+                        include: [
+                            // Subquery to get the MAX score for THIS specific track and class
+                            [
+                                Sequelize.literal(`(
+                                    SELECT MAX(CAST(score AS SIGNED))
+                                    FROM scores AS s
+                                    WHERE s.track = tracks.id 
+                                    AND s.class = '${classType}'
+                                )`), 'top_score'
+                            ],
+                            [
+                                Sequelize.literal(`(
+                                    SELECT COUNT(DISTINCT user_id)
+                                    FROM scores AS s
+                                    WHERE s.track = tracks.id 
+                                    AND s.class = '${classType}'
+                                )`), 'user_count'
+                            ],
+                            [
+                                Sequelize.literal(`(
+                                    SELECT COUNT(DISTINCT id)
+                                    FROM scores AS s
+                                    WHERE s.track = tracks.id 
+                                    AND s.class = '${classType}'
+                                )`), 'entries'
+                            ]
+                        ]
+                    },
                 },
             ],
             order: [
@@ -184,11 +213,13 @@ export const getCachedGames = (gameSymbol:string) => unstable_cache(
             ]
         });
     },
-    ['games', String(gameSymbol)], {
+    ['games', String(gameSymbol), classType], {
         tags: [
             'games',
-            `games-${gameSymbol}`
-        ] 
+            `games-${gameSymbol}`,
+            `games-${gameSymbol}-${classType.toLowerCase()}`
+        ],
+        revalidate: 3600
     }
 )();
 
