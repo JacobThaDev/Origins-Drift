@@ -33,11 +33,11 @@ export default function Home() {
     if (loading) {
         return <LoadingBox message="Loading Stats"/>
     }
-    
+
     return (
         <>
             <HomeHeader stats={stats}/>
-            <HomeStats stats={stats}/>
+            {/* <HomeStats stats={stats}/> */}
 
             <div className="py-20" id="leaderboards">
                 <Container>
