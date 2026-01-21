@@ -9,11 +9,11 @@ import PlatformIcon from "../leaderboards/PlatformIcon";
 import { DiscordIcon } from "../icons/DiscordIcon";
 
 const PublicProfileHeader = ({ member } :  { member: ProfileTypes }) => {
+    
+    const platform = member.account.User?.AccountData?.platform;
+    const platform_name = member.account.User?.AccountData?.platform_name;
 
-    const platform = member.account.User?.AccountData.platform;
-    const platform_name = member.account.User?.AccountData.platform_name;
-
-    const platformLink = getPlatformLink(platform, platform_name);
+    const platformLink = platform && platform_name && getPlatformLink(platform, platform_name) || null;
 
     return(
             <PageHeader>
@@ -52,7 +52,7 @@ const PublicProfileHeader = ({ member } :  { member: ProfileTypes }) => {
                                 {member.discord.nick || member.discord.user.global_name || member.discord.user.username}
                             </p>
                             <p className="text-white/60 mb-7">
-                                {member.account.User?.AccountData.about_me}
+                                {member.account.User?.AccountData?.about_me}
                             </p>
 
                             <div className="flex items-center gap-3 text-white/60 mb-7">
