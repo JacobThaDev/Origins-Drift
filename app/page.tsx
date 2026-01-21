@@ -1,5 +1,6 @@
 "use client"
 
+import LoadingBox from "@/components/global/LoadingBox";
 import HomeHeader from "@/components/home/Header";
 import HomeStats from "@/components/home/HomeStats";
 import TracksSection from "@/components/home/Tracks";
@@ -11,6 +12,7 @@ export default function Home() {
     
     const [ stats, setStats ] = useState<any>();
     const [ mounted, setMounted ] = useState<boolean>(false);
+    const [ loading, setLoading ] = useState<boolean>(true);
 
     useEffect(() => setMounted(true), []);
 
@@ -22,11 +24,16 @@ export default function Home() {
         async function loadStats() {
             const results = await LocalApi.get("/stats");
             setStats(results);
+            setLoading(false);
         }
 
         loadStats();
     }, [ mounted ]);
 
+    if (loading) {
+        return <LoadingBox message="Loading Stats"/>
+    }
+    
     return (
         <>
             <HomeHeader stats={stats}/>
