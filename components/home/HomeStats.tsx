@@ -22,27 +22,27 @@ const HomeStats = ({ stats }: { stats:any }) => {
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                         <div className="bg-card rounded-xl p-7 text-start border-2 border-border hover:border-info/50 transition-all duration-300 hover:scale-110 hover:rotate-[-5deg]">
-                            <div className="bg-warning/20 rounded-lg w-16 h-16 flex items-center justify-center mb-5">
-                                <TrophyIcon height={38} className="text-warning"/>
+                            <div className="bg-warning/20 rounded-lg w-12 h-12 md:w-16 md:h-16 flex items-center justify-center mb-5">
+                                <TrophyIcon height={38} className="text-warning max-w-[24px] md:max-w-[38px]"/>
                             </div>
 
-                            <p className="text-4xl font-black">
+                            <p className="text-3xl md:text-4xl font-black">
                                 {stats ?
                                 <CountUp
                                     start={0}
                                     end={stats ? stats.max_score.score : 0}
                                     /> : 0}
                             </p>
-                            <p className="text-lg font-bold mb-3">Highest Score</p>
-                            <p className="text-muted">{stats?.max_score.Track.name} Circuit</p>
+                            <p className="text-sm md:text-lg font-bold mb-3">Highest Score</p>
+                            <p className="text-sm md:text-base text-muted">{stats?.max_score.Track.name} Circuit</p>
                         </div>
 
                         <div className="bg-card rounded-xl p-7 text-start border-2 border-border hover:border-info/50 transition-all duration-300 hover:scale-110 hover:rotate-[-5deg]">
-                            <div className="bg-danger/20 rounded-lg w-16 h-16 flex items-center justify-center mb-5">
-                                <FireIcon height={38} className="text-danger"/>
+                            <div className="bg-danger/20 rounded-lg w-12 h-12 md:w-16 md:h-16 flex items-center justify-center mb-5">
+                                <FireIcon height={38} className="text-danger max-w-[24px] md:max-w-[38px]"/>
                             </div>
 
-                            <p className="text-4xl font-black">
+                            <p className="text-3xl md:text-4xl font-black">
                                 {stats ?
                                 <CountUp
                                     start={0}
@@ -51,40 +51,40 @@ const HomeStats = ({ stats }: { stats:any }) => {
                                     suffix="m"
                                     /> : 0}
                             </p>
-                            <p className="text-lg font-bold mb-3">Total Score</p>
-                            <p className="text-muted">Sum of all scores submitted</p>
+                            <p className="text-sm md:text-lg font-bold mb-3">Total Score</p>
+                            <p className="text-sm md:text-base text-muted">Sum of all scores submitted</p>
                         </div>
 
                         <div className="bg-card rounded-xl p-7 text-start border-2 border-border hover:border-info/50 transition-all duration-300 hover:scale-110 hover:rotate-[-5deg]">
-                            <div className="bg-info/20 rounded-lg w-16 h-16 flex items-center justify-center mb-5">
-                                <QueueListIcon height={38} className="text-info"/>
+                            <div className="bg-info/20 rounded-lg w-12 h-12 md:w-16 md:h-16 flex items-center justify-center mb-5">
+                                <QueueListIcon height={38} className="text-info max-w-[24px] md:max-w-[38px]"/>
                             </div>
 
-                            <p className="text-4xl font-black">
+                            <p className="text-3xl md:text-4xl font-black">
                                 {stats ?
                                 <CountUp
                                     start={0}
                                     end={stats.cars}
                                     /> : 0}
                             </p>
-                            <p className="text-lg font-bold mb-3">Cars</p>
+                            <p className="text-sm md:text-lg font-bold mb-3">Cars</p>
                             <p className="text-muted">Cars we have data for</p>
                         </div>
 
                         <div className="bg-card rounded-xl p-7 text-start border-2 border-border hover:border-info/50 transition-all duration-300 hover:scale-110 hover:rotate-[-5deg]">
-                            <div className="bg-success/20 rounded-lg w-16 h-16 flex items-center justify-center mb-5">
-                                <BullseyeIcon height={38} className="text-success"/>
+                            <div className="bg-success/20 rounded-lg w-12 h-12 md:w-16 md:h-16 flex items-center justify-center mb-5">
+                                <BullseyeIcon height={38} className="text-success max-w-[24px] md:max-w-[38px]"/>
                             </div>
 
-                            <p className="text-4xl font-black">
+                            <p className="text-3xl md:text-4xl font-black">
                                  {stats ?
                                 <CountUp
                                     start={0}
                                     end={stats.avg_score}
                                     /> : 0}
                             </p>
-                            <p className="text-lg font-bold mb-3">Average Score</p>
-                            <p className="text-muted">An average of all scores</p>
+                            <p className="text-sm md:text-lg font-bold mb-3">Average Score</p>
+                            <p className="text-sm md:text-base text-muted">An average of all scores</p>
                         </div>
                     </div>
                 </div>

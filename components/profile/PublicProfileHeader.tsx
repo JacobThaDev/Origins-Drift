@@ -13,7 +13,7 @@ const PublicProfileHeader = ({ member } :  { member: ProfileTypes }) => {
     const platform = member.account.User?.AccountData?.platform;
     const platform_name = member.account.User?.AccountData?.platform_name;
 
-    const platformLink = platform && platform_name && getPlatformLink(platform, platform_name) || null;
+    const platformLink = (platform && platform_name) && getPlatformLink(platform, platform_name) || null;
 
     return(
             <PageHeader>

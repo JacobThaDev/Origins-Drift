@@ -46,7 +46,7 @@ const TracksSection = () => {
                                 <div className="absolute top-0 bottom-0 left-0 w-full bg-gradient-to-b from-transparent to-card"/>
                                 
                                 <div className="relative flex justify-between items-center w-full">
-                                    <p className="text-2xl font-bold">
+                                    <p className="text-xl md:text-2xl font-bold">
                                         {track.name} Circuit
                                     </p>
                                     <p className="font-mono text-info text-lg font-bold">

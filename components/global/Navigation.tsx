@@ -8,7 +8,7 @@ import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvi
 import Image from "next/image";
 import { UserIcon } from "../icons/UserIcon";
 import { client } from '@/lib/auth-client';
-import { ArrowRightStartOnRectangleIcon, Bars3Icon, Cog6ToothIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowRightStartOnRectangleIcon, Cog6ToothIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const Navigation = () => {
 
@@ -31,9 +31,16 @@ const Navigation = () => {
 
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    const handleDocumentClick = (event: MouseEvent) => {
+    const handleDocumentClick = (event: any) => {
+        if (event.target.id == "mobile-menu")
+            return;
+
+        if (event.target.href) {
+            setMenuOpen(false);
+        }
+
         if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-            setShowLogout(false);
+            setMenuOpen(false);
         }
     }
 
@@ -90,7 +97,7 @@ const Navigation = () => {
                         })}
                     </div>
                     
-                    <div className="w-[250px] min-w-[250px]">
+                    <div className="lg:w-[250px] lg:min-w-[250px]">
 
                         <div className="hidden lg:flex justify-end gap-2 text-nowrap items-center relative">
                             {!session && 
@@ -127,10 +134,10 @@ const Navigation = () => {
                         </div>
                         
                         <div className="flex w-full justify-end lg:hidden">
-                            <button 
+                            <button id="mobile-menu"
                                 onClick={() => setMenuOpen(true)}
-                                className="aaaaa text-muted hover:bg-info/10 hover:text-info rounded-xl h-10 w-10 flex items-center justify-center">
-                                <Bars3Icon width={28} strokeWidth={2} />
+                                className="text-muted hover:bg-info/10 hover:text-info px-5 rounded-xl h-10 flex items-center justify-center">
+                                Menu
                             </button>
                         </div>
 
@@ -139,12 +146,9 @@ const Navigation = () => {
             </Container>
         </div>
 
-        
+        <div className={`fixed top-0 left-0 w-full h-full bg-black/30 backdrop-blur-sm z-[1049] ${!menuOpen && "hidden"} lg:!hidden`}></div>
 
-        <div onClick={() => setMenuOpen(false)} 
-            className={`fixed top-0 left-0 w-full h-full bg-black/30 backdrop-blur-sm z-[1049] ${!menuOpen && "hidden"} lg:!hidden`}></div>
-
-        <div className={`fixed top-0 right-[-300px] ${menuOpen && 'translate-x-[-300px]'} h-full w-[300px] bg-card z-[1050] transition-all duration-300 shadow-lg shadow-black lg:!hidden`}>
+        <div ref={dropdownRef} className={`fixed top-0 right-[-300px] ${menuOpen && 'translate-x-[-300px]'} h-full w-[300px] bg-card z-[1050] transition-all duration-300 shadow-lg shadow-black lg:!hidden`}>
             {session ?
                 <div className="flex flex-col items-center justify-start bg-black/20 py-5 px-7 gap-5 relative">
                     <div className="absolute top-5 right-5">
@@ -198,7 +202,7 @@ const Navigation = () => {
             <hr className="my-5 border-border"/>
 
             <div className="flex flex-col justify-start items-start">
-                <div className="relative" ref={dropdownRef}>
+                <div className="relative">
                     {session && 
                     <Link href={`/profile/`+session.discord.user.id} 
                         className="hover:text-info flex gap-3 items-center text-muted px-7 lg:px-5 py-2 lg:py-3 transition-all lg:w-auto w-full">
