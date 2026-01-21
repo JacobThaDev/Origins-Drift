@@ -18,7 +18,7 @@ const getAverageScore = () => db.scores.findOne({
 
 const getHighestScore = () => db.scores.findOne({
     attributes: [
-        [Sequelize.fn("MAX", Sequelize.col("score")), "maxScore"]
+        [Sequelize.fn("MAX", Sequelize.col("score")), "score"]
     ],
     include: [
         {
@@ -29,11 +29,11 @@ const getHighestScore = () => db.scores.findOne({
         {
             model: db.users,
             as: "User",
-            attributes: ["name", "image", "role", "banned", "createdAt"]
+            attributes: ["id", "name", "image"]
         }
     ],
-    group: ['Track.id', 'scores.id'],
-    order: [[Sequelize.literal('maxScore'), 'DESC']],
+    group: ['Track.id', 'scores.id', 'User.id'],
+    order: [[Sequelize.literal('score'), 'DESC']],
     nest: true,
     raw: true
 });
@@ -72,7 +72,7 @@ const getTrackRecords = () => db.scores.findAll({
 const getHomepageStats = () => unstable_cache(
     async () => {
         const [ 
-            user_created, submitted, score_sum, tracks, cars, avg_scores, track_leaders 
+            user_created, submitted, score_sum, tracks, cars, avg_scores, max_score, track_leaders 
         ] = await Promise.all([
             getUsersCreated(),
             getScoresCount(),
@@ -80,6 +80,7 @@ const getHomepageStats = () => unstable_cache(
             getTracksCount(),
             getCarsCount(),
             getAverageScore(),
+            getHighestScore(),
             getTrackRecords()
         ]);
         
@@ -90,7 +91,7 @@ const getHomepageStats = () => unstable_cache(
             cars: cars,
             score_sum: score_sum,
             avg_score: parseFloat(avg_scores.averageScore),
-            //max_score: max_score,
+            max_score: max_score,
             track_leaders
         }
     },

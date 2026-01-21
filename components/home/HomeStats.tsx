@@ -34,7 +34,7 @@ const HomeStats = ({ stats }: { stats:any }) => {
                                 {stats ?
                                 <CountUp
                                     start={0}
-                                    end={stats ? stats.max_score.maxScore : 0}
+                                    end={stats ? stats.max_score.score : 0}
                                     /> : 0}
                             </p>
                             <p className="text-lg font-bold mb-3">Highest Score</p>
