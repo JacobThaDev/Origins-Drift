@@ -27,7 +27,7 @@ export default function Home() {
                 setStats(results);
                 setLoading(false);
             } catch (err:any) {
-
+                
             }
         }
 

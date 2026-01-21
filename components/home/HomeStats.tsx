@@ -7,10 +7,6 @@ import CountUp from 'react-countup';
 
 const HomeStats = ({ stats }: { stats:any }) => {
 
-    if (!stats) {
-        return null;
-    }
-
     return(
        <div className="bg-card/50 py-20">
             <Container>
