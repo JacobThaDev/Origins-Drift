@@ -8,6 +8,7 @@ import ProfileFields from "@/components/profile/ProfileFields";
 import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvider";
 import { getAvatar } from "@/utils/Functions";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Profile() {
 
@@ -39,10 +40,21 @@ export default function Profile() {
             <div className="pb-20">
                 <Container>
                     <div className="bg-card rounded-xl border-[1px] border-border p-7 mb-5">
-                        <p className="text-lg">Profile</p>
-                        <p className="text-muted mb-5">
-                            Your Discord avatar and display name synced from your account
-                        </p>
+                        
+                        <div className="flex flex-col md:flex-row justify-between items-center md:items-start">
+                            <div>
+                                <p className="text-lg">Profile</p>
+                                <p className="text-muted mb-5">
+                                    Your Discord avatar and display name synced from your account
+                                </p>
+                            </div>
+                            <Link href={`/profile/${session.discord.user.id}`}
+                                className=" px-5 py-3 border-2 border-border rounded-lg hover:border-info hover:bg-info hover:text-black font-semibold transition-all text-nowrap">
+                                Public Profile
+                            </Link>
+                        </div>
+
+
                         <div className="flex flex-col md:flex-row gap-10 items-center">
                             <div className="flex w-[150px] py-5 flex-col items-center justify-center gap-5">
                                 <Image unoptimized 
