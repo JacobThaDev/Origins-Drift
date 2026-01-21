@@ -37,7 +37,7 @@ export default function Home() {
     return (
         <>
             <HomeHeader stats={stats}/>
-            {/* <HomeStats stats={stats}/> */}
+            <HomeStats stats={stats}/>
 
             <div className="py-20" id="leaderboards">
                 <Container>
