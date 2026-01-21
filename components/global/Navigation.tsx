@@ -90,9 +90,11 @@ const Navigation = () => {
                     <div className="hidden lg:flex items-center justify-center w-full">
                         {links.map((link:any, index:number) => {
                             return(
-                                <NavLink key={index} url={link.url}>
+                                <Link href={link.url} key={index}
+                                    aria-label={link.title}
+                                    className={`hover:text-info flex gap-3 items-center text-muted px-7 lg:px-5 py-2 lg:py-3 transition-all lg:w-auto w-full`}>
                                     {link.title}
-                                </NavLink>
+                                </Link>
                             )
                         })}
                     </div>
@@ -192,9 +194,12 @@ const Navigation = () => {
             <div className="flex flex-col justify-start items-start">
                 {links.map((link:any, index:number) => {
                     return(
-                        <NavLink key={index} url={link.url}>
+                        <Link href={link.url} key={index}
+                            aria-label={link.title}
+                            onClick={() => setMenuOpen(false)}
+                            className={`hover:text-info flex gap-3 items-center text-muted px-7 lg:px-5 py-2 lg:py-3 transition-all lg:w-auto w-full`}>
                             {link.icon && link.icon} {link.title}
-                        </NavLink>
+                        </Link>
                     )
                 })}
             </div>
@@ -205,13 +210,15 @@ const Navigation = () => {
                 <div className="relative">
                     {session && 
                     <Link href={`/profile/`+session.discord.user.id} 
+                        onClick={() => setMenuOpen(false)}
                         className="hover:text-info flex gap-3 items-center text-muted px-7 lg:px-5 py-2 lg:py-3 transition-all lg:w-auto w-full">
                         <UserIcon height={20} strokeWidth={2} className="text-muted"/>
                         <p>View Profile</p>
                     </Link>}
 
                     {session && 
-                    <Link href="/profile" 
+                    <Link href="/profile"  
+                        onClick={() => setMenuOpen(false)}
                         className="hover:text-info flex gap-3 items-center text-muted px-7 lg:px-5 py-2 lg:py-3 transition-all lg:w-auto w-full">
                         <Cog6ToothIcon height={20}/>
                         <p>Profile Settings</p>
@@ -219,7 +226,10 @@ const Navigation = () => {
                     
                     {session && 
                     <button 
-                        onClick={() => setShowLogout(true)}
+                        onClick={() => {
+                            setMenuOpen(false);
+                            setShowLogout(true)
+                        }}
                         className="text-danger flex gap-3 items-center px-7 lg:px-5 py-2 lg:py-3 transition-all lg:w-auto w-full">
                         <ArrowRightStartOnRectangleIcon height={20}/>
                         <p>Sign Out</p>
@@ -229,22 +239,6 @@ const Navigation = () => {
         </div>
         </>
     );
-}
-
-const NavLink = ({ children, url, title }: {
-    url: string;
-    children?: React.ReactNode;
-    title?:string;
-}) => {
-
-    return(
-        <Link href={url}
-            aria-label={title}
-            className={`hover:text-info flex gap-3 items-center text-muted px-7 lg:px-5 py-2 lg:py-3 transition-all lg:w-auto w-full`}>
-            {children}
-        </Link>
-    )
-    
 }
 
 export default Navigation;
