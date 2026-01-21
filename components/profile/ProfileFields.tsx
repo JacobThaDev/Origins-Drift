@@ -108,7 +108,7 @@ const ProfileFields = ({ userData }: { userData:UsersTypes }) => {
                         <button
                             onClick={() => setPlatform("PLAYSTATION")}
                             type="button"
-                            className={`p-6 py-1 md:py-6 w-full flex flex-row md:flex-col items-center md:justify-center gap-x-3 bg-secondary/30 border-2 border-secondary rounded-xl text-muted hover:border-info/30 hover:bg-info/10 hover:text-info ${platform == "PLAYSTATION" && "!bg-success/10 !border-success/50 !text-success"}`}>
+                            className={`p-6 py-1 md:py-6 w-full flex flex-row md:flex-col items-center md:justify-center gap-x-3 bg-secondary/30 border-2 border-border rounded-xl text-muted hover:border-info/30 hover:bg-info/10 hover:text-info ${platform == "PLAYSTATION" && "!bg-success/10 !border-success/50 !text-success"}`}>
                             <PlaystationIcon height={48} className="mb-1 max-w-[28px] md:max-w-[48px]"/>
                             <p>Playstation</p>
                         </button>
