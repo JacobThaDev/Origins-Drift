@@ -5,7 +5,8 @@ import { UsersIcon } from "@/components/icons/UsersIcon";
 import Container from "@/components/layout/Container";
 import PageHeader from "@/components/layout/PageHeader";
 import GlowText from "@/components/misc/GlowText";
-import { BoltIcon, ChatBubbleLeftIcon, ExclamationTriangleIcon, HeartIcon, PhotoIcon, ShieldExclamationIcon, TrophyIcon } from "@heroicons/react/24/outline";
+import { ArrowRightIcon, BoltIcon, ChatBubbleLeftIcon, CheckCircleIcon, ExclamationTriangleIcon, HeartIcon, ShieldExclamationIcon, TrophyIcon, VideoCameraIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 export default function Guidelines() {
 
@@ -46,7 +47,7 @@ export default function Guidelines() {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-20">
 
                         <RuleCard
                             number={1}
@@ -81,7 +82,7 @@ export default function Guidelines() {
                             title="Share Your Clips"
                             message="We love seeing your best drifts! Share clips and screenshots in the appropriate channels. Tag the club when posting on social media."
                             color="green"
-                            icon={<PhotoIcon height={28} strokeWidth={1.5} />} />
+                            icon={<VideoCameraIcon height={28} strokeWidth={1.5} />} />
 
                         <RuleCard
                             number={6}
@@ -103,27 +104,27 @@ export default function Guidelines() {
                             message="Inactive members may be removed to make room for active drifters. Participate in events, submit scores, or just hang out with us!"
                             color="warning"
                             icon={<BoltIcon height={28} strokeWidth={1.5} />} />
+                    </div>
 
-                        {/* <div className={`bg-card relative flex items-start gap-6 border-2 border-border p-6 rounded-xl`}>
-                            <div className="absolute right-6">
-                                <p className="text-6xl font-black text-secondary font-mono">01</p>
-                            </div>
-                            <div>
-                                <div className={`w-14 h-14 bg-info/10 border-2 border-info/20 flex items-center justify-center rounded-lg`}>
-                                    <UsersIcon height={28} strokeWidth={1.5} className={`text-info`}/>
-                                </div>
-                            </div>
-                            <div>
-                                <p className={`font-bold text-info mb-2`}>Rule 01</p>
-                                <p className="font-bold text-xl mb-4">Respect All Drivers</p>
+                    <div className={`bg-info/5 relative border-[1px] border-info/30 p-6 rounded-2xl text-center py-10 max-w-4xl mx-auto bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-info/5 to-card`}>
+                        <div className={`w-20 h-20 border-info/30 bg-info/20 text-info border-2 flex items-center justify-center rounded-full mx-auto mb-10`}>
+                            <CheckCircleIcon height={38} strokeWidth={2} />
+                        </div>
+                                
+                        <p className="font-bold text-4xl mb-4">
+                            Ready to <span className="italic text-info">Drift</span> With Us?
+                        </p>
 
-                                <p className="text-muted">
-                                    Treat every member with respect regardless of skill level. 
-                                    We all started somewhere. No toxicity, harassment, or 
-                                    discrimination tolerated.
-                                </p>
-                            </div>
-                        </div> */}
+                        <p className="text-muted max-w-2xl mx-auto text-lg mb-10">
+                            By joining Origins Drift Club, you agree to follow these rules and be a positive member of our community. Let&apos;s make some tire smoke together!
+                        </p>
+
+                        <div className="flex gap-6 justify-center">
+                            <Link href="/join" className="bg-info hover:bg-info/80 text-black rounded-lg px-6 py-3 font-bold inline-flex items-center gap-6">
+                                Join the Club
+                                <ArrowRightIcon height={16} />
+                            </Link>
+                        </div>
                     </div>
                 </Container>
             </div>

@@ -1,6 +1,5 @@
 "use client"
 
-import LoadingBox from "@/components/global/LoadingBox";
 import HomeHeader from "@/components/home/Header";
 import HomeStats from "@/components/home/HomeStats";
 import TracksSection from "@/components/home/Tracks";
@@ -27,7 +26,8 @@ export default function Home() {
                 setStats(results);
                 setLoading(false);
             } catch (err:any) {
-
+                console.log(loading, err);
+                setLoading(false);
             }
         }
 
