@@ -5,7 +5,7 @@ import { UsersIcon } from "@/components/icons/UsersIcon";
 import Container from "@/components/layout/Container";
 import PageHeader from "@/components/layout/PageHeader";
 import GlowText from "@/components/misc/GlowText";
-import { ArrowRightIcon, BoltIcon, ChatBubbleLeftIcon, CheckCircleIcon, ExclamationTriangleIcon, HeartIcon, ShieldExclamationIcon, TrophyIcon, VideoCameraIcon } from "@heroicons/react/24/outline";
+import { ArrowRightIcon, BoltIcon, ChatBubbleLeftIcon, CheckCircleIcon, ExclamationCircleIcon, ExclamationTriangleIcon, HeartIcon, ShieldExclamationIcon, TrophyIcon, VideoCameraIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 export default function Guidelines() {
@@ -47,7 +47,7 @@ export default function Guidelines() {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-20">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
 
                         <RuleCard
                             number={1}
@@ -106,7 +106,27 @@ export default function Guidelines() {
                             icon={<BoltIcon height={28} strokeWidth={1.5} />} />
                     </div>
 
-                    <div className={`bg-info/5 relative border-[1px] border-info/30 p-6 rounded-2xl text-center py-10 max-w-4xl mx-auto bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-info/5 to-card`}>
+
+                    <div className={`bg-card mb-20 relative border-2 border-border p-6 rounded-2xl text-center py-10 mx-auto `}>
+                        <ExclamationCircleIcon height={60}
+                            className="mx-auto text-danger mb-5"/>
+                                
+                        <p className="font-bold text-2xl mb-4">
+                            Car Restrictions
+                        </p>
+
+                        <p className="text-muted max-w-4xl mx-auto text-lg mb-5">
+                            All cars regardless of class must be <strong>real-wheel drive</strong> on treaded tires. 
+                            <br/>Stock, street, racing &#40;non slick&#41;, or drift tire compound only.
+                        </p>
+
+                        <div className="inline-flex items-center gap-4 text-warning rounded-xl bg-warning/10 p-4 border-2 border-warning/50 bg-card">
+                            <ExclamationTriangleIcon strokeWidth={2} height={20}/>
+                            <p>Using drag/slicks or driving all-wheel drive in online drifting will result in immediate removal.</p>
+                        </div>
+                    </div>
+
+                    <div className={`bg-info/5 relative border-[1px] border-info/30 p-6 rounded-2xl text-center py-10 max-w-4xl mx-auto `}>
                         <div className={`w-20 h-20 border-info/30 bg-info/20 text-info border-2 flex items-center justify-center rounded-full mx-auto mb-10`}>
                             <CheckCircleIcon height={38} strokeWidth={2} />
                         </div>

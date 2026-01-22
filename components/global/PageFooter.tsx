@@ -9,7 +9,7 @@ import { HeartIcon } from "@heroicons/react/24/solid";
 const PageFooter = () => {
     
     return(
-        <div className="py-12 bg-card/30 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-border/30 to-background border-t border-border text-muted">
+        <div className="py-12 bg-card/30 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-border/50 to-background border-t border-border text-muted">
             <Container>
                 <div className="grid md:grid-cols-4 gap-8">
                     <div className="md:col-span-2">
