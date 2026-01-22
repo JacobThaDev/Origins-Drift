@@ -48,7 +48,7 @@ const ConsoleInstructions = () => {
         <>
             {steps.map((step:StepTypes, index:number) => {
                 return(
-                    <InstructionCard
+                    <InstructionCard key={index}
                         step={index + 1}
                         title={step.title}
                         message={step.message}

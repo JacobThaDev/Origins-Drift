@@ -27,15 +27,14 @@ const JoinGroupSection = () => {
                 <div className="flex justify-center gap-4 mb-10">
                     <button onClick={() => setPlatform("pc")}
                         className={`inline-flex outline-none items-start group gap-3 text-start bg-card border-border transition-all hover:border-info/30 ${platform == "pc" && "bg-info/10 !border-info"} border-2 text-muted rounded-xl py-4 px-6`}>
-                            <div className="pt-2">
-                                <ComputerDesktopIcon height={32}
-                                    className={`group-hover:text-white/80 transition-colors ${platform == "pc" && "!text-info"}`}/>
-                            </div>
-                            
-                            <div>
-                                <p className={`${platform == "pc" && "!text-white"} text-lg font-bold group-hover:text-white transition-colors `}>PC</p>
-                                <p className={`group-hover:text-white/70 transition-colors ${platform == "pc" && "!text-white/80"}`}>Windows / Steam</p>
-                            </div>
+                        <div className="pt-2">
+                            <ComputerDesktopIcon height={32}
+                                className={`group-hover:text-white/80 transition-colors ${platform == "pc" && "!text-info"}`}/>
+                        </div>
+                        <div>
+                            <p className={`${platform == "pc" && "!text-white"} text-lg font-bold group-hover:text-white transition-colors `}>PC</p>
+                            <p className={`group-hover:text-white/70 transition-colors ${platform == "pc" && "!text-white/80"}`}>Windows / Steam</p>
+                        </div>
                     </button>
 
                     <button  onClick={() => setPlatform("console")}
