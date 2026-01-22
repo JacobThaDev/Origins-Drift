@@ -2,11 +2,9 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-@font-face { font-family: "PlusJakartaSans"; src: url('../fonts/PlusJakartaSans.ttf'); font-display: fallback;}
-@font-face { font-family: "Kanit-Medium"; src: url('../fonts/Kanit-Medium.ttf'); font-display: fallback;}
-@font-face { font-family: "Kanit-Semibold"; src: url('../fonts/Kanit-SemiBold.ttf'); font-display: fallback; }
 @font-face { font-family: "Geist"; src: url('../fonts/Geist.ttf'); font-display: fallback; }
 @font-face { font-family: "GeistMono"; src: url('../fonts/GeistMono.ttf'); font-display: fallback; }
+
 html {
     height: 100% !important;
 }

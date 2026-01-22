@@ -1,6 +1,6 @@
 import Container from "../layout/Container"
 
-const PageHeader = ({ gradient = true, children }: { gradient?:boolean, children:any }) => {
+const PageHeader = ({ gradient = true, children }: { gradient?:boolean, children?:any }) => {
 
     return(
         <div className="relative py-40 pb-20">

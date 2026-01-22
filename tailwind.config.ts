@@ -31,7 +31,9 @@ const config: Config = {
             transparent: "#00000000",
             discord: "#7289da",
             youtube: "#cd201f",
-            facebook: "#1877F2"
+            facebook: "#1877F2",
+            purple: "#AD46FF",
+            green: "#00C950"
         },
         container: {
             center: true,
