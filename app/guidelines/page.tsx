@@ -59,14 +59,14 @@ export default function Guidelines() {
                             number={2}
                             title="No Ramming or Griefing"
                             message="Intentional ramming, blocking, or disrupting other drivers during drift sessions is strictly prohibited. Keep it clean on the track."
-                            color="pink"
+                            color="success"
                             icon={<ShieldExclamationIcon height={28} strokeWidth={1.5} />} />
 
                         <RuleCard
                             number={3}
                             title="Keep Chat Friendly"
                             message="Whether in-game or on Discord, keep conversations positive. No spam, NSFW content, or excessive self-promotion."
-                            color="lightPurple"
+                            color="purple"
                             icon={<ChatBubbleLeftIcon height={28} strokeWidth={1.5} />} />
 
                         <RuleCard
@@ -94,7 +94,7 @@ export default function Guidelines() {
                             number={7}
                             title="Help New Members"
                             message="If you see someone struggling, offer tips or guidance. We grow stronger together. Everyone deserves a chance to improve."
-                            color="pink"
+                            color="danger"
                             icon={<HeartIcon height={28} strokeWidth={1.5} />} />
 
                         <RuleCard
