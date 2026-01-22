@@ -33,7 +33,9 @@ const config: Config = {
             youtube: "#cd201f",
             facebook: "#1877F2",
             purple: "#AD46FF",
-            green: "#00C950"
+            lightPurple: "#A684FF",
+            green: "#00C950",
+            pink: "#FF637E",
         },
         container: {
             center: true,

@@ -92,9 +92,9 @@ const PageFooter = () => {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/rules"
+                                <Link href="/guidelines"
                                     className="text-sm text-muted hover:text-info transition-colors">
-                                    Club Rules
+                                    Club Guidelines
                                 </Link>
                             </li>
                         </ul>
