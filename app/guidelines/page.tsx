@@ -42,7 +42,7 @@ export default function Guidelines() {
                             8 Rules to Live By
                         </p>
                         <p className="max-w-xl mx-auto text-muted">
-                            Simple guidelines that keep our community thriving. Follow these and you'll fit right in.
+                            Simple guidelines that keep our community thriving. Follow these and you&apos;ll fit right in.
                         </p>
                     </div>
 
