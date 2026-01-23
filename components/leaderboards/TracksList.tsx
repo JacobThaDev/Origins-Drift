@@ -1,4 +1,4 @@
-import { capitalize, formatNumber } from "@/utils/Functions";
+import { formatNumber } from "@/utils/Functions";
 import { TracksTypes } from "@/utils/types/TracksTypes";
 import { MapPinIcon, SparklesIcon, Square3Stack3DIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";

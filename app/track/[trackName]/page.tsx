@@ -4,7 +4,6 @@ import ErrorBox from "@/components/global/ErrorBox";
 import LoadingBox from "@/components/global/LoadingBox";
 import { RouteIcon } from "@/components/icons/RouteIcon";
 import { UserIcon } from "@/components/icons/UserIcon";
-import { UsersIcon } from "@/components/icons/UsersIcon";
 import Container from "@/components/layout/Container";
 import PageHeader from "@/components/layout/PageHeader";
 import ClassButton from "@/components/leaderboards/ClassButton";
@@ -12,7 +11,7 @@ import LeaderTable from "@/components/leaderboards/LeaderTable";
 import TrackSelector from "@/components/leaderboards/TrackSelector";
 import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
 import { TracksTypes } from "@/utils/types/TracksTypes";
-import { DocumentDuplicateIcon, ListBulletIcon, QueueListIcon, Square3Stack3DIcon } from "@heroicons/react/24/outline";
+import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import { use, useEffect } from "react";
 
 export default function TrackLeaderboard({ params }: { params: Promise<{ trackName: string }>}) {
