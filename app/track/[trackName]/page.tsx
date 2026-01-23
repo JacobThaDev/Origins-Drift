@@ -3,6 +3,7 @@
 import ErrorBox from "@/components/global/ErrorBox";
 import LoadingBox from "@/components/global/LoadingBox";
 import { RouteIcon } from "@/components/icons/RouteIcon";
+import { UserIcon } from "@/components/icons/UserIcon";
 import { UsersIcon } from "@/components/icons/UsersIcon";
 import Container from "@/components/layout/Container";
 import PageHeader from "@/components/layout/PageHeader";
@@ -11,7 +12,7 @@ import LeaderTable from "@/components/leaderboards/LeaderTable";
 import TrackSelector from "@/components/leaderboards/TrackSelector";
 import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
 import { TracksTypes } from "@/utils/types/TracksTypes";
-import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
+import { DocumentDuplicateIcon, ListBulletIcon, QueueListIcon, Square3Stack3DIcon } from "@heroicons/react/24/outline";
 import { use, useEffect } from "react";
 
 export default function TrackLeaderboard({ params }: { params: Promise<{ trackName: string }>}) {
@@ -105,19 +106,23 @@ export default function TrackLeaderboard({ params }: { params: Promise<{ trackNa
                             <div className="flex gap-5">
                                 <div className="flex items-center gap-3">
                                     <RouteIcon height={18} strokeWidth={2} className="text-muted"/>
-                                    <p>{current.length}mi</p>
+                                    <p>{current.length} mi</p>
                                 </div>
 
                                 <div className="w-[1px] bg-border"></div>
 
                                 <div className="flex items-center gap-3">
-                                    <UsersIcon height={18} strokeWidth={2} className="text-muted"/>
-                                    <p>{current.user_count}</p>
+                                    <UserIcon height={18} strokeWidth={2} className="text-muted"/>
+                                    <p className="font-bold">{current.user_count}</p>
+                                    <p className="hidden lg:inline-block text-muted text-sm">Users</p>
                                 </div>
 
+                                <div className="w-[1px] bg-border"></div>
+
                                 <div className="flex items-center gap-3">
-                                    <Square3Stack3DIcon height={18} strokeWidth={1.5} className="text-muted"/>
-                                    <p>{current.entries}</p>
+                                    <DocumentDuplicateIcon height={18} strokeWidth={1.8} className="text-muted"/>
+                                    <p className="font-bold">{current.entries}</p>
+                                    <p className="hidden lg:inline-block text-muted text-sm">Entries</p>
                                 </div>
                             </div>
                         </div>

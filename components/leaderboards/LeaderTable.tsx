@@ -8,10 +8,11 @@ import { ArrowTopRightOnSquareIcon, CheckBadgeIcon, FlagIcon } from "@heroicons/
 import SubmitButton from "./SubmitButton";
 import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvider";
 import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
+import { LoadingIcon } from "../icons/LoadingIcon";
 
 const LeaderTable = () => {
     
-    const { leaderboard, loading }:TracksContextTypes = useTracksContext();
+    const { leaderboard, loading, fetching }:TracksContextTypes = useTracksContext();
     const { profile }:ProfileContextTypes = useProfileContext();
     
     if (!loading && leaderboard && leaderboard.length == 0) {
@@ -28,7 +29,13 @@ const LeaderTable = () => {
     }
 
     return(
-        <div className="bg-card border-2 border-border rounded-xl overflow-hidden font-mono">
+        <div className="bg-card relative border-2 border-border rounded-xl overflow-hidden font-mono">
+            
+            {fetching && 
+            <div className="bg-card/80 absolute z-10 top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-sm">
+                <LoadingIcon height={50}/>
+            </div>}
+
             <div className="flex items-center justify-between pe-4">
                 <div className="p-5">
                     <p>Leaderboard</p>
