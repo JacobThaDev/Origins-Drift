@@ -2,19 +2,16 @@
 "use client"
 
 import LoadingBox from "@/components/global/LoadingBox";
-import { SpeedIcon } from "@/components/icons/SpeedIcon";
 import Container from "@/components/layout/Container";
 import PageHeader from "@/components/layout/PageHeader";
-import GameSelector from "@/components/leaderboards/GameSelector";
 import TracksList from "@/components/leaderboards/TracksList";
 import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
 import { TracksTypes } from "@/utils/types/TracksTypes";
-import { ArrowPathRoundedSquareIcon } from "@heroicons/react/24/outline";
 
 export default function Leaderboards() {
 
     const { 
-        tracks, loading, game, perfIndex, setPerfIndex
+        tracks, loading, game, setGame, perfIndex, setPerfIndex
     }:TracksContextTypes = useTracksContext();
     
     if (loading && !tracks) {
@@ -33,24 +30,10 @@ export default function Leaderboards() {
                             <p className="text-3xl lg:text-6xl font-bold mb-3">
                                 Leaderboards
                             </p>
-                            <p className="text-white/60 mb-8">
+                            <p className="text-white/60">
                                 Submit your best drift scores and climb the rankings. Each track
                                 offers unique<br/>challenges for every skill level.
                             </p>
-
-                            <button onClick={() => setPerfIndex(perfIndex == "a" ? "s1" : "a")} 
-                                className="flex items-center gap-3 text-info relative mb-5 lg:mb-0">
-                                <SpeedIcon height={18} strokeWidth={2}/>
-                                <div className="text-white flex items-center gap-2">
-                                    {perfIndex.toUpperCase()}-{perfIndex == "a" ? 800 : 900}
-                                    <ArrowPathRoundedSquareIcon height={16} 
-                                        className="text-white/60 inline-block" 
-                                        strokeWidth={1.5}/>
-                                </div>
-                            </button>
-                        </div>
-                        <div className="mb-5 lg:mb-0">
-                            <GameSelector/>
                         </div>
                     </div>
                 </div>
@@ -59,11 +42,43 @@ export default function Leaderboards() {
 
             <div className="pb-24">
                 <Container>
-                    <p className="text-2xl md:text-3xl font-bold mb-10">
-                        {game == "FH4" ? "Forza Horizon 4" : 
-                        game == "FH5" ? "Forza Horizon 5" : 
-                        "Forza Horizon 6"} Tracks
-                    </p>
+
+                    <div className="flex flex-col lg:flex-row md:justify-between justify-center lg:items-center mb-10">
+                        <p className="text-2xl md:text-3xl font-bold mb-5 lg:mb-0">
+                            {game == "FH5" 
+                                ? "Forza Horizon 5" 
+                                : "Forza Horizon 6"} Tracks
+                        </p>
+
+                        <div className="flex flex-row items-center gap-4">
+                            <button 
+                                onClick={() => setGame(game == "FH5" ? "FH6" : "FH5")} 
+                                className="inline-flex items-center rounded-xl bg-card p-2 border-2 border-border font-bold">
+                                
+                                <p className="px-5 text-sm text-muted hidden md:inline-block">Game</p>
+                                
+                                <div className={`${game == "FH5" && "bg-info/20"} w-14 py-2 rounded-lg`}>
+                                    FH5
+                                </div>
+                                <div className={`${game == "FH6" && "bg-info/20"} w-14 py-2 rounded-lg`}>
+                                    FH6
+                                </div>
+                            </button>
+
+                            <button onClick={() => setPerfIndex(perfIndex == "a" ? "s1" : "a")}
+                                    className="inline-flex items-center rounded-xl bg-card p-2 border-2 border-border font-bold">
+                                
+                                <p className="px-5 text-sm text-muted hidden md:inline-block">Class</p>
+                                
+                                <div className={`${perfIndex == "a" && "bg-danger text-white"} w-14 py-2 rounded-lg`}>
+                                    A
+                                </div>
+                                <div className={`${perfIndex == "s1" && "bg-lightPurple text-white"} w-14 py-2 rounded-lg`}>
+                                    S1
+                                </div>
+                            </button>
+                        </div>
+                    </div>
 
                     <TracksList tracks={gameTracks} showButton={false} />
                 </Container>
