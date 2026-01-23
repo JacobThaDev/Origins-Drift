@@ -32,7 +32,8 @@ export default function Home() {
         }
 
         loadStats();
-    }, [ mounted ]);
+    },// eslint-disable-next-line
+    [ mounted ]);
 
     return (
         <>
@@ -41,16 +42,6 @@ export default function Home() {
 
             <div className="py-20" id="leaderboards">
                 <Container>
-                    <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
-                        <div>
-                            <p className="uppercase text-info font-bold mb-2">Leaderboards</p>
-                            <p className="text-3xl font-bold">Compete on Official Tracks</p>
-                        </div>
-                        <div className="max-w-lg text-muted">
-                            <p>Submit your best drift scores and climb the rankings. Each track offers unique challenges for every skill level.</p>
-                        </div>
-                    </div>
-
                     <TracksSection/>
                 </Container>
             </div>

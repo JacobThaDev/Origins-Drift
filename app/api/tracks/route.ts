@@ -3,48 +3,63 @@ import db from "@/models";
 import { Sequelize } from "sequelize";
 import { unstable_cache } from "next/cache";
 
-const getTrackData = () => unstable_cache(
+const getTrackData = (classType:string = 'a') => unstable_cache(
     async () => {
         const trackData = await db.tracks.findAll({
             attributes: {
                 exclude: ['webhook_url'],
                 include: [
-                    // Subquery to get the MAX score for THIS specific track and class
-                    [
-                        Sequelize.literal(`(
-                            SELECT MAX(CAST(score AS SIGNED))
-                            FROM scores AS s
-                            WHERE s.track = tracks.id
-                        )`), 'top_score'
-                    ],
                     [
                         Sequelize.literal(`(
                             SELECT COUNT(DISTINCT user_id)
                             FROM scores AS s
-                            WHERE s.track = tracks.id 
+                            WHERE s.track = tracks.id
+                                AND s.class = '${classType}'
                         )`), 'user_count'
                     ],
                     [
                         Sequelize.literal(`(
                             SELECT COUNT(DISTINCT id)
                             FROM scores AS s
-                            WHERE s.track = tracks.id 
+                            WHERE s.track = tracks.id
+                                AND s.class = '${classType}'
                         )`), 'entries'
                     ]
                 ]
             },
-            include: {
-                model: db.games,
-                as: "Game"
-            }
+            include: [
+                {
+                    model: db.games,
+                    as: "Game"
+                }, 
+                {
+                    model: db.scores,
+                    as: "Scores",
+                    where: { class: classType },
+                    attributes: {
+                        exclude: ['proof_url', 'updatedAt', 'track', 'game', 'proof_delete_hash']
+                    },
+                    required: false,
+                    separate: true,  // This runs a separate query, making the order below work
+                    order: [["score", "DESC"]],
+                    limit: 1,
+                    include: {
+                        model: db.users,
+                        as: "User",
+                        attributes: {
+                            exclude: ['email', 'emailVerified', 'updatedAt','twoFactorEnabled', 'banReason', 'banExpires']
+                        }
+                    }
+                }
+            ],
         });
         
         return trackData;
     },
-    ['tracks-data'], {
-        revalidate: 3600,
+    ['tracks-data', classType], {
         tags: [
-            'tracks-data'
+            'tracks-data',
+            `tracks-data-${classType}`
         ]
     }
 )();
@@ -58,8 +73,19 @@ const getTrackData = () => unstable_cache(
  */
 // eslint-disable-next-line
 export async function GET(req: any, res:any) {
+    const searchParams = req.nextUrl.searchParams;
+    const classType    = searchParams.get("class") || "a";
+
+    if (classType != "a" && classType != "s1") {
+        return Response.json({
+            error: { 
+                message: "Invalid class. Must be either A or S1."
+            }
+        })
+    }
+    
     try {
-        const trackData:TracksTypes[]|undefined = await getTrackData();
+        const trackData:TracksTypes[]|undefined = await getTrackData(classType);
 
         if (!trackData) {
             return Response.json({

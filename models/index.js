@@ -64,6 +64,13 @@ db.tracks.belongsTo(db.games, {
     onDelete: "NO ACTION"
 });
 
+db.tracks.hasMany(db.scores, {
+    targetKey: "id",
+    foreignKey: 'track',
+    as: 'Scores',
+    onDelete: "NO ACTION",
+});
+
 db.scores.belongsTo(db.games, {
     targetKey: "id",
     foreignKey: 'game',

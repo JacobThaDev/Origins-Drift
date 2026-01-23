@@ -261,9 +261,12 @@ export async function POST(req: any, res:any) {
         revalidateTag(`leaders-${trackData.id}-${classType.toUpperCase()}`);
         //update the recent entries cache
         revalidateTag(`recent-${trackData.id}-${classType.toUpperCase()}`);
-        
-        if (new_pb) // only revalidate if user has a new pb for this track and class
+        // update tracks list and records
+        revalidateTag(`tracks-data-${classType}`);
+
+        if (new_pb) { // only revalidate if user has a new pb for this track and class
             revalidateTag(`user-record-${trackData.id}-${classType.toUpperCase()}-${user_id}`);
+        }
 
         return Response.json({
             success: true,

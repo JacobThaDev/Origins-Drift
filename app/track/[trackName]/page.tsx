@@ -3,23 +3,21 @@
 import ErrorBox from "@/components/global/ErrorBox";
 import LoadingBox from "@/components/global/LoadingBox";
 import { RouteIcon } from "@/components/icons/RouteIcon";
-import { SpeedIcon } from "@/components/icons/SpeedIcon";
 import { UsersIcon } from "@/components/icons/UsersIcon";
 import Container from "@/components/layout/Container";
 import PageHeader from "@/components/layout/PageHeader";
+import ClassButton from "@/components/leaderboards/ClassButton";
 import LeaderTable from "@/components/leaderboards/LeaderTable";
 import TrackSelector from "@/components/leaderboards/TrackSelector";
 import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
 import { TracksTypes } from "@/utils/types/TracksTypes";
-import { ArrowPathRoundedSquareIcon, Square3Stack3DIcon } from "@heroicons/react/24/outline";
+import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
 import { use, useEffect } from "react";
 
 export default function TrackLeaderboard({ params }: { params: Promise<{ trackName: string }>}) {
 
     const { trackName } = use(params);
-    
-    // eslint-disable-next-line
-    const { error, tracks, current, setCurrent, perfIndex, loading, setPerfIndex, setError }:TracksContextTypes = useTracksContext();
+    const { error, tracks, current, setCurrent, loading, setError }:TracksContextTypes = useTracksContext();
 
     useEffect(() => {
         if (!tracks) {
@@ -105,21 +103,21 @@ export default function TrackLeaderboard({ params }: { params: Promise<{ trackNa
                     <div className="flex gap-5 flex-col md:flex-row">
                         <div>
                             <div className="flex gap-5">
-                                <div className="flex items-center gap-3 text-info">
-                                    <RouteIcon height={18}  strokeWidth={2}/>
-                                    <p className="text-muted">{current.length}mi</p>
+                                <div className="flex items-center gap-3">
+                                    <RouteIcon height={18} strokeWidth={2} className="text-muted"/>
+                                    <p>{current.length}mi</p>
                                 </div>
 
                                 <div className="w-[1px] bg-border"></div>
 
-                                <div className="flex items-center gap-3 text-info">
-                                    <UsersIcon height={18} strokeWidth={2}/>
-                                    <p className="text-muted">{current.user_count}</p>
+                                <div className="flex items-center gap-3">
+                                    <UsersIcon height={18} strokeWidth={2} className="text-muted"/>
+                                    <p>{current.user_count}</p>
                                 </div>
 
-                                <div className="flex items-center gap-3 text-info">
-                                    <Square3Stack3DIcon height={18} strokeWidth={1.5}/>
-                                    <p className="text-muted">{current.entries}</p>
+                                <div className="flex items-center gap-3">
+                                    <Square3Stack3DIcon height={18} strokeWidth={1.5} className="text-muted"/>
+                                    <p>{current.entries}</p>
                                 </div>
                             </div>
                         </div>
@@ -127,14 +125,7 @@ export default function TrackLeaderboard({ params }: { params: Promise<{ trackNa
                         <div className="w-[1px] bg-border hidden md:inline-block"></div>
 
                         <div>
-                            <button onClick={() => setPerfIndex(perfIndex == "a" ? "s1" : "a")} 
-                                className="flex items-center gap-3 text-info relative">
-                                <SpeedIcon height={18} strokeWidth={2}/>
-                                <div className="text-white flex items-center gap-2">
-                                    {perfIndex.toUpperCase()}-{perfIndex == "a" ? 800 : 900}
-                                    <ArrowPathRoundedSquareIcon height={16} className="text-white/60 inline-block" strokeWidth={1.5}/>
-                                </div>
-                            </button>
+                            <ClassButton/>
                         </div>
                     </div>
                     

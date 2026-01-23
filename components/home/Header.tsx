@@ -29,7 +29,7 @@ const HomeHeader = ({ stats }: { stats:any }) => {
                     className="transition-all group-hover:translate-x-2"/>
                 </Link>
 
-                <Link href="/#leaderboards" className="flex items-center text-lg justify-center gap-2 px-5 py-3.5 border-2 border-white/10 rounded-md hover:border-info hover:bg-info hover:text-black font-bold transition-all duration-300 w-full md:w-auto">
+                <Link href="/leaderboards" className="flex items-center text-lg justify-center gap-2 px-5 py-3.5 border-2 border-white/10 rounded-md hover:border-info hover:bg-info hover:text-black font-bold transition-all duration-300 w-full md:w-auto">
                     View Leaderboards
                 </Link>
             </div>
