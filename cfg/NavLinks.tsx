@@ -17,11 +17,6 @@ export default [
         icon: <QueueListIcon height={20}/>
     },
     {
-        title: "Club Rules",
-        url: "/guidelines",
-        icon: <QueueListIcon height={20}/>
-    },
-    {
         title: "Join the Crew",
         url: "/join",
         icon: <ArrowRightEndOnRectangleIcon height={20}/>

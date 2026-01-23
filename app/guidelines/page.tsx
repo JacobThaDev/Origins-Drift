@@ -116,7 +116,7 @@ export default function Guidelines() {
                         </p>
 
                         <p className="text-muted max-w-4xl mx-auto text-lg mb-5">
-                            All cars regardless of class must be <strong>real-wheel drive</strong> on treaded tires. 
+                            All cars regardless of class must be <strong>rear-wheel drive</strong> on treaded tires. 
                             <br/>Stock, street, racing &#40;non slick&#41;, or drift tire compound only.
                         </p>
 
