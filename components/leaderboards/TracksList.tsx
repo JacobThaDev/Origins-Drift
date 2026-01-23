@@ -72,7 +72,7 @@ const TracksList = ({ tracks, showButton = true, limit = 6 } : TracksListTypes) 
                                     </div>
                                     <div className="flex items-center text-muted gap-2">
                                         <UsersIcon strokeWidth={2} height={18}/>
-                                        <p>{track.entries}</p>
+                                        <p>{track.user_count}</p>
                                     </div>
                                     <div className="flex items-center text-muted gap-2">
                                         <Square3Stack3DIcon strokeWidth={1.7} height={18}/>
@@ -80,19 +80,18 @@ const TracksList = ({ tracks, showButton = true, limit = 6 } : TracksListTypes) 
                                     </div>
                                 </div>
 
-                                <div className="flex flex-row items-center justify-between gap-5">
-                                    <div>
-                                        <p className="text-muted text-sm">Top Score</p>
-                                        <p className="font-mono text-info text-2xl font-bold">
-                                            { track.Scores.length > 0 && formatNumber(track.Scores[0].score) || 0}
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <p className="text-end text-lg">
-                                            <span className="block text-muted text-sm">By</span>
-                                            <span className="font-semibold">{ track.Scores.length > 0 && capitalize(track.Scores[0].User?.name) || "-"}</span>
-                                       </p>
-                                    </div>
+                                <div className="flex items-center justify-between text-sm text-muted mb-1">
+                                    <p>Top score</p>
+                                    <p>By</p>
+                                </div>
+
+                                <div className="flex items-center justify-between text-muted">
+                                    <p className="text-info font-mono font-bold text-2xl">
+                                        {track.Scores.length > 0 && formatNumber(track.Scores[0].score) || 0}
+                                    </p>
+                                    <p className="text-white font-semibold text-xl">
+                                        { track.Scores.length > 0 && track.Scores[0].User?.name || "-"}
+                                    </p>
                                 </div>
                             </div>
                         </Link>
