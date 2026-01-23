@@ -5,14 +5,14 @@ import Image from "next/image";
 import { useState } from "react";
 import { UsersIcon } from "../icons/UsersIcon";
 import Link from "next/link";
-import { useTracksContext } from "@/providers/TracksProvider";
+import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
 import { SpeedIcon } from "../icons/SpeedIcon";
 
 const TracksList = ({ tracks, showButton = true, limit = 6 } : TracksListTypes) => {
     
 
     const [ showAll, setShowAll ] = useState<boolean>(false);
-    const { perfIndex, game } = useTracksContext();
+    const { perfIndex, game }:TracksContextTypes = useTracksContext();
     
     return(
         <>
@@ -38,7 +38,7 @@ const TracksList = ({ tracks, showButton = true, limit = 6 } : TracksListTypes) 
                                 <div className="ml-auto bg-card/40 backdrop-blur flex gap-2 items-center px-4 pe-5 py-2 rounded-xl">
                                     <SpeedIcon strokeWidth={2} height={20} className="text-info" />
                                     <p className="text-sm font-bold">
-                                        {perfIndex.toUpperCase()}-800
+                                        {perfIndex.toUpperCase()}-{perfIndex == "a" ? "800" : "900"}
                                     </p>
                                 </div>
                             </div>
