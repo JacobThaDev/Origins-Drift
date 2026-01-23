@@ -80,18 +80,19 @@ const TracksList = ({ tracks, showButton = true, limit = 6 } : TracksListTypes) 
                                     </div>
                                 </div>
 
-                                <div className="flex items-center justify-between text-sm text-muted mb-1">
-                                    <p>Top score</p>
-                                    <p>By</p>
-                                </div>
-
                                 <div className="flex items-center justify-between text-muted">
-                                    <p className="text-info font-mono font-bold text-2xl">
-                                        {track.Scores.length > 0 && formatNumber(track.Scores[0].score) || 0}
-                                    </p>
-                                    <p className="text-white font-semibold text-xl">
-                                        { track.Scores.length > 0 && track.Scores[0].User?.name || "-"}
-                                    </p>
+                                    <div>
+                                        <p className="mb-1">Top score</p>
+                                        <p className="text-info font-mono font-bold text-2xl">
+                                            {track.Scores.length > 0 && formatNumber(track.Scores[0].score) || 0}
+                                        </p>
+                                    </div>
+                                    <div className="text-end">
+                                        <p className="mb-1">By</p>
+                                        <p className="text-white font-semibold text-lg">
+                                            { track.Scores.length > 0 && track.Scores[0].User?.name || "-"}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </Link>
