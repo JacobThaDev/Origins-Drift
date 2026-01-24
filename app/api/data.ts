@@ -37,7 +37,67 @@ export const getCachedTrack = (gameSymbol:string, trackName:string) => unstable_
     }
 )();
 
-export const getTrackData = (classType:string = 'a') => unstable_cache(
+/**
+ * get a specific tracks data. differs from {@link getTracksData}
+ * @param track 
+ * @param classType 
+ * @returns 
+ */
+export const getTrackData = (track:string, classType:string) => unstable_cache(
+    async () => {
+        const trackData = await db.tracks.findOne({
+            attributes: {
+                exclude: ['webhook_url'],
+                include: [
+                    // Subquery to get the MAX score for THIS specific track and class
+                    [
+                        Sequelize.literal(`(
+                            SELECT MAX(CAST(score AS SIGNED))
+                            FROM scores AS s
+                            WHERE s.track = tracks.id
+                                and s.class = '${classType}'
+                        )`), 'top_score'
+                    ],
+                    [
+                        Sequelize.literal(`(
+                            SELECT COUNT(DISTINCT user_id)
+                            FROM scores AS s
+                            WHERE s.track = tracks.id 
+                                and s.class = '${classType}'
+                        )`), 'user_count'
+                    ],
+                    [
+                        Sequelize.literal(`(
+                            SELECT COUNT(DISTINCT id)
+                            FROM scores AS s
+                            WHERE s.track = tracks.id 
+                                and s.class = '${classType}'
+                        )`), 'entries'
+                    ]
+                ]
+            },
+            where: parseInt(track) 
+                ? { id: track, } 
+                : { short_name: track },
+            include: {
+                model: db.games,
+                as: "Game"
+            }
+        });
+        
+        return trackData;
+    },
+    ['track-data', parseInt(track) ? String(track) : track.toLowerCase(), classType], {
+        revalidate: 3600,
+        tags: [
+            'track-data',
+            `track-data-${parseInt(track) ? String(track) : track.toLowerCase()}`,
+            `track-data-${parseInt(track) ? String(track) : track.toLowerCase()}-${classType}`,
+        ]
+    }
+)();
+
+export const getTracksData = (classType:string = 'a') => unstable_cache(
     async () => {
         const trackData = await db.tracks.findAll({
             attributes: {

@@ -46,10 +46,6 @@ const ConfirmBox = ({
         
         try {
             const result:BasicApiResponseType = await LocalApi.post( "/tracks/"+activeTrack.short_name+"/"+perfIndex, {
-                user_id: profile.id,
-                game: "fh5",
-                track: activeTrack.short_name,
-                class: classFilter,
                 score: score as number,
                 proof_url: imgurData?.link,
                 delete_hash: imgurData?.deletehash
@@ -59,11 +55,13 @@ const ConfirmBox = ({
                 setError(result.error);
                 return;
             }
+
+            console.log(result);
             
-            setIsPersonalBest(result.new_pb ? result.new_pb : false);
-            setSubmitted(result.result as LeadersTypes);
+            //setIsPersonalBest(result.new_pb ? result.new_pb : false);
+            //setSubmitted(result.result as LeadersTypes);
             setLoading(false);
-            loadLeaderboard(false);
+            //loadLeaderboard(false);
         } catch (err:any) {
             console.log(err);
             setError(err.message);

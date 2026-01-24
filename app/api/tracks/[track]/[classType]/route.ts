@@ -4,66 +4,17 @@ import { Sequelize } from "sequelize";
 import { revalidateTag, unstable_cache } from "next/cache";
 import { LeadersTypes } from "@/utils/types/LeadersTypes";
 import { formatNumber } from "@/utils/Functions";
-import { getCachedTrack, getCachedUser, getUserRecord } from "@/app/api/data";
+import { getTrackData } from "@/app/api/data";
 import { UsersTypes } from "@/utils/types/UsersTypes";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { SessionsTypes } from "@/utils/types/SessionsTypes";
+import { NextRequest } from "next/server";
+import { z } from 'zod';
 
-const getTrackData = (track:string, classType:string) => unstable_cache(
-    async () => {
-        const trackData = await db.tracks.findOne({
-            attributes: {
-                exclude: ['webhook_url'],
-                include: [
-                    // Subquery to get the MAX score for THIS specific track and class
-                    [
-                        Sequelize.literal(`(
-                            SELECT MAX(CAST(score AS SIGNED))
-                            FROM scores AS s
-                            WHERE s.track = tracks.id
-                                and s.class = '${classType}'
-                        )`), 'top_score'
-                    ],
-                    [
-                        Sequelize.literal(`(
-                            SELECT COUNT(DISTINCT user_id)
-                            FROM scores AS s
-                            WHERE s.track = tracks.id 
-                                and s.class = '${classType}'
-                        )`), 'user_count'
-                    ],
-                    [
-                        Sequelize.literal(`(
-                            SELECT COUNT(DISTINCT id)
-                            FROM scores AS s
-                            WHERE s.track = tracks.id 
-                                and s.class = '${classType}'
-                        )`), 'entries'
-                    ]
-                ]
-            },
-            where: parseInt(track) 
-                ? { id: track, } 
-                : { short_name: track },
-            include: {
-                model: db.games,
-                as: "Game"
-            }
-        });
-        
-        return trackData;
-    },
-    ['track-data', parseInt(track) ? String(track) : track.toLowerCase(), classType], {
-        revalidate: 3600,
-        tags: [
-            'track-data',
-            `track-data-${parseInt(track) ? String(track) : track.toLowerCase()}`,
-            `track-data-${parseInt(track) ? String(track) : track.toLowerCase()}-${classType}`,
-        ]
-    }
-)();
-
+type RouteContext = {
+    params: Promise<{ track:string, classType: string }>;
+};
 
 /**
  * Get a specific tracks details
@@ -72,11 +23,9 @@ const getTrackData = (track:string, classType:string) => unstable_cache(
  * @returns 
  */
 // eslint-disable-next-line
-export async function GET(req: any, res:any) {
+export async function GET(req: any, { params } : RouteContext) {
     try {
-        const bodyData  = await res.params;
-        const trackName = bodyData?.track.toLowerCase();
-        const classType = bodyData?.classType.toLowerCase();
+        const { track, classType }  = await params;
 
         if (classType != "a" && classType != "s1") {
             return Response.json({
@@ -84,7 +33,7 @@ export async function GET(req: any, res:any) {
             }, { status: 422 });
         }
 
-        const trackData:TracksTypes|undefined = await getTrackData(trackName, classType);
+        const trackData:TracksTypes|undefined = await getTrackData(track, classType);
 
         if (!trackData) {
             return Response.json({
@@ -102,12 +51,23 @@ export async function GET(req: any, res:any) {
 }
 
 /**
+ * Post request schema
+ */
+const ScoreSchema = z.object({
+    score: z.coerce.number().positive(),
+    proof_url: z.url().optional(),
+    delete_hash: z.string().optional(),
+});
+
+type ScoreInput = z.infer<typeof ScoreSchema>;
+
+/**
  * POST endpoint for submitting a score for a specific track
  * @param req 
  * @returns 
  */
 // eslint-disable-next-line
-export async function POST(req: any, res:any) {
+export async function POST(req: NextRequest, { params }: RouteContext) {
     try {
         const session = await auth.api.getSession({
             headers: await headers()
@@ -115,19 +75,40 @@ export async function POST(req: any, res:any) {
 
         if (!session) {
             return Response.json({ 
-                error: "Please log in to use this endpoint."
+                error: "Unauthorized"
             }, { status: 401 });
         }
 
-        const { 
-            game, track:trackName, score, proof_url, delete_hash
+        const json   = await req.json();
+        const result = ScoreSchema.safeParse(json);
+
+        if (!result.success) { // invalid post data types
+            return Response.json({
+                error: result.error.message
+            }, { status: 400 })
+        }
+
+        const user_id = session.session.userId;
+        const { score, proof_url, delete_hash }:ScoreInput = result.data;
+        const { track, classType } = await params;
+
+        return Response.json({
+            user_id: user_id,
+            score: score,
+            proof_url: proof_url,
+            delete_hash: delete_hash,
+            track: track,
+            classType: classType
+         })
+
+        /*const { // post data
+            game, score, proof_url, delete_hash
         }:RequestTypes = await req.json();
 
         const user_id   = session.session.userId;
-        const bodyData  = await res.params;
-        const classType = bodyData?.classType.toLowerCase();
+        const { track, classType } = await params;
 
-        if (!user_id || !game || !trackName || !classType || !score) {
+        if (!user_id || !game || !score) {
             return Response.json({
                 error: "Missing required parameters."
             }, { status: 422 });
@@ -159,7 +140,7 @@ export async function POST(req: any, res:any) {
             }, { status: 401 });
         }
         
-        const trackData:TracksTypes|undefined = await getCachedTrack(game, trackName);
+        const trackData:TracksTypes|undefined = await getCachedTrack(game, track);
 
         if (!trackData || trackData.error) {
             return Response.json({
@@ -287,7 +268,7 @@ export async function POST(req: any, res:any) {
             message: "Your score has been submitted.",
             new_pb: new_pb,
             result: result
-        });
+        });*/
     } catch (e:any) {
         console.log(e);
         return Response.json({

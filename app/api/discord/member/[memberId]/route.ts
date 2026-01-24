@@ -6,9 +6,9 @@
 import { getDiscordMember } from "@/app/api/data";
 
 // eslint-disable-next-line
-export async function GET(req: any, res:any) {
+export async function GET(req: any, { params }: { params: Promise<{ memberId: string }> }) {
     try {
-        const { memberId }:RequestTypes = await res.params;
+        const { memberId }:RequestTypes = await params;
 
         const result = await getDiscordMember(memberId);
 

@@ -1,5 +1,5 @@
 import { TracksTypes } from "@/utils/types/TracksTypes";
-import { getTrackData } from "../data";
+import { getTracksData } from "../data";
 
 
 /**
@@ -22,7 +22,7 @@ export async function GET(req: any, res:any) {
     }
     
     try {
-        const trackData:TracksTypes[]|undefined = await getTrackData(classType);
+        const trackData:TracksTypes[]|undefined = await getTracksData(classType);
 
         if (!trackData) {
             return Response.json({

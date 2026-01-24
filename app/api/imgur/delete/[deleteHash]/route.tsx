@@ -5,11 +5,10 @@ import { headers } from "next/headers";
 
 /**
  * DELETE Endpoint for removing images on Imgur.
- * @param req 
- * @param res 
+ * @param req
  */
 // eslint-disable-next-line
-export async function DELETE(req: any, res:any) {
+export async function DELETE(req: any, { params }: { params: Promise<{ deleteHash: string }> }) {
     try {
         if (!process.env.IMGUR_CLIENT_ID) {
             return Response.json({
@@ -27,7 +26,7 @@ export async function DELETE(req: any, res:any) {
             }, { status: 401 });
         }
 
-        const { deleteHash }:RequestTypes = await res.params;
+        const { deleteHash }:RequestTypes = await params;
 
         const ImgurApi = Axios.create({
             baseURL: "https://api.imgur.com/3",

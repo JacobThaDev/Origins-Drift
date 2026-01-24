@@ -61,17 +61,15 @@ const getTrackData = (track:string) => unstable_cache(
  * @returns 
  */
 // eslint-disable-next-line
-export async function GET(req: any, res:any) {
+export async function GET(req: any, { params }: { params: Promise<{ track: string }> }) {
     try {
-        const bodyData  = await res.params;
-        const trackName = bodyData?.track.toLowerCase();
-        
-        const trackData:TracksTypes|undefined = await getTrackData(trackName);
+        const { track }  = await params;
+        const trackData:TracksTypes|undefined = await getTrackData(track.toLowerCase());
 
         if (!trackData) {
             return Response.json({
                 error: "Track not found."
-            });
+            }, { status: 400 });
         }
 
         return Response.json(trackData);
