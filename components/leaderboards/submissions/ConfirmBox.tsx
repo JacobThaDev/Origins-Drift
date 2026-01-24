@@ -55,13 +55,11 @@ const ConfirmBox = ({
                 setError(result.error);
                 return;
             }
-
-            console.log(result);
             
-            //setIsPersonalBest(result.new_pb ? result.new_pb : false);
-            //setSubmitted(result.result as LeadersTypes);
+            setIsPersonalBest(result.new_pb ? result.new_pb : false);
+            setSubmitted(result.result as LeadersTypes);
             setLoading(false);
-            //loadLeaderboard(false);
+            loadLeaderboard(false);
         } catch (err:any) {
             console.log(err);
             setError(err.message);

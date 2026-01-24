@@ -4,7 +4,7 @@ import { Sequelize } from "sequelize";
 import { revalidateTag, unstable_cache } from "next/cache";
 import { LeadersTypes } from "@/utils/types/LeadersTypes";
 import { formatNumber } from "@/utils/Functions";
-import { getTrackData } from "@/app/api/data";
+import { getCachedTrack, getCachedUser, getTrackData, getUserRecord } from "@/app/api/data";
 import { UsersTypes } from "@/utils/types/UsersTypes";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -73,7 +73,7 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
             headers: await headers()
         }) as SessionsTypes;
 
-        if (!session) {
+        if (!session || session.user.banned) {
             return Response.json({ 
                 error: "Unauthorized"
             }, { status: 401 });
@@ -87,156 +87,23 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
                 error: result.error.message
             }, { status: 400 })
         }
-
+        
+        // grab the user from the session
         const user_id = session.session.userId;
         const { score, proof_url, delete_hash }:ScoreInput = result.data;
         const { track, classType } = await params;
 
-        return Response.json({
-            user_id: user_id,
-            score: score,
-            proof_url: proof_url,
-            delete_hash: delete_hash,
-            track: track,
-            classType: classType
-         })
-
-        /*const { // post data
-            game, score, proof_url, delete_hash
-        }:RequestTypes = await req.json();
-
-        const user_id   = session.session.userId;
-        const { track, classType } = await params;
-
-        if (!user_id || !game || !score) {
-            return Response.json({
-                error: "Missing required parameters."
-            }, { status: 422 });
-        }
-
-        if (classType.toUpperCase() != "A" && classType.toUpperCase() != "S1") {
-            return Response.json({
-                error: "Invalid class type. Must be A or S1."
-            }, { status: 422 });
-        }
-
-        if (score < 0 || !parseInt(String(score))) {
-             return Response.json({
-                error: "Score must be a number greater than 0. Score: "+score+""
-            }, { status: 422 });
-        }
-
-        const user:UsersTypes = await getCachedUser(user_id);
-
-        if (!user) {
-            return Response.json({
-                error: "User not found."
-            }, { status: 500 });
-        }
-
-        if (user.banned) {
-            return Response.json({
-                error: "You are blocked from submitting new scores."
-            }, { status: 401 });
-        }
-        
-        const trackData:TracksTypes|undefined = await getCachedTrack(game, track);
+        // get the specific track data
+        const trackData:TracksTypes|undefined = await getCachedTrack(track);
 
         if (!trackData || trackData.error) {
             return Response.json({
                 error: trackData ? trackData.error : "Track not found."
             });
         }
-        
-        let new_pb = false;
 
-        if (trackData.webhook_url) {
-            const personal_best = await getUserRecord(user_id, trackData.id, classType);
-            
-            if (!personal_best) {
-                personal_best.score = score;
-            }
-            
-            const difference = score - (personal_best ? personal_best.score : 0);
-            new_pb = difference > 0;
-
-            if (new_pb) {
-                try {
-                    const embedPayload = {
-                        embeds: [
-                            {
-                                author: {
-                                    name: trackData.name+" | Origins Drift",
-                                    url: process.env.PREVIEW_URL + "/track/"+trackData.short_name
-                                },
-                                //title: "🏆 Score Added",
-                                description: 
-                                    (score > personal_best.score 
-                                        ? `**<@${user.Account.accountId}>** has hit a new ✨personal best✨ of **${formatNumber(score)}** 🥳!`
-                                        : `**<@${user.Account.accountId}>** has posted a score of **${formatNumber(score)}**!`),
-                                fields: [
-                                    {
-                                        name: "Class",
-                                        value: classType.toUpperCase() + (classType.toUpperCase() == "A" ? "-800" : "-900"),
-                                        inline: true,
-                                    },
-                                    {
-                                        name: "Score",
-                                        value: formatNumber(score),
-                                        inline: true,
-                                    },
-                                    {
-                                        name: "Personal Best",
-                                        value: formatNumber(personal_best.score),
-                                        inline: true,
-                                    },
-                                    {
-                                        name: "Performance",
-                                        value: `${difference > 0 ? "⬆️ +" : "⬇️ "}`+formatNumber(difference),
-                                        inline: true,
-                                    },
-                                ],
-                                thumbnail: {
-                                    url: process.env.PREVIEW_URL + trackData.track_image,
-                                },
-                                footer: {
-                                    text: "Origins Drift Club"
-                                },
-                                ...(proof_url && { image: { url: proof_url } }),
-                                timestamp: new Date().toISOString(),
-                            }
-                        ]
-                    };
-                    
-                    // send the embed payload
-                    const discordRes = await fetch(trackData.webhook_url, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(embedPayload),
-                    });
-
-                    if (!discordRes.ok) {
-                        const errorText = await discordRes.text();
-                        console.error("Discord Webhook Error:", errorText);
-                        return Response.json({
-                            error: "Webhook error: "+errorText
-                        })
-                    }
-
-                    if (difference > 0) {
-                        // update the users record
-                        revalidateTag(`user-record-${trackData.id}-${classType.toUpperCase()}-${user_id}`);
-                    }
-                } catch(err:any) {
-                    console.log(err);
-                    return Response.json({
-                        error: err.message
-                    }, { status: 500 });
-                }
-            }
-        }
-
-        const result = await db.scores.create({
+        // now we just add a new score
+        const score_result = await db.scores.create({
             user_id: user_id,
             game: trackData.game,
             track: trackData.id,
@@ -246,29 +113,46 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
             proof_delete_hash: delete_hash
         }) as LeadersTypes;
 
-        if (!result) {
+        if (!score_result) {
             return Response.json({
-                error: "Failed to insert new entry."
+                error: "Failed to create new score."
             });
         }
 
-        //update the leaderboards for this specific track and class
-        revalidateTag(`leaders-${trackData.id}-${classType.toUpperCase()}`);
-        //update the recent entries cache
-        revalidateTag(`recent-${trackData.id}-${classType.toUpperCase()}`);
-        // update tracks list and records
-        revalidateTag(`tracks-data-${classType}`);
+        // do this after securing the score on record. 
+        const personal_best = await getUserRecord(user_id, trackData.id, classType);
+        let isNewPb = false;
 
-        if (new_pb) { // only revalidate if user has a new pb for this track and class
+        if (!personal_best) {
+            personal_best.score = score;
+        }
+
+        const difference = score - (personal_best ? personal_best.score : 0);
+        isNewPb = difference > 0;
+
+        if (isNewPb) {
+            // do not send this async. if it fails in the background
+            // it's not that big of deal. record is already set. 
+            sendWebhook(trackData, score, personal_best, session.user, classType, proof_url);
+
+            // user has a new record so cache needs updated.
             revalidateTag(`user-record-${trackData.id}-${classType.toUpperCase()}-${user_id}`);
         }
+
+        /**
+         * Now we need to update the caches so it can show the new score
+         * across the website properly
+         */
+        revalidateTag(`leaders-${trackData.id}-${classType.toUpperCase()}`);
+        revalidateTag(`recent-${trackData.id}-${classType.toUpperCase()}`);
+        revalidateTag(`tracks-data-${classType}`);
 
         return Response.json({
             success: true,
             message: "Your score has been submitted.",
-            new_pb: new_pb,
-            result: result
-        });*/
+            new_pb: isNewPb,
+            result: score_result
+        });
     } catch (e:any) {
         console.log(e);
         return Response.json({
@@ -277,12 +161,79 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
     }
 }
 
-interface RequestTypes {
-    user_id: string,
-    game: string,
-    track: string,
-    class: string,
-    score: number,
-    proof_url: string,
-    delete_hash: string;
+const sendWebhook = async(trackData:TracksTypes, score:number, pb:{ score: number }, user:UsersTypes, classType:string, proof_url:string|undefined) => {
+    try {
+        if (!trackData.webhook_url) {
+            return;
+        }
+
+        const difference = score - (pb ? pb.score : 0);
+
+        const embedPayload = {
+            embeds: [
+                {
+                    author: {
+                        name: trackData.name+" | Origins Drift",
+                        url: process.env.PREVIEW_URL + "/track/"+trackData.short_name
+                    },
+                    //title: "🏆 Score Added",
+                    description: 
+                        (score > pb.score 
+                            ? `**<@${user.Account.accountId}>** has hit a new ✨personal best✨ of **${formatNumber(score)}** 🥳!`
+                            : `**<@${user.Account.accountId}>** has posted a score of **${formatNumber(score)}**!`),
+                    fields: [
+                        {
+                            name: "Class",
+                            value: classType.toUpperCase() + (classType.toUpperCase() == "A" ? "-800" : "-900"),
+                            inline: true,
+                        },
+                        {
+                            name: "Score",
+                            value: formatNumber(score),
+                            inline: true,
+                        },
+                        {
+                            name: "Personal Best",
+                            value: formatNumber(pb.score),
+                            inline: true,
+                        },
+                        {
+                            name: "Performance",
+                            value: `${difference > 0 ? "⬆️ +" : "⬇️ "}`+formatNumber(difference),
+                            inline: true,
+                        },
+                    ],
+                    thumbnail: {
+                        url: process.env.PREVIEW_URL + trackData.track_image,
+                    },
+                    footer: {
+                        text: "Origins Drift Club"
+                    },
+                    ...(proof_url && { image: { url: proof_url } }),
+                    timestamp: new Date().toISOString(),
+                }
+            ]
+        };
+
+        const discordRes = await fetch(trackData.webhook_url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(embedPayload),
+        });
+
+        if (!discordRes.ok) {
+            const errorText = await discordRes.text();
+            console.error("Discord Webhook Error:", errorText);
+            return Response.json({
+                error: "Webhook error: "+errorText
+            })
+        }
+
+        if (difference > 0) {
+            // update the users record
+            revalidateTag(`user-record-${trackData.id}-${classType.toUpperCase()}-${user.id}`);
+        }
+    } catch(err:any) {
+        console.error(err);
+    }
 }

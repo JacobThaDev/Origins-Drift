@@ -13,7 +13,7 @@ export async function getFullUserProfile(userId: string) {
     
     const user:UsersTypes = await await db.users.findOne({
         attributes: [
-            "name", "discord_name", "image", "role", "createdAt"
+            "name", "discord_name", "image", "role", "createdAt", "banned"
         ],
         where: {
             id: userId

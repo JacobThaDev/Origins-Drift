@@ -9,11 +9,10 @@ const GUILD_ID    = process.env.DISCORD_GUILD_ID;
 
 /**
  * get a tracks data including the game it belongs to
- * @param gameSymbol the game as either `fh4`, `fh5`, or `fh6`
  * @param trackName the short name of the track.
  * @returns 
  */
-export const getCachedTrack = (gameSymbol:string, trackName:string) => unstable_cache(
+export const getCachedTrack = (trackName:string) => unstable_cache(
     async () => {
         const track = await db.tracks.findOne({
             where: {
@@ -21,18 +20,16 @@ export const getCachedTrack = (gameSymbol:string, trackName:string) => unstable_
             },
             include: {
                 model: db.games,
-                as: "Game",
-                where: { symbol: gameSymbol }
+                as: "Game"
             }
         });
         
         return track;
     },
-    ['tracks', gameSymbol, trackName.toLowerCase()], {
+    ['tracks', trackName.toLowerCase()], {
         tags: [
             'tracks',
-            `track-${gameSymbol.toUpperCase()}`,
-            `track-${gameSymbol.toUpperCase()}-${trackName.toLowerCase()}`,
+            `track-${trackName.toLowerCase()}`,
         ]
     }
 )();
@@ -180,6 +177,7 @@ export const getUserRecord = (user_id:string, trackId: number, classType: string
         });
     },
     ['user-record', String(trackId), classType.toUpperCase(), user_id], {
+        revalidate: 3600,
         tags: [
             'user-records',
             `user-record-${trackId}-${classType.toUpperCase()}-${user_id}`
