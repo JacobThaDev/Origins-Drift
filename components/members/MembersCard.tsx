@@ -57,7 +57,7 @@ const MembersCard = ({ member }: { member:DiscordUserTypes}) => {
                 </div>
 
                 {member.account && <div className="flex items-center justify-end ml-auto">
-                    <Link href={`/profile/${member.id}`} 
+                    <Link href={`/profile/${member.username}`} 
                         className="text-lg font-bold text-warning text-nowrap inline-block">
                         <ProfileCardIcon height={30}/>
                     </Link>
