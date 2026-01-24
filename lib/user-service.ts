@@ -1,6 +1,5 @@
 // 1. Create a shared data fetching function
 
-import { getDiscordMember } from "@/app/api/data";
 import db from "@/models";
 import { DiscordMemberTypes } from "@/utils/types/discord/DiscordMemberTypes";
 import { UsersTypes } from "@/utils/types/UsersTypes";

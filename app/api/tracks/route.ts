@@ -1,7 +1,4 @@
 import { TracksTypes } from "@/utils/types/TracksTypes";
-import db from "@/models";
-import { Sequelize } from "sequelize";
-import { unstable_cache } from "next/cache";
 import { getTrackData } from "../data";
 
 
