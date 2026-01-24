@@ -2,7 +2,12 @@
 
 import { getDiscordMember } from "@/app/api/data";
 import db from "@/models";
+import { DiscordMemberTypes } from "@/utils/types/discord/DiscordMemberTypes";
 import { UsersTypes } from "@/utils/types/UsersTypes";
+import { revalidateTag } from "next/cache";
+
+const BOT_TOKEN   = process.env.DISCORD_BOT_TOKEN;
+const GUILD_ID    = process.env.DISCORD_GUILD_ID;
 
 // Put this in a file like @/lib/user-service.ts
 export async function getFullUserProfile(userId: string) {
@@ -35,11 +40,46 @@ export async function getFullUserProfile(userId: string) {
     if (!user) 
         return null;
     
-    // Call your Discord fetch logic here directly
-    const discordMember = await getDiscordMember(user.Account.accountId);
+    const memberData = await fetch(`https://discord.com/api/v10/guilds/${GUILD_ID}/members/${user.Account.accountId}`, {
+        headers: {
+            Authorization: `Bot ${BOT_TOKEN}`,
+        }
+    });
+
+    if (!memberData.ok) {
+        return null;
+    }
+
+    const member:DiscordMemberTypes = await memberData.json();
+
+    if (member) {
+        // server nickname first, then global display name
+        const display_name = member.nick || member.user.global_name;
+
+        if (user.discord_name != member.user.username || user.name != display_name) {
+            try {
+                await db.users.update({
+                    name: display_name,
+                    discord_name: member.user.username
+                }, { 
+                    where: { id: userId }
+                });
+
+                // need to refresh the caches for everything related to said user.
+                revalidateTag(`users-${userId}`);
+                revalidateTag(`user-name-id-${user.discord_name}`);
+                revalidateTag(`user-name-${user.discord_name}`);
+                revalidateTag(`leaders`);
+                revalidateTag(`user-records`);
+                revalidateTag(`tracks-data`);
+            } catch (err:any) {
+                console.error(err);
+            }
+        }
+    }
     
     return { 
         user: user, 
-        discord: discordMember 
+        discord: member 
     };
 }

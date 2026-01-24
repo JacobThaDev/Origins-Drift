@@ -22,11 +22,12 @@ export async function GET(req: any, res:any) {
 
         const member = await getDiscordMember(user.Account.accountId) as DiscordMemberTypes;
         
-        if (!member || member.error) {
+        if (!member || member.error) { 
             return Response.json({ 
                 error: "Could not load Discord profile"
             });
         }
+    
 
         return Response.json({
             ...user, 

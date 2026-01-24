@@ -174,6 +174,7 @@ const Navigation = () => {
                     <div className="text-center">
                         <p className="text-white/50">Signed in as</p>
                         <p className="text-2xl font-black mb-2">{session.user.name}</p>
+                        <p>{session.user.discord_name}</p>
                     </div>
                 </div>
             : <>
