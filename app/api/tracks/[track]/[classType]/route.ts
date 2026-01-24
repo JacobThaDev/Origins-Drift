@@ -228,11 +228,6 @@ const sendWebhook = async(trackData:TracksTypes, score:number, pb:{ score: numbe
                 error: "Webhook error: "+errorText
             })
         }
-
-        if (difference > 0) {
-            // update the users record
-            revalidateTag(`user-record-${trackData.id}-${classType.toUpperCase()}-${user.id}`);
-        }
     } catch(err:any) {
         console.error(err);
     }
