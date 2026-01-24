@@ -5,11 +5,6 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             unique: true
         },
-        display_name: {
-            type: DataTypes.STRING,
-            allowNull: true,
-            defaultValue: null
-        },
         platform: {
             type: DataTypes.STRING,
             allowNull: true,
@@ -17,11 +12,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         platform_name: {
             type: DataTypes.STRING,
-            allowNull: true,
-            defaultValue: null
-        },
-        fav_car_fh5: {
-            type: DataTypes.INTEGER,
             allowNull: true,
             defaultValue: null
         },

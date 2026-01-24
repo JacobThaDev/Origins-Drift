@@ -9,6 +9,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: ""
         },
+        discord_name: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: null
+        },
         email: {
             type: DataTypes.STRING,
             unique: true,

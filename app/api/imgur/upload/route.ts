@@ -1,4 +1,7 @@
+import { auth } from "@/lib/auth";
+import { SessionsTypes } from "@/utils/types/SessionsTypes";
 import Axios from "axios";
+import { headers } from "next/headers";
 
 /**
  * POST Endpoint to uploading an image to Imgur.
@@ -12,6 +15,16 @@ export async function POST(req: any, res:any) {
             return Response.json({
                 error: "Missing IMGUR_CLIENT_ID environment variable."
             });
+        }
+
+        const session = await auth.api.getSession({
+            headers: await headers()
+        }) as SessionsTypes;
+
+        if (!session) {
+            return Response.json({ 
+                error: "Please log in to use this endpoint."
+            }, { status: 401 });
         }
 
         const { image }:RequestTypes = await req.json();

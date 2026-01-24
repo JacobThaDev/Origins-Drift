@@ -48,7 +48,7 @@ export default function Profile() {
                                     Your Discord avatar and display name synced from your account
                                 </p>
                             </div>
-                            <Link href={`/profile/${session.discord.user.id}`}
+                            <Link href={`/profile/${session.user.discord_name}`}
                                 className=" px-5 py-3 border-2 border-border rounded-lg hover:border-info hover:bg-info hover:text-black font-semibold transition-all text-nowrap">
                                 Public Profile
                             </Link>
@@ -68,7 +68,7 @@ export default function Profile() {
                             <div>
                                 <p className="text-muted">Display Name</p>
                                 <p className="text-2xl font-bold mb-3">
-                                    {session.discord.user.global_name || session.discord.user.username}
+                                    {session.user.name}
                                 </p>
 
                                 <p className="text-sm text-muted">This is how other members see you across the platform.</p>
@@ -81,7 +81,7 @@ export default function Profile() {
                                             Discord
                                         </p>
                                         <p className="text-white font-semibold">
-                                            {session.discord.user.username}
+                                            {session.user.discord_name}
                                         </p>
                                     </div>
 

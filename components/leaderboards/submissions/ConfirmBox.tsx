@@ -65,6 +65,7 @@ const ConfirmBox = ({
             setLoading(false);
             loadLeaderboard(false);
         } catch (err:any) {
+            console.log(err);
             setError(err.message);
             setLoading(false);
         }

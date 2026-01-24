@@ -211,7 +211,7 @@ const Navigation = () => {
             <div className="flex flex-col justify-start items-start">
                 <div className="relative">
                     {session && 
-                    <Link href={`/profile/`+session.discord.user.id} 
+                    <Link href={`/profile/`+session.user.discord_name} 
                         onClick={() => setMenuOpen(false)}
                         className="hover:text-info flex gap-3 items-center text-muted px-7 lg:px-5 py-2 lg:py-3 transition-all lg:w-auto w-full">
                         <UserIcon height={20} strokeWidth={2} className="text-muted"/>

@@ -6,6 +6,9 @@ import { LeadersTypes } from "@/utils/types/LeadersTypes";
 import { formatNumber } from "@/utils/Functions";
 import { getCachedTrack, getCachedUser, getUserRecord } from "@/app/api/data";
 import { UsersTypes } from "@/utils/types/UsersTypes";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { SessionsTypes } from "@/utils/types/SessionsTypes";
 
 const getTrackData = (track:string, classType:string) => unstable_cache(
     async () => {
@@ -78,7 +81,7 @@ export async function GET(req: any, res:any) {
         if (classType != "a" && classType != "s1") {
             return Response.json({
                 error: "Invalid car class. Must be either a or s1"
-            });
+            }, { status: 422 });
         }
 
         const trackData:TracksTypes|undefined = await getTrackData(trackName, classType);
@@ -106,29 +109,40 @@ export async function GET(req: any, res:any) {
 // eslint-disable-next-line
 export async function POST(req: any, res:any) {
     try {
+        const session = await auth.api.getSession({
+            headers: await headers()
+        }) as SessionsTypes;
+
+        if (!session) {
+            return Response.json({ 
+                error: "Please log in to use this endpoint."
+            }, { status: 401 });
+        }
+
         const { 
-            user_id, game, track:trackName, score, proof_url, delete_hash
+            game, track:trackName, score, proof_url, delete_hash
         }:RequestTypes = await req.json();
 
+        const user_id   = session.session.userId;
         const bodyData  = await res.params;
         const classType = bodyData?.classType.toLowerCase();
 
         if (!user_id || !game || !trackName || !classType || !score) {
-             return Response.json({
+            return Response.json({
                 error: "Missing required parameters."
-            });
+            }, { status: 422 });
         }
 
         if (classType.toUpperCase() != "A" && classType.toUpperCase() != "S1") {
             return Response.json({
                 error: "Invalid class type. Must be A or S1."
-            });
+            }, { status: 422 });
         }
 
-        if (score < 0) {
+        if (score < 0 || !parseInt(String(score))) {
              return Response.json({
-                error: "Score can not be less than 0."
-            });
+                error: "Score must be a number greater than 0. Score: "+score+""
+            }, { status: 422 });
         }
 
         const user:UsersTypes = await getCachedUser(user_id);
@@ -136,13 +150,13 @@ export async function POST(req: any, res:any) {
         if (!user) {
             return Response.json({
                 error: "User not found."
-            });
+            }, { status: 500 });
         }
 
         if (user.banned) {
             return Response.json({
                 error: "You are blocked from submitting new scores."
-            });
+            }, { status: 401 });
         }
         
         const trackData:TracksTypes|undefined = await getCachedTrack(game, trackName);
@@ -156,7 +170,7 @@ export async function POST(req: any, res:any) {
         let new_pb = false;
 
         if (trackData.webhook_url) {
-            const personal_best = await getUserRecord(user.id, trackData.id, classType);
+            const personal_best = await getUserRecord(user_id, trackData.id, classType);
             
             if (!personal_best) {
                 personal_best.score = score;
@@ -242,7 +256,7 @@ export async function POST(req: any, res:any) {
         }
 
         const result = await db.scores.create({
-            user_id: user.id,
+            user_id: user_id,
             game: trackData.game,
             track: trackData.id,
             class: classType.toUpperCase(),

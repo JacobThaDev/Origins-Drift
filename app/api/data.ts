@@ -1,6 +1,11 @@
 import db from "@/models";
 import { unstable_cache } from "next/cache";
 import { Op, Sequelize } from "sequelize";
+import crypto from "node:crypto";
+import { DiscordMemberTypes } from "@/utils/types/discord/DiscordMemberTypes";
+
+const BOT_TOKEN   = process.env.DISCORD_BOT_TOKEN;
+const GUILD_ID    = process.env.DISCORD_GUILD_ID;
 
 /**
  * get a tracks data including the game it belongs to
@@ -90,12 +95,12 @@ export const getCachedScores = (trackId: number, classType: string) => unstable_
             include: [{
                 model: db.users,
                 as: "User",
-                attributes: ["name", "image", "createdAt"],
+                attributes: ["name", "discord_name", "image", "createdAt"],
                 include: [
                     { 
                         model: db.accountData, 
                         as: "AccountData",
-                        attributes: ["display_name", "platform"] 
+                        attributes: ["platform", "platform_name"] 
                     },
                     { 
                         model: db.account, 
@@ -132,12 +137,12 @@ export const getCachedRecentScores = (gameId: number, trackId: number, classType
             include: [{
                 model: db.users,
                 as: "User",
-                attributes: ["name", "image", "createdAt"],
+                attributes: ["name", "discord_name", "image", "createdAt"],
                 include: [
                     { 
                         model: db.accountData, 
                         as: "AccountData",
-                        attributes: ["display_name", "platform"] 
+                        attributes: ["platform", "platform_name"] 
                     },
                     { 
                         model: db.account, 
@@ -157,69 +162,76 @@ export const getCachedRecentScores = (gameId: number, trackId: number, classType
     }
 )();
 
-/**
- * Gets a list of games and all tracks for each game.
- * @param gameSymbol the games symbol. (`fh4`, `fh5`, `fh6`)
- * @returns a list of games and available tracks for each game
- */
-export const getCachedGames = (gameSymbol:string, classType:string = 'a') => unstable_cache(
+export const getUserByName = (name:string, includeId:boolean = false) => unstable_cache(
     async () => {
-        return await db.games.findOne({
+        const user = await db.users.findOne({
+            attributes: includeId 
+                ? [ "id", "name", "discord_name", "image", "role", "createdAt" ] 
+                : [ "name", "discord_name", "image", "role", "createdAt" ],
             where: {
-                symbol: gameSymbol
+                discord_name: name
             },
             include: [
                 {
-                    model: db.tracks,
-                    as: 'tracks',
-                    include: [{
-                        model: db.games,
-                        as: 'Game'
-                    }],
+                    model: db.accountData,
+                    as: "AccountData",
                     attributes: {
-                        include: [
-                            // Subquery to get the MAX score for THIS specific track and class
-                            [
-                                Sequelize.literal(`(
-                                    SELECT MAX(CAST(score AS SIGNED))
-                                    FROM scores AS s
-                                    WHERE s.track = tracks.id 
-                                    AND s.class = '${classType}'
-                                )`), 'top_score'
-                            ],
-                            [
-                                Sequelize.literal(`(
-                                    SELECT COUNT(DISTINCT user_id)
-                                    FROM scores AS s
-                                    WHERE s.track = tracks.id 
-                                    AND s.class = '${classType}'
-                                )`), 'user_count'
-                            ],
-                            [
-                                Sequelize.literal(`(
-                                    SELECT COUNT(DISTINCT id)
-                                    FROM scores AS s
-                                    WHERE s.track = tracks.id 
-                                    AND s.class = '${classType}'
-                                )`), 'entries'
-                            ]
-                        ]
-                    },
+                        exclude: ['user_id']
+                    }
                 },
+                {
+                    model: db.account,
+                    as: "Account",
+                    attributes: ["accountId", "providerId"]
+                }
             ],
-            order: [
-                ['tracks', 'favorite', 'DESC'],
-                ['tracks', 'id', 'ASC']
-            ]
+            raw: true,
+            nest: true
         });
+
+        return user;
     },
-    ['games', String(gameSymbol), classType], {
+    ['user-name', name], {
+        revalidate: 3600,  // 1 hours
         tags: [
-            'games',
-            `games-${gameSymbol}`,
-            `games-${gameSymbol}-${classType.toLowerCase()}`
-        ],
-        revalidate: 3600
+            `user-names`,
+            `user-name-${name}`
+        ]
+    }
+)();
+
+export const getUserByNameWithId = (name:string) => unstable_cache(
+    async () => {
+        const user = await db.users.findOne({
+            attributes: [ "id", "name", "discord_name", "image", "role", "createdAt" ],
+            where: {
+                discord_name: name
+            },
+            include: [
+                {
+                    model: db.accountData,
+                    as: "AccountData",
+                    attributes: {
+                        exclude: ['user_id']
+                    }
+                },
+                {
+                    model: db.account,
+                    as: "Account",
+                    attributes: ["accountId", "providerId"]
+                }
+            ],
+            raw: true,
+            nest: true
+        });
+
+        return user;
+    },
+    ['user-name-id', name], {
+        revalidate: 3600,  // 1 hours
+        tags: [
+            `user-name-id-${name}`
+        ]
     }
 )();
 
@@ -227,7 +239,7 @@ export const getCachedUser = (user_id:string) => unstable_cache(
     async () => {
         return await db.users.findOne({
             attributes: [
-                "id", "name", "image", "role", "createdAt"
+                "name", "image", "role", "createdAt"
             ],
             where: {
                 id: user_id
@@ -236,9 +248,8 @@ export const getCachedUser = (user_id:string) => unstable_cache(
                 {
                     model: db.accountData,
                     as: "AccountData",
-                    include: {
-                        model: db.cars_fh5,
-                        as: "fav_car",
+                    attributes: {
+                        exclude: ['user_id']
                     }
                 },
                 {
@@ -256,3 +267,47 @@ export const getCachedUser = (user_id:string) => unstable_cache(
         ]
     }
 )();
+
+export const getDiscordMember = (member_id:string) => unstable_cache(
+    async () => {
+        const result = await fetch(`https://discord.com/api/v10/guilds/${GUILD_ID}/members/${member_id}`, {
+            headers: {
+                Authorization: `Bot ${BOT_TOKEN}`,
+            }
+        });
+
+        if (!result.ok) {
+            return null;
+        }
+
+        const memberData:DiscordMemberTypes = await result.json();
+        return memberData;
+    },
+    ['discord_user', member_id], {
+        revalidate: 3600,  // 1 hours
+        tags: [
+            `discord-user`,
+            `discord_user-${member_id}`
+        ]
+    }
+)();
+
+export function verifySignature(payload: string, signature: string, secret: string) {
+    const expectedSignature = crypto
+        .createHmac("sha256", secret)
+        .update(payload)
+        .digest("base64");
+    
+    return expectedSignature === signature;
+}
+
+export async function createSignature(payload: string, secret: string) {
+    const encoder = new TextEncoder();
+    const key = await crypto.subtle.importKey(
+        "raw", encoder.encode(secret),
+        { name: "HMAC", hash: "SHA-256" },
+        false, ["sign"]
+    );
+    const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(payload));
+    return btoa(String.fromCharCode(...new Uint8Array(signature)));
+}

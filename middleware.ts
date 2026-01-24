@@ -3,12 +3,6 @@ import { env as _env } from 'process';
 import LocalApi from "./services/LocalApi";
 
 export async function middleware(request: NextRequest) {
-    const { pathname } = new URL(request.url);
-
-    if (pathname == "/" || pathname == "/login") {
-        return NextResponse.next();
-    }
-
     try {
         const session = await LocalApi.get("/auth/get-session", {
             headers: {
@@ -16,22 +10,10 @@ export async function middleware(request: NextRequest) {
             },
         });
 
-        const api_paths:string[] = [
-            "/api/revalidate",
-            "/api/imgur/upload",
-            "/api/imgur/delete/[deleteHash]",
-        ];
-
         if(!session) {
-            if (api_paths.includes(pathname)) {
-                return NextResponse.json({
-                    error: "You must be logged in to use this endpoint."
-                })
-            }
-
             return NextResponse.redirect(new URL("/login", request.url));
         }
-        
+
         return NextResponse.next();
     } catch (e:any) {
         console.error(e)
@@ -40,10 +22,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
 	matcher: [
-        "/",
-        "/api/revalidate",
-        "/api/imgur/upload",
-        "/api/imgur/delete/[deleteHash]",
         "/dashboard",
     ]
 };

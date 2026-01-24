@@ -14,6 +14,7 @@ import verificationModel from './verification.model';
 import sessionModel from './session.model';
 import passkeyModel from './passkey.model';
 import carsModel from './cars.model';
+import garageModel from './garage.model';
 
 let sequelize = new Sequelize(process.env.MYSQL_DATABASE, process.env.MYSQL_USER, process.env.MYSQL_PASS, {
     host: process.env.MYSQL_HOST,
@@ -50,6 +51,7 @@ db.accountData  = accountDataModel(sequelize, Sequelize);
 db.verification = verificationModel(sequelize, Sequelize);
 db.session      = sessionModel(sequelize, Sequelize);
 db.passkey      = passkeyModel(sequelize, Sequelize);
+db.garage       = garageModel(sequelize, Sequelize);
 
 db.games.hasMany(db.tracks, {
     targetKey: "id",
@@ -113,6 +115,30 @@ db.users.hasOne(db.account, {
     onDelete: "CASCADE"
 });
 
+// Garage linking
+db.users.hasMany(db.garage, { 
+    foreignKey: 'owner',
+    sourceKey: 'id',
+    as: 'Garage'
+});
+
+db.garage.belongsTo(db.users, { 
+    foreignKey: 'owner', 
+    targetKey: 'id' 
+});
+
+db.garage.belongsTo(db.cars_fh5, { 
+    foreignKey: 'car_id', 
+    targetKey: 'id',
+    as: 'CarData'
+});
+
+db.cars_fh5.hasMany(db.garage, { 
+    foreignKey: 'car_id', 
+    sourceKey: 'id' 
+});
+
+// account linking
 db.account.belongsTo(db.users, {
     targetKey: "id",
     foreignKey: 'userId',

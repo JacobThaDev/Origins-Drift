@@ -1,5 +1,5 @@
 import { UsersTypes } from "@/utils/types/UsersTypes";
-import { getCachedUser } from "@/app/api/data";
+import { getUserByNameWithId } from "@/app/api/data";
 import { unstable_cache } from "next/cache";
 import db from "@/models";
 
@@ -71,9 +71,9 @@ const getUserStats = (user_id:string) => unstable_cache(
 // eslint-disable-next-line
 export async function GET(req: any, res:any) {
     try {
-        const { userId }:RequestTypes = await res.params;
+        const { username }:RequestTypes = await res.params;
 
-        const user:UsersTypes = await getCachedUser(userId);
+        const user:UsersTypes = await getUserByNameWithId(username);
 
         if (!user) {
             return Response.json({ 
@@ -81,11 +81,11 @@ export async function GET(req: any, res:any) {
             });
         }
 
-        const stats = await getUserStats(userId);
+        const stats = await getUserStats(user.id);
 
         return Response.json(stats);
     } catch (e:any) {
-        console.error(e.response);
+        console.error(e);
         return Response.json({ 
             message: e.message
         });
@@ -93,5 +93,5 @@ export async function GET(req: any, res:any) {
 }
 
 interface RequestTypes {
-    userId: string;
+    username: string;
 }

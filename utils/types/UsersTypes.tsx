@@ -1,9 +1,12 @@
 import { AccountDataTypes } from "./AccountDataTypes";
 import { AccountTypes } from "./AccountTypes";
+import { DiscordMemberTypes } from "./discord/DiscordMemberTypes";
 
 export interface UsersTypes {
+    [x: string]: any;
     id: string;
     name: string;
+    discord_name: string;
     emai?:string;
     emailVerified?: boolean;
     image: string;
@@ -16,6 +19,7 @@ export interface UsersTypes {
     banExpires: string;
     AccountData: AccountDataTypes;
     Account: AccountTypes;
+    discord: DiscordMemberTypes;
     error?:string;
     update: (...args:any[]) => Promise<any>
 }

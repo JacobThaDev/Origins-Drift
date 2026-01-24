@@ -63,7 +63,7 @@ const SubmitButton = () => {
 
         try {
             //deletes image on imgur servers
-            await LocalApi.delete(`imgur/delete/${deleteHash}`);
+            await LocalApi.delete(`/imgur/delete/${deleteHash}`);
         } catch (err:any) {
             console.log(err);
         }

@@ -64,7 +64,7 @@ const getCachedUsers = () => unstable_cache(
                 include: {
                     model: db.users,
                     as: "User",
-                    attributes: ["name", "image", "role", "banned", "banExpires", "createdAt" ],
+                    attributes: ["name", "discord_name", "image", "role", "banned", "banExpires", "createdAt" ],
                     include: {
                         model: db.accountData,
                         as: "AccountData"

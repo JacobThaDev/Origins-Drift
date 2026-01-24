@@ -3,7 +3,6 @@ import { betterAuth } from "better-auth";
 import {
 	bearer,
 	multiSession,
-	//oneTap,
 	oAuthProxy,
 	openAPI,
 	customSession,
@@ -12,9 +11,7 @@ import {
 import { Pool, createPool } from "mysql2/promise";
 import { nextCookies } from "better-auth/next-js";
 import { passkey } from "@better-auth/passkey";
-import LocalApi from "@/services/LocalApi";
-import { UsersTypes } from "@/utils/types/UsersTypes";
-import { DiscordMemberTypes } from "@/utils/types/discord/DiscordMemberTypes";
+import { getFullUserProfile } from "./user-service";
 
 const globalForDb = global as unknown as { conn: Pool | undefined };
 
@@ -71,17 +68,11 @@ export const auth = betterAuth({
 		multiSession(),
 		oAuthProxy(),
 		nextCookies(),
-		//oneTap(),
 		customSession(async (session) => {
-            const user_id = session.user.id;
-
-            const profile:{ 
-                user:UsersTypes, 
-                discord:DiscordMemberTypes, 
-                error?:string 
-            } = await LocalApi.get("/profile/"+user_id);
+            const user_id = session.session.userId;
+            const profile = await getFullUserProfile(user_id);
             
-            if (!profile || profile.error) {
+            if (!profile) {
                 return {
                     // return nothing  
                 };

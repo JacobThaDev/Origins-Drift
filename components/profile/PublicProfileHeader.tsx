@@ -1,5 +1,3 @@
-import { AccountTypes } from "@/utils/types/AccountTypes";
-import { DiscordMemberTypes } from "@/utils/types/discord/DiscordMemberTypes";
 import PageHeader from "../layout/PageHeader";
 import { CalendarDateRangeIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -7,11 +5,16 @@ import { getAvatar, getPlatformLink, getPlatformName } from "@/utils/Functions";
 import Image from "next/image";
 import PlatformIcon from "../leaderboards/PlatformIcon";
 import { DiscordIcon } from "../icons/DiscordIcon";
+import { UsersTypes } from "@/utils/types/UsersTypes";
 
-const PublicProfileHeader = ({ member } :  { member: ProfileTypes }) => {
+const PublicProfileHeader = ({ member } : { member:UsersTypes|undefined }) => {
+
+    if (!member) {
+        return null;
+    }
     
-    const platform = member.account.User?.AccountData?.platform;
-    const platform_name = member.account.User?.AccountData?.platform_name;
+    const platform = member.AccountData?.platform;
+    const platform_name = member.AccountData?.platform_name;
 
     const platformLink = (platform && platform_name) && getPlatformLink(platform, platform_name) || null;
 
@@ -52,18 +55,18 @@ const PublicProfileHeader = ({ member } :  { member: ProfileTypes }) => {
                                 {member.discord.nick || member.discord.user.global_name || member.discord.user.username}
                             </p>
                             <p className="text-white/60 mb-7">
-                                {member.account.User?.AccountData?.about_me}
+                                {member.AccountData?.about_me}
                             </p>
 
                             <div className="flex items-center gap-3 text-white/60 mb-7">
                                 <CalendarDateRangeIcon height={18} strokeWidth={2} />
                                 <p>
-                                    Joined {member.account.User && new Date(member.account.User?.createdAt).toLocaleDateString()}
+                                    Joined {new Date(member.createdAt).toLocaleDateString()}
                                 </p>
                             </div>
 
                             <div className="flex flex-col md:flex-row gap-5 gap-y-3">
-                                <Link href={`https://discord.com/users/${member.account.accountId}`} 
+                                <Link href={`https://discord.com/users/${member.Account.accountId}`} 
                                     target="_blank"
                                     className="px-5 py-3 border-2 border-border hover:bg-info hover:border-info text-white hover:text-black rounded-lg font-semibold flex items-center gap-5 transition-all">
                                     <DiscordIcon height={20} />
@@ -89,15 +92,6 @@ const PublicProfileHeader = ({ member } :  { member: ProfileTypes }) => {
                 </>
             </PageHeader>
     )
-}
-
-interface ProfileTypes {
-    account: AccountTypes,
-    discord: DiscordMemberTypes,
-    error?: { 
-        message: string, 
-        code: number 
-    };
 }
 
 export default PublicProfileHeader;

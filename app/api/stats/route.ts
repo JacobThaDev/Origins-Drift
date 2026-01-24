@@ -29,7 +29,7 @@ const getHighestScore = () => db.scores.findOne({
         {
             model: db.users,
             as: "User",
-            attributes: ["id", "name", "image"]
+            attributes: ["name", "image"]
         }
     ],
     group: ['Track.id', 'scores.id', 'User.id'],
@@ -42,7 +42,7 @@ const getTrackRecords = () => db.scores.findAll({
     attributes: [
         'class',
         [Sequelize.fn('MAX', Sequelize.col('score')), 'max_score'],
-         [Sequelize.fn('COUNT', Sequelize.col('*')), 'entries']
+        [Sequelize.fn('COUNT', Sequelize.col('*')), 'entries']
     ],
     where: {
         class: "a"
@@ -56,7 +56,9 @@ const getTrackRecords = () => db.scores.findAll({
         {
             model: db.users,
             as: "User",
-            attributes: ["name", "image", "role", "banned", "createdAt", "updatedAt"]
+            attributes: {
+                exclude: ['id']
+            }
         }
     ],
     group: [

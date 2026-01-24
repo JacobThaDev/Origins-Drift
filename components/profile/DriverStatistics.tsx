@@ -6,11 +6,11 @@ import { ClockIcon, FireIcon, TrophyIcon } from "@heroicons/react/24/outline";
 import { BullseyeIcon } from "../icons/BullseyeIcon";
 import LocalApi from "@/services/LocalApi";
 import { LeadersTypes } from "@/utils/types/LeadersTypes";
-import { ProfileTypes } from "@/utils/types/ProfileTypes";
 import CountUp from "react-countup";
+import { UsersTypes } from "@/utils/types/UsersTypes";
 
-const DriverStatistics = ({ member }:  { member: ProfileTypes }) => {
-
+const DriverStatistics = ({ member } : { member:UsersTypes|undefined }) => {
+    
     const [ stats, setStats ] = useState<any>();
     const [ mounted, setMounted ] = useState<boolean>();
 
@@ -22,7 +22,11 @@ const DriverStatistics = ({ member }:  { member: ProfileTypes }) => {
         }
 
         async function getUserData() {
-            const result:ProfileStatsTypes = await LocalApi.get("/profile/"+member.account.User?.id+"/stats");
+            if (!member) {
+                return;
+            }
+
+            const result:ProfileStatsTypes = await LocalApi.get("/user/"+member.discord_name+"/stats");
             
             if (result.error) {
                 return;
@@ -34,6 +38,11 @@ const DriverStatistics = ({ member }:  { member: ProfileTypes }) => {
         getUserData();
     },// eslint-disable-next-line 
     [mounted]);
+
+
+    if (!member) {
+        return null;
+    }
 
     return(
         <div className="bg-card/50 py-20">

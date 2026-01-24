@@ -52,8 +52,6 @@ const LeaderTable = () => {
             
             {leaderboard && leaderboard.length > 0 ? leaderboard.map((entry:LeadersTypes, index:number) => {
 
-                const displayName = entry.User?.name;
-
                 return(
                     <div className={`flex items-center ${index % 2 && "bg-black/10"} py-4 pe-5`} key={"score-"+index}>
                         <div className="w-[70px] rounded-xl flex items-center justify-center font-black">
@@ -67,9 +65,9 @@ const LeaderTable = () => {
                                     className="rounded-full border-[5px] border-black/30" />}
                             </div>
                             <div>
-                                <Link href={`/profile/${entry.User?.Account.accountId}`} 
+                                <Link href={`/profile/${entry.User?.discord_name}`} 
                                     className="text-lg font-semibold text-info hover:underline">
-                                    {displayName}
+                                    {entry.User?.name}
                                 </Link>
                                 {entry.proof_url ?
                                 <Link href={entry.proof_url.replace("i.", "").replace(".png", "").replace(".jpg", "")} 
