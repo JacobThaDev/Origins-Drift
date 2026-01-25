@@ -134,7 +134,7 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
         if (isNewPb) {
             // do not send this async. if it fails in the background
             // it's not that big of deal. record is already set. 
-            await sendWebhook(trackData, score, personal_best, session.user, classType, proof_url);
+            sendWebhook(trackData, score, personal_best, session.user, classType, proof_url);
             // user has a new record so cache needs updated.
             revalidateTag(`user-record-${trackData.id}-${classType.toUpperCase()}-${user_id}`);
         }
