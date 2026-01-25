@@ -19,7 +19,7 @@ import { use, useEffect } from "react";
 export default function TrackLeaderboard({ params }: { params: Promise<{ trackName: string }>}) {
 
     const { trackName } = use(params);
-    const { error, tracks, current, setCurrent, loading, setError }:TracksContextTypes = useTracksContext();
+    const { error, tracks, current, setCurrent, loading, setError, perfIndex }:TracksContextTypes = useTracksContext();
 
     useEffect(() => {
         if (!tracks) {
@@ -38,7 +38,7 @@ export default function TrackLeaderboard({ params }: { params: Promise<{ trackNa
             setCurrent(undefined)
             setError(undefined)
         }
-    }, [ tracks, trackName ]);
+    }, [ tracks, trackName, perfIndex ]);
 
     if (error) 
         return (<ErrorBox message={error}/>);
