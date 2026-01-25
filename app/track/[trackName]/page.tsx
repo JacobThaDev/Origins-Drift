@@ -35,8 +35,8 @@ export default function TrackLeaderboard({ params }: { params: Promise<{ trackNa
         }
 
         return() => {
-            setCurrent(undefined)
-            setError(undefined)
+            //setCurrent(undefined)
+            //setError(undefined)
         }
     }, [ tracks, trackName, perfIndex ]);
 
