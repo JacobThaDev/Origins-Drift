@@ -193,21 +193,24 @@ export const getUserRecord = (user_id:string, trackId: number, classType: string
     async () => {
         return await db.scores.findOne({
             attributes: [
-                [Sequelize.fn('MAX', Sequelize.col('score')), 'score'] // Use an alias for the result
+                [
+                    Sequelize.literal(`(
+                        SELECT MAX(score)
+                        FROM scores AS s
+                        WHERE s.class = '${classType}'
+                            AND s.user_id = '${user_id}'
+                            AND s.track = ${trackId}
+                    )`), 'score'
+                ] // Use an alias for the result
             ],
-            where: {
-                user_id: user_id,
-                track: trackId,
-                class: classType
-            },
             raw: true
         });
     },
-    ['user-record', String(trackId), classType.toUpperCase(), user_id], {
+    ['user-record', String(trackId), classType.toLowerCase(), user_id], {
         revalidate: 3600,
         tags: [
             'user-records',
-            `user-record-${trackId}-${classType.toUpperCase()}-${user_id}`
+            `user-record-${trackId}-${classType.toLowerCase()}-${user_id}`
         ]
     }
 )();

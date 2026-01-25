@@ -102,7 +102,7 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
         }
 
         // grab original record
-        const personal_best = await getUserRecord(user_id, trackData.id, classType);
+        let personal_best = await getUserRecord(user_id, trackData.id, classType);
 
         // now we just add a new score
         const score_result = await db.scores.create({
@@ -121,22 +121,17 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
             });
         }
 
-        // do this after securing the score on record. 
-        let isNewPb = false;
-        const difference = score - (personal_best ? personal_best.score : 0);
-
         if (!personal_best) {
-            personal_best.score = score;
+            personal_best = { score: 0 };
         }
 
-        isNewPb = difference > 0;
+        const pb = personal_best.score;
+        const isNewPb = score > pb;
 
         if (isNewPb) {
-            // do not send this async. if it fails in the background
-            // it's not that big of deal. record is already set. 
             sendWebhook(trackData, score, personal_best, session.user, classType, proof_url);
             // user has a new record so cache needs updated.
-            revalidateTag(`user-record-${trackData.id}-${classType.toUpperCase()}-${user_id}`);
+            revalidateTag(`user-record-${trackData.id}-${classType.toLowerCase()}-${user_id}`);
         }
 
         /**
