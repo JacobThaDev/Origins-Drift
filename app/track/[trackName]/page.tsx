@@ -10,8 +10,6 @@ import ClassButton from "@/components/leaderboards/ClassButton";
 import LeaderTable from "@/components/leaderboards/LeaderTable";
 import TrackSelector from "@/components/leaderboards/TrackSelector";
 import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
-import LocalApi from "@/services/LocalApi";
-import { LeaderboardTypes } from "@/utils/types/LeaderboardTypes";
 import { TracksTypes } from "@/utils/types/TracksTypes";
 import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import { use, useEffect } from "react";
@@ -19,7 +17,7 @@ import { use, useEffect } from "react";
 export default function TrackLeaderboard({ params }: { params: Promise<{ trackName: string }>}) {
 
     const { trackName } = use(params);
-    const { error, tracks, current, setCurrent, loading, setError, perfIndex }:TracksContextTypes = useTracksContext();
+    const { error, tracks, current, setCurrent, loading, perfIndex }:TracksContextTypes = useTracksContext();
 
     useEffect(() => {
         if (!tracks) {
@@ -32,11 +30,6 @@ export default function TrackLeaderboard({ params }: { params: Promise<{ trackNa
                     setCurrent(track);
                 }
             });
-        }
-
-        return() => {
-            //setCurrent(undefined)
-            //setError(undefined)
         }
     }, [ tracks, trackName, perfIndex ]);
 
