@@ -40,9 +40,31 @@ export function TracksContextProvider({ children }:TracksContextProps) {
         if (!mounted) {
             return;
         }
-
+        
         loadTracks();
     }, [ mounted, perfIndex ]);
+
+    useEffect(() => {
+        async function loadLeaderboard() {
+            let results:LeaderboardTypes = await LocalApi.get(
+                `/tracks/${current?.short_name}/${perfIndex}/leaderboard`
+            );
+            
+            if (results.error) {
+                setError(results.error);
+                setLoading(false);
+                setFetching(false);
+                return false;
+            }
+
+            setLeaderboard(results.leaderboard);
+            setLoading(false);
+            setFetching(false);
+        }
+
+        if (tracks && current)
+            loadLeaderboard();
+    }, [ tracks, current ]);
 
     const loadTracks = async(loadFlag:boolean = false) => {
         if (loadFlag)
@@ -96,19 +118,11 @@ export function TracksContextProvider({ children }:TracksContextProps) {
         }
     }
 
-    useEffect(() => {
-        if (!current) {
-            return;
-        }
-
-        loadLeaderboard(false);
-    }, [ current, perfIndex ]);
-
     return (
         <TracksContext.Provider value={{ 
             loading, setLoading, loadLeaderboard, current, setCurrent, tracks, error, 
             setError, perfIndex, setPerfIndex, leaderboard, setLeaderboard, game, setGame,
-            fetching, loadTracks
+            fetching, setFetching, loadTracks
             }}>
             {children}
         </TracksContext.Provider>
@@ -120,6 +134,7 @@ export interface TracksContextTypes {
     loading: boolean;
     fetching: boolean;
     setLoading: (arg1: boolean) => void;
+    setFetching: (arg1: boolean) => void;
     tracks: TracksTypes[];
     loadTracks: (arg1?:boolean) => Promise<boolean>;
     current: TracksTypes;

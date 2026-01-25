@@ -123,7 +123,6 @@ const SubmitButton = () => {
                 </> : 
                 <ConfirmBox 
                     score={score}
-                    profile={profile}
                     activeTrack={current}
                     classFilter={perfIndex}
                     imgurData={imgurData}

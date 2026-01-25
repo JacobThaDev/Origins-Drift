@@ -10,6 +10,8 @@ import ClassButton from "@/components/leaderboards/ClassButton";
 import LeaderTable from "@/components/leaderboards/LeaderTable";
 import TrackSelector from "@/components/leaderboards/TrackSelector";
 import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
+import LocalApi from "@/services/LocalApi";
+import { LeaderboardTypes } from "@/utils/types/LeaderboardTypes";
 import { TracksTypes } from "@/utils/types/TracksTypes";
 import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import { use, useEffect } from "react";
@@ -24,28 +26,19 @@ export default function TrackLeaderboard({ params }: { params: Promise<{ trackNa
             return;
         }
 
-        let currentTrack:TracksTypes|null = null;
-
-        tracks.forEach((track:TracksTypes) => {
-            if (track.short_name.toLowerCase() == trackName.toLowerCase()) {
-                currentTrack = track;
-                
-            }
-        });
-
-        if (!currentTrack) {
-            setError("Invalid track")
-            return;
+        if (current == null || current.short_name != trackName.toLocaleLowerCase()) {
+            tracks.forEach((track:TracksTypes) => {
+                if (track.short_name.toLowerCase() == trackName.toLowerCase()) {
+                    setCurrent(track);
+                }
+            });
         }
-        
-        setCurrent(currentTrack);
 
-        return () => {
-            setCurrent(undefined);
-            setError(undefined);
+        return() => {
+            setCurrent(undefined)
+            setError(undefined)
         }
-    }, // eslint-disable-next-line
-    [ tracks ]);
+    }, [ tracks, trackName ]);
 
     if (error) 
         return (<ErrorBox message={error}/>);

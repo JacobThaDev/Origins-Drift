@@ -17,7 +17,6 @@ import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider
 
 interface ConfirmBoxTypes {
     score: number|undefined;
-    profile: UsersTypes;
     imgurData: ImgurDataTypes|undefined;
     activeTrack: TracksTypes;
     classFilter: string;
@@ -26,7 +25,7 @@ interface ConfirmBoxTypes {
 }
 
 const ConfirmBox = ({ 
-    score, profile, imgurData, activeTrack, classFilter, reset, setShowConfirm 
+    score, imgurData, activeTrack, classFilter, reset, setShowConfirm 
 }: ConfirmBoxTypes) => {
 
     const [ loading, setLoading ] = useState<boolean>(false);
@@ -34,7 +33,7 @@ const ConfirmBox = ({
     const [ error, setError ] = useState<string>();
     const [ submitted, setSubmitted ] = useState<LeadersTypes>();
 
-    const { perfIndex, loadLeaderboard, loadTracks }:TracksContextTypes = useTracksContext();
+    const { perfIndex, loadLeaderboard }:TracksContextTypes = useTracksContext();
     
 
     const submitData = async() => {
@@ -62,10 +61,7 @@ const ConfirmBox = ({
             if (result.new_pb) {
                 // only time we need to update the tracks on their end,
                 // is if they hit a new pb so they can see that immediately
-                await Promise.all([
-                    loadLeaderboard(false),
-                    loadTracks(false)
-                ]);
+                loadLeaderboard(false);
             }
             
             setLoading(false);
