@@ -102,8 +102,9 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
         }
 
         // grab original record
-        let personal_best = await getUserRecord(user_id, trackData.id, classType);
+        let personal_best = await getUserRecord(user_id, score, trackData.id, classType);
 
+        console.log(personal_best)
         // now we just add a new score
         const score_result = await db.scores.create({
             user_id: user_id,
@@ -122,7 +123,7 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
         }
 
         if (!personal_best) {
-            personal_best = { score: 0 };
+            personal_best = { score: 0, rank: 0 };
         }
 
         const pb = personal_best.score;
@@ -157,7 +158,7 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
     }
 }
 
-const sendWebhook = async(trackData:TracksTypes, score:number, pb:{ score: number }, user:UsersTypes, classType:string, proof_url:string|undefined) => {
+const sendWebhook = async(trackData:TracksTypes, score:number, pb:{ score: number, rank: number }, user:UsersTypes, classType:string, proof_url:string|undefined) => {
     try {
         if (!trackData.webhook_url) {
             return null;
@@ -198,6 +199,11 @@ const sendWebhook = async(trackData:TracksTypes, score:number, pb:{ score: numbe
                         {
                             name: "Imrovement",
                             value: `${difference > 0 ? "⬆️ +" : "⬇️ "}`+formatNumber(difference),
+                            inline: true,
+                        },
+                        {
+                            name: `Track Rank (${classType.toUpperCase()}-Class)`,
+                            value: "#"+formatNumber(pb.rank + 1),
                             inline: true,
                         },
                     ],

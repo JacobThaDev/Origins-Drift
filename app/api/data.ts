@@ -189,7 +189,7 @@ export const getBasicTrackData = (track:string) => unstable_cache(
  * @param classType the PI class as either `a` or `s1` 
  * @returns 
  */
-export const getUserRecord = (user_id:string, trackId: number, classType: string) => unstable_cache(
+export const getUserRecord = (user_id:string, score:number, trackId: number, classType: string) => unstable_cache(
     async () => {
         return await db.scores.findOne({
             attributes: [
@@ -201,7 +201,16 @@ export const getUserRecord = (user_id:string, trackId: number, classType: string
                             AND s.user_id = '${user_id}'
                             AND s.track = ${trackId}
                     )`), 'score'
-                ] // Use an alias for the result
+                ],
+                [
+                    Sequelize.literal(`(
+                        SELECT COUNT(*)
+                        FROM scores AS s
+                        WHERE s.class = '${classType}'
+                            AND s.track = ${trackId}
+                            AND s.score > '${score}'
+                    )`), 'rank'
+                ]
             ],
             raw: true
         });
