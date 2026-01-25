@@ -34,7 +34,7 @@ const ConfirmBox = ({
     const [ error, setError ] = useState<string>();
     const [ submitted, setSubmitted ] = useState<LeadersTypes>();
 
-    const { perfIndex, loadLeaderboard }:TracksContextTypes = useTracksContext();
+    const { perfIndex, loadLeaderboard, loadTracks }:TracksContextTypes = useTracksContext();
     
 
     const submitData = async() => {
@@ -58,8 +58,17 @@ const ConfirmBox = ({
             
             setIsPersonalBest(result.new_pb ? result.new_pb : false);
             setSubmitted(result.result as LeadersTypes);
+            
+            if (result.new_pb) {
+                // only time we need to update the tracks on their end,
+                // is if they hit a new pb so they can see that immediately
+                await Promise.all([
+                    loadLeaderboard(false),
+                    loadTracks(false)
+                ]);
+            }
+            
             setLoading(false);
-            loadLeaderboard(false);
         } catch (err:any) {
             console.log(err);
             setError(err.message);

@@ -44,16 +44,56 @@ export function TracksContextProvider({ children }:TracksContextProps) {
         loadTracks();
     }, [ mounted, perfIndex ]);
 
-    const loadTracks = async() => {
-        let results = await LocalApi.get(`/tracks?class=${perfIndex}`);
-        
-        if (!results || results.error) {
-            setError(results.error);
-            setLoading(false);
-            return;
-        }
+    const loadTracks = async(loadFlag:boolean = false) => {
+        if (loadFlag)
+            setLoading(true);
 
-        setTracks(results);
+        try {
+            let results = await LocalApi.get(`/tracks?class=${perfIndex}`);
+            
+            if (!results || results.error) {
+                setError(results.error);
+                setLoading(false);
+                return false;
+            }
+
+            setTracks(results);
+            return true;
+        } catch (err:any) {
+            setLoading(false);
+            setError(err.message);
+            return false;
+        }
+    }
+
+    const loadLeaderboard = async(showLoader:boolean = false) => {
+        if (showLoader)
+            setLoading(true);
+
+        setFetching(true);
+        
+        try {
+            let results:LeaderboardTypes = await LocalApi.get(
+                `/tracks/${current?.short_name}/${perfIndex}/leaderboard`
+            );
+            
+            if (results.error) {
+                setError(results.error);
+                setLoading(false);
+                setFetching(false);
+                return false;
+            }
+            
+            setLeaderboard(results.leaderboard);
+            setLoading(false);
+            setFetching(false);
+            return true;
+        } catch (err:any) {
+            setLoading(false);
+            setFetching(false);
+            setError(err.message);
+            return false;
+        }
     }
 
     useEffect(() => {
@@ -64,33 +104,11 @@ export function TracksContextProvider({ children }:TracksContextProps) {
         loadLeaderboard(false);
     }, [ current, perfIndex ]);
 
-    const loadLeaderboard = async(showLoader:boolean = false) => {
-        if (showLoader)
-            setLoading(true);
-
-        setFetching(true);
-        
-        let results:LeaderboardTypes = await LocalApi.get(
-            `/tracks/${current?.short_name}/${perfIndex}/leaderboard`
-        );
-        
-        if (results.error) {
-            setError(results.error);
-            setLoading(false);
-            setFetching(false);
-            return;
-        }
-        
-        setLeaderboard(results.leaderboard);
-        setLoading(false);
-        setFetching(false);
-    }
-
     return (
         <TracksContext.Provider value={{ 
             loading, setLoading, loadLeaderboard, current, setCurrent, tracks, error, 
             setError, perfIndex, setPerfIndex, leaderboard, setLeaderboard, game, setGame,
-            fetching
+            fetching, loadTracks
             }}>
             {children}
         </TracksContext.Provider>
@@ -103,6 +121,7 @@ export interface TracksContextTypes {
     fetching: boolean;
     setLoading: (arg1: boolean) => void;
     tracks: TracksTypes[];
+    loadTracks: (arg1?:boolean) => Promise<boolean>;
     current: TracksTypes;
     setCurrent: (arg1: TracksTypes|undefined|null) => void;
     error: string;
@@ -111,7 +130,7 @@ export interface TracksContextTypes {
     setPerfIndex: (arg1: "a"|"s1") => void;
     leaderboard: LeadersTypes[];
     setLeaderboard: (arg1: LeadersTypes[]|undefined) => void;
-    loadLeaderboard: (arg1?:boolean) => void;
+    loadLeaderboard: (arg1?:boolean) => Promise<boolean>;
     game: GamesSymbol;
     setGame: (arg1: GamesSymbol) => void;
 }

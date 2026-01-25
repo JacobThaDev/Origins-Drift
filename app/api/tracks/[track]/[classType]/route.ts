@@ -3,7 +3,7 @@ import db from "@/models";
 import { revalidateTag,  } from "next/cache";
 import { LeadersTypes } from "@/utils/types/LeadersTypes";
 import { formatNumber } from "@/utils/Functions";
-import { getBasicTrackData, getTrackByName, getTrackByNameWithHook, getUserRecord } from "@/app/api/data";
+import { getTrackByName, getTrackByNameWithHook, getUserRecord } from "@/app/api/data";
 import { UsersTypes } from "@/utils/types/UsersTypes";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -143,8 +143,8 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
          * Now we need to update the caches so it can show the new score
          * across the website properly
          */
-        revalidateTag(`track-data`);
-        revalidateTag(`tracks-data`);
+        revalidateTag(`track-data-${track.toLowerCase()}-${classType.toLowerCase()}`);
+        revalidateTag(`tracks-data-${classType.toLowerCase()}`);
         revalidateTag(`leaders-${trackData.id}-${classType.toUpperCase()}`);
         revalidateTag(`recent-${trackData.id}-${classType.toUpperCase()}`);
 
