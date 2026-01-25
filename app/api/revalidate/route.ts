@@ -23,7 +23,9 @@ export async function GET(req: any, res:any) {
 
         revalidateTag(`users`);
         revalidateTag(`user-records`);
-        revalidateTag(`tracks`);
+        revalidateTag(`track-data`);
+        revalidateTag(`track-hook`);
+        revalidateTag(`tracks-data`);
         revalidateTag(`track-basic`);
         revalidateTag(`leaders`);
         revalidateTag(`recent`);

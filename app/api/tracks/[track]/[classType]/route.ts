@@ -1,10 +1,9 @@
 import { TracksTypes } from "@/utils/types/TracksTypes";
 import db from "@/models";
-import { Sequelize } from "sequelize";
-import { revalidateTag, unstable_cache } from "next/cache";
+import { revalidateTag,  } from "next/cache";
 import { LeadersTypes } from "@/utils/types/LeadersTypes";
 import { formatNumber } from "@/utils/Functions";
-import { getCachedTrack, getCachedUser, getTrackData, getUserRecord } from "@/app/api/data";
+import { getBasicTrackData, getTrackByName, getTrackByNameWithHook, getUserRecord } from "@/app/api/data";
 import { UsersTypes } from "@/utils/types/UsersTypes";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -33,7 +32,7 @@ export async function GET(req: any, { params } : RouteContext) {
             }, { status: 422 });
         }
 
-        const trackData:TracksTypes|undefined = await getTrackData(track, classType);
+        const trackData:TracksTypes|undefined = await getTrackByName(track, classType);
 
         if (!trackData) {
             return Response.json({
@@ -94,13 +93,16 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
         const { track, classType } = await params;
 
         // get the specific track data
-        const trackData:TracksTypes|undefined = await getCachedTrack(track);
+        const trackData:TracksTypes|undefined = await getTrackByNameWithHook(track);
 
         if (!trackData || trackData.error) {
             return Response.json({
                 error: trackData ? trackData.error : "Track not found."
             });
         }
+
+        // grab original record
+        const personal_best = await getUserRecord(user_id, trackData.id, classType);
 
         // now we just add a new score
         const score_result = await db.scores.create({
@@ -120,21 +122,19 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
         }
 
         // do this after securing the score on record. 
-        const personal_best = await getUserRecord(user_id, trackData.id, classType);
         let isNewPb = false;
+        const difference = score - (personal_best ? personal_best.score : 0);
 
         if (!personal_best) {
             personal_best.score = score;
         }
 
-        const difference = score - (personal_best ? personal_best.score : 0);
         isNewPb = difference > 0;
 
         if (isNewPb) {
             // do not send this async. if it fails in the background
             // it's not that big of deal. record is already set. 
-            sendWebhook(trackData, score, personal_best, session.user, classType, proof_url);
-
+            await sendWebhook(trackData, score, personal_best, session.user, classType, proof_url);
             // user has a new record so cache needs updated.
             revalidateTag(`user-record-${trackData.id}-${classType.toUpperCase()}-${user_id}`);
         }
@@ -143,9 +143,10 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
          * Now we need to update the caches so it can show the new score
          * across the website properly
          */
+        revalidateTag(`track-data`);
+        revalidateTag(`tracks-data`);
         revalidateTag(`leaders-${trackData.id}-${classType.toUpperCase()}`);
         revalidateTag(`recent-${trackData.id}-${classType.toUpperCase()}`);
-        revalidateTag(`tracks-data-${classType}`);
 
         return Response.json({
             success: true,
@@ -164,7 +165,7 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
 const sendWebhook = async(trackData:TracksTypes, score:number, pb:{ score: number }, user:UsersTypes, classType:string, proof_url:string|undefined) => {
     try {
         if (!trackData.webhook_url) {
-            return;
+            return null;
         }
 
         const difference = score - (pb ? pb.score : 0);
@@ -172,33 +173,35 @@ const sendWebhook = async(trackData:TracksTypes, score:number, pb:{ score: numbe
         const embedPayload = {
             embeds: [
                 {
+                    // Use the user's name as the author to make it feel personal
                     author: {
-                        name: trackData.name+" | Origins Drift",
-                        url: process.env.PREVIEW_URL + "/track/"+trackData.short_name
+                        name: `${trackData.name} Circuit`,
+                        icon_url: user.image, // If available
+                        url: `${process.env.PREVIEW_URL}/track/${trackData.short_name}`,
                     },
-                    //title: "🏆 Score Added",
-                    description: 
-                        (score > pb.score 
-                            ? `**<@${user.Account.accountId}>** has hit a new ✨personal best✨ of **${formatNumber(score)}** 🥳!`
-                            : `**<@${user.Account.accountId}>** has posted a score of **${formatNumber(score)}**!`),
+                    title: `${user.name} reached a New Personal Best!`,
+                    ...(proof_url && { 
+                        image: { 
+                            url: proof_url 
+                        } 
+                    }),
+                    url: `${process.env.PREVIEW_URL}/profile/${user.discord_name}`,
+                    color: 0xF1C40F, // Gold color for a PB
+                    // Place the main achievement front and center
+                    description: `## 🏆 ${formatNumber(score)}`,
                     fields: [
                         {
                             name: "Class",
-                            value: classType.toUpperCase() + (classType.toUpperCase() == "A" ? "-800" : "-900"),
+                            value: `\`${classType.toUpperCase()}${classType.toUpperCase() === "A" ? "-800" : "-900"}\``,
                             inline: true,
                         },
                         {
-                            name: "Score",
-                            value: formatNumber(score),
-                            inline: true,
-                        },
-                        {
-                            name: "Personal Best",
+                            name: "Previous Best",
                             value: formatNumber(pb.score),
                             inline: true,
                         },
                         {
-                            name: "Performance",
+                            name: "Imrovement",
                             value: `${difference > 0 ? "⬆️ +" : "⬇️ "}`+formatNumber(difference),
                             inline: true,
                         },
@@ -207,9 +210,8 @@ const sendWebhook = async(trackData:TracksTypes, score:number, pb:{ score: numbe
                         url: process.env.PREVIEW_URL + trackData.track_image,
                     },
                     footer: {
-                        text: "Origins Drift Club"
+                        text: "Origins Drift Club • Keep Drifting!",
                     },
-                    ...(proof_url && { image: { url: proof_url } }),
                     timestamp: new Date().toISOString(),
                 }
             ]
@@ -224,10 +226,13 @@ const sendWebhook = async(trackData:TracksTypes, score:number, pb:{ score: numbe
         if (!discordRes.ok) {
             const errorText = await discordRes.text();
             console.error("Discord Webhook Error:", errorText);
-            return Response.json({
+
+            return {
                 error: "Webhook error: "+errorText
-            })
+            }
         }
+
+        return discordRes;
     } catch(err:any) {
         console.error(err);
     }

@@ -8,40 +8,17 @@ const BOT_TOKEN   = process.env.DISCORD_BOT_TOKEN;
 const GUILD_ID    = process.env.DISCORD_GUILD_ID;
 
 /**
- * get a tracks data including the game it belongs to
- * @param trackName the short name of the track.
- * @returns 
- */
-export const getCachedTrack = (trackName:string) => unstable_cache(
-    async () => {
-        const track = await db.tracks.findOne({
-            where: {
-                short_name: trackName
-            },
-            include: {
-                model: db.games,
-                as: "Game"
-            }
-        });
-        
-        return track;
-    },
-    ['tracks', trackName.toLowerCase()], {
-        tags: [
-            'tracks',
-            `track-${trackName.toLowerCase()}`,
-        ]
-    }
-)();
-
-/**
  * get a specific tracks data. differs from {@link getTracksData}
  * @param track 
  * @param classType 
  * @returns 
  */
-export const getTrackData = (track:string, classType:string) => unstable_cache(
+export const getTrackByName = (track:string, classType:string = 'a') => unstable_cache(
     async () => {
+
+        if (!classType)
+            classType = 'a';
+        
         const trackData = await db.tracks.findOne({
             attributes: {
                 exclude: ['webhook_url'],
@@ -52,7 +29,7 @@ export const getTrackData = (track:string, classType:string) => unstable_cache(
                             SELECT MAX(CAST(score AS SIGNED))
                             FROM scores AS s
                             WHERE s.track = tracks.id
-                                and s.class = '${classType}'
+                                ${classType && `AND s.class = '${classType}'`}
                         )`), 'top_score'
                     ],
                     [
@@ -60,7 +37,7 @@ export const getTrackData = (track:string, classType:string) => unstable_cache(
                             SELECT COUNT(DISTINCT user_id)
                             FROM scores AS s
                             WHERE s.track = tracks.id 
-                                and s.class = '${classType}'
+                               ${classType && `AND s.class = '${classType}'`}
                         )`), 'user_count'
                     ],
                     [
@@ -68,14 +45,12 @@ export const getTrackData = (track:string, classType:string) => unstable_cache(
                             SELECT COUNT(DISTINCT id)
                             FROM scores AS s
                             WHERE s.track = tracks.id 
-                                and s.class = '${classType}'
+                                ${classType && `AND s.class = '${classType}'`}
                         )`), 'entries'
                     ]
                 ]
             },
-            where: parseInt(track) 
-                ? { id: track, } 
-                : { short_name: track },
+            where: { short_name: track },
             include: {
                 model: db.games,
                 as: "Game"
@@ -84,12 +59,39 @@ export const getTrackData = (track:string, classType:string) => unstable_cache(
         
         return trackData;
     },
-    ['track-data', parseInt(track) ? String(track) : track.toLowerCase(), classType], {
+    ['track-data', track.toLowerCase(), classType], {
         revalidate: 3600,
         tags: [
             'track-data',
-            `track-data-${parseInt(track) ? String(track) : track.toLowerCase()}`,
-            `track-data-${parseInt(track) ? String(track) : track.toLowerCase()}-${classType}`,
+            `track-data-${track.toLowerCase()}-${classType}`,
+        ]
+    }
+)();
+
+
+/**
+ * get a specific tracks data. differs from {@link getTracksData}
+ * @param track 
+ * @param classType 
+ * @returns 
+ */
+export const getTrackByNameWithHook = (track:string) => unstable_cache(
+    async () => {
+        const trackData = await db.tracks.findOne({
+            where: { short_name: track },
+            include: {
+                model: db.games,
+                as: "Game"
+            }
+        });
+        
+        return trackData;
+    },
+    ['track-hook', track.toLowerCase()], {
+        revalidate: 3600,
+        tags: [
+            'track-hook',
+            `track-hook-${track.toLowerCase()}`,
         ]
     }
 )();
@@ -151,6 +153,31 @@ export const getTracksData = (classType:string = 'a') => unstable_cache(
         tags: [
             'tracks-data',
             `tracks-data-${classType}`
+        ]
+    }
+)();
+
+export const getBasicTrackData = (track:string) => unstable_cache(
+    async () => {
+        const trackData = await db.tracks.findOne({
+            attributes: {
+                exclude: ['webhook_url']
+            },
+            where: { short_name: track },
+            include: {
+                model: db.games,
+                as: "Game"
+            }
+        });
+        
+        return trackData;
+    },
+    ['track-basic', track.toLowerCase()], {
+        revalidate: (3600 & 6 ), // 6 hour for basic track data that rarely changes.
+        tags: [
+            'track-basic',
+            `track-basic-${track.toLowerCase()}`,
+            `track-basic-${track.toLowerCase()}`,
         ]
     }
 )();

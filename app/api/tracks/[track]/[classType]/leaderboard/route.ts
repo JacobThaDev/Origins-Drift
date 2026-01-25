@@ -1,34 +1,5 @@
 import { TracksTypes } from "@/utils/types/TracksTypes";
-import db from "@/models";
-import { unstable_cache } from "next/cache";
-import { getCachedScores } from "@/app/api/data";
-
-const getTrackData = (track:string) => unstable_cache(
-    async () => {
-        const trackData = await db.tracks.findOne({
-            attributes: {
-                exclude: ['webhook_url']
-            },
-            where: parseInt(track) 
-                ? { id: track, } 
-                : { short_name: track },
-            include: {
-                model: db.games,
-                as: "Game"
-            }
-        });
-        
-        return trackData;
-    },
-    ['track-basic', parseInt(track) ? String(track) : track.toLowerCase()], {
-        revalidate: 3600,
-        tags: [
-            'track-basic',
-            `track-basic-${parseInt(track) ? String(track) : track.toLowerCase()}`,
-            `track-basic-${parseInt(track) ? String(track) : track.toLowerCase()}`,
-        ]
-    }
-)();
+import { getCachedScores, getTrackByName } from "@/app/api/data";
 
 
 /**
@@ -50,7 +21,7 @@ export async function GET(req: any, res:any) {
             });
         }
 
-        const track:TracksTypes = await getTrackData(trackName);
+        const track:TracksTypes = await getTrackByName(trackName);
 
         if (!track) {
             return Response.json({
