@@ -14,7 +14,6 @@ const CarGarageBlock = ({ car } : CarBlockTypes) => {
     const [ error, setError ] = useState<string>();
     const [ uploading, setUploading ] = useState<boolean>(false);
     const [ imgurData, setImgurData ] = useState<ImgurDataTypes>();
-    const [ image, setImage ] = useState<string|null>(car.image_url);
 
     const [ confirmImage, setConfirmImage ] = useState<boolean>(false);
     const [ confirmCar, setConfirmCar ] = useState<boolean>(false);
@@ -131,7 +130,6 @@ const CarGarageBlock = ({ car } : CarBlockTypes) => {
             });
             
             if (result.success) {
-                setImage(imgurData.link);
                 loadGarage();
             }
         } catch (err:any) {
@@ -151,7 +149,6 @@ const CarGarageBlock = ({ car } : CarBlockTypes) => {
             });
 
             if (result.success) {
-                setImage(null);
                 loadGarage();
             }
         } catch (err:any) {
@@ -179,7 +176,7 @@ const CarGarageBlock = ({ car } : CarBlockTypes) => {
                     }
                 }
 
-                setGarage(garage_copy);
+                loadGarage()
             }
         } catch (err:any) {
             console.log(err);
@@ -199,7 +196,7 @@ const CarGarageBlock = ({ car } : CarBlockTypes) => {
             <div className="relative w-full h-[150px] rounded-lg overflow-hidden mb-4">
                 
                 <div className="absolute flex gap-3 z-[20] top-2 right-2 px-3 justify-between" ref={dropdownRef}>
-                    {image && 
+                    {car.image_url && 
                         <button onClick={() => setConfirmImage(true)}
                             aria-label="Remove Image"
                             disabled={status != undefined} 
@@ -258,17 +255,17 @@ const CarGarageBlock = ({ car } : CarBlockTypes) => {
                     </div>
                 </>}
 
-                {image && 
+                {car.image_url && 
                 <div className="flex items-center justify-center absolute w-full h-full overflow-hidden">
                     <Image 
-                        src={image} 
+                        src={car.image_url} 
                         width={1920} height={1080} 
                         className="w-full min-w-[350px] opacity-80"
                         alt="" 
                         referrerPolicy="no-referrer"/>
                 </div>}
 
-                {!image && <div {...getRootProps()} className="hover:cursor-pointer inline-flex bg-secondary/50 relative z-[10] w-full h-full items-center justify-center overflow-hidden">
+                {!car.image_url && <div {...getRootProps()} className="hover:cursor-pointer inline-flex bg-secondary/50 relative z-[10] w-full h-full items-center justify-center overflow-hidden">
                     <input {...getInputProps()} />
                     
                     <div className="text-center">
@@ -280,7 +277,6 @@ const CarGarageBlock = ({ car } : CarBlockTypes) => {
                             Click or drop a photo here.<br/>1920 x 1080 / 10mb
                         </p>
                     </div>
-
                 </div>}
             </div>
             
