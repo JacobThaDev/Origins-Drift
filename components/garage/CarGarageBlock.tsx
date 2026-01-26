@@ -258,6 +258,7 @@ const CarGarageBlock = ({ car } : CarBlockTypes) => {
                 {car.image_url && 
                 <div className="flex items-center justify-center absolute w-full h-full overflow-hidden">
                     <Image 
+                        unoptimized
                         src={car.image_url} 
                         width={1920} height={1080} 
                         className="w-full min-w-[350px] opacity-80"
