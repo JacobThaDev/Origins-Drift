@@ -283,9 +283,9 @@ const CarGarageBlock = ({ car } : CarBlockTypes) => {
             
             <div>
                 <div className="flex mb-3">
-                    <div>
-                        <p className="text-muted">{car.CarData.make}</p>
-                        <p className="text-lg font-semibold">{car.CarData.year} {car.CarData.model}</p>
+                    <div className="truncate">
+                        <p className="text-muted">{car.CarData.year} {car.CarData.make}</p>
+                        <p className="text-lg font-semibold truncate">{car.CarData.model}</p>
                     </div>
                     <div className="ml-auto">
                         <p className="inline-flex justify-center rounded-lg items-center bg-secondary w-7 h-7 font-bold text-center text-sm text-white/50">
