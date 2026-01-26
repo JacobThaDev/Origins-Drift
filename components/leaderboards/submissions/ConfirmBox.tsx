@@ -6,7 +6,6 @@ import { BasicApiResponseType } from "@/utils/types/BasicApiResponseType";
 import { ImgurDataTypes } from "@/utils/types/ImgurDataTypes";
 import { LeadersTypes } from "@/utils/types/LeadersTypes";
 import { TracksTypes } from "@/utils/types/TracksTypes";
-import { UsersTypes } from "@/utils/types/UsersTypes";
 import { CheckIcon, PresentationChartBarIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";

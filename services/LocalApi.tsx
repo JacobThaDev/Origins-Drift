@@ -33,9 +33,9 @@ const LocalApi = {
 
     get: (url: string, options?: RequestInit) => LocalApi.request(url, { ...options, method: 'GET' }),
     delete: (url: string, options?: RequestInit) => LocalApi.request(url, { ...options, method: 'DELETE' }),
+    put: (url: string, options?: RequestInit) => LocalApi.request(url, { ...options, method: 'PUT' }),
     post: (url: string, data: any, options?: RequestInit) => 
         LocalApi.request(url, { ...options, method: 'POST', body: JSON.stringify(data) }),
-    // Add put, delete, etc., as needed
 };
 
 export default LocalApi;

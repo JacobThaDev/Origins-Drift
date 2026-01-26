@@ -17,7 +17,7 @@ import { use, useEffect } from "react";
 export default function TrackLeaderboard({ params }: { params: Promise<{ trackName: string }>}) {
 
     const { trackName } = use(params);
-    const { error, tracks, current, setCurrent, loading, perfIndex }:TracksContextTypes = useTracksContext();
+    const { error, tracks, current, setCurrent, loading }:TracksContextTypes = useTracksContext();
 
     useEffect(() => {
         if (!tracks) {
@@ -28,7 +28,8 @@ export default function TrackLeaderboard({ params }: { params: Promise<{ trackNa
                 setCurrent(track);
             }
         });
-    }, [ tracks, trackName ]);
+    }, // eslint-disable-next-line 
+    [ tracks, trackName ]);
 
     if (error) 
         return (<ErrorBox message={error}/>);

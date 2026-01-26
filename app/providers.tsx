@@ -15,7 +15,8 @@ export default function Providers({ children }: {  children: React.ReactNode }) 
     
     const pathname = usePathname();
 
-    if (pathname == "/profile" || pathname.startsWith("/profile")) {
+    if (pathname == "/profile" || pathname.startsWith("/profile") 
+        || pathname == "/garage") {
         return(
         <ProgressProvider 
             height="4px"

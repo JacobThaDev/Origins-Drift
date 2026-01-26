@@ -7,6 +7,66 @@ import { DiscordMemberTypes } from "@/utils/types/discord/DiscordMemberTypes";
 const BOT_TOKEN   = process.env.DISCORD_BOT_TOKEN;
 const GUILD_ID    = process.env.DISCORD_GUILD_ID;
 
+export const getGarage = (user_id:string) => unstable_cache(
+    async () => {
+        const garage = await db.garage.findAll({
+            where: {
+                owner: user_id
+            },
+            attributes: {
+                exclude: ['owner', 'delete_hash', 'updatedAt'],
+            },
+            include: [
+                {
+                    model: db.cars_fh5,
+                    as: 'CarData',
+                }
+            ],
+            raw: true,
+            nest: true
+        });
+        
+        return garage;
+    },
+    ['garage', user_id], {
+        revalidate: 3600,
+        tags: [
+            'garage',
+            `garage-${user_id}`
+        ]
+    }
+)();
+
+export const getCarByOwner = (owner_id:string, car_id:number) => unstable_cache(
+    async () => {
+        const garage = await db.garage.findAll({
+            where: {
+                owner: owner_id
+            },
+            attributes: {
+                exclude: ['owner', 'delete_hash', 'updatedAt'],
+            },
+            include: [
+                {
+                    model: db.cars_fh5,
+                    as: 'CarData',
+                }
+            ],
+            raw: true,
+            nest: true
+        });
+        
+        return garage;
+    },
+    ['garage', owner_id, String(car_id)], {
+        revalidate: 3600,
+        tags: [
+            'garage',
+            `garage-${owner_id}-${car_id}`
+        ]
+    }
+)();
+
 /**
  * get a specific tracks data. differs from {@link getTracksData}
  * @param track 

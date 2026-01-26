@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import LocalApi from "@/services/LocalApi";
 import { ImgurDataTypes } from "@/utils/types/ImgurDataTypes";
-import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvider";
 import ConfirmBox from "./submissions/ConfirmBox";
 import Particles from "../misc/Particles";
 import SubmitScoreForm from "./submissions/SubmitScoreForm";
@@ -12,7 +11,6 @@ import SubmitScoreForm from "./submissions/SubmitScoreForm";
 const SubmitButton = () => {
 
     const { current, perfIndex }:TracksContextTypes = useTracksContext();
-    const { profile }:ProfileContextTypes = useProfileContext();
 
     const [ imgurData, setImgurData ] = useState<ImgurDataTypes>();
     const [ error, setError ]         = useState<string>();

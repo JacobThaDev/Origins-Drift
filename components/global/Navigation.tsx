@@ -86,7 +86,10 @@ const Navigation = () => {
                 
                 <div className="flex items-center h-full w-full justify-between">
                     <div className="lg:w-[250px] lg:min-w-[250px]">
-                        <p className="text-2xl font-black">Origins</p>
+                        <p className="text-2xl font-black relative inline-block">
+                            Origins
+                            <span className="absolute inline-block px-1 py-0.5 border-background border-2 text-[10px] leading-[1em] -bottom-1 -right-3 bg-danger rounded-full">BETA</span>
+                        </p>
                     </div>
 
                     <div className="hidden lg:flex items-center justify-center w-full">

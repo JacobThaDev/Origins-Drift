@@ -147,13 +147,13 @@
 }
 
 .scrollbar::-webkit-scrollbar {
-    width: 18px;
+    width: 12px;
     height:18px;
 }
   
   /* Track */
 .scrollbar::-webkit-scrollbar-track {
-    background: #14171d;
+    background: transparent;
     border-radius: 0 0 6px 0;
     
 }
@@ -161,8 +161,6 @@
   /* Handle */
 .scrollbar::-webkit-scrollbar-thumb {
     background: #2c3643;
-    border: solid 4px #14171d;
-    
     border-radius: 8px;
 }
   

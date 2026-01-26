@@ -1,3 +1,4 @@
+import { CarIcon } from "@/components/icons/CarIcon";
 import { ArrowRightEndOnRectangleIcon, HomeIcon, QueueListIcon, UsersIcon } from "@heroicons/react/24/outline";
 
 export default [
@@ -10,6 +11,11 @@ export default [
         title: "Members",
         url: "/members",
         icon: <UsersIcon height={20}/>
+    },
+    {
+        title: "Garage",
+        url: "/garage",
+        icon: <CarIcon height={20}/>
     },
     {
         title: "Leaderboards",
