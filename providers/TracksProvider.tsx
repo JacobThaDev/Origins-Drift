@@ -40,7 +40,7 @@ export function TracksContextProvider({ children }:TracksContextProps) {
         if (!mounted) {
             return;
         }
-        
+        console.log("called")
         loadTracks();
     }, [ mounted, perfIndex ]);
 

@@ -23,15 +23,12 @@ export default function TrackLeaderboard({ params }: { params: Promise<{ trackNa
         if (!tracks) {
             return;
         }
-
-        if (current == null || current.short_name != trackName.toLocaleLowerCase()) {
-            tracks.forEach((track:TracksTypes) => {
-                if (track.short_name.toLowerCase() == trackName.toLowerCase()) {
-                    setCurrent(track);
-                }
-            });
-        }
-    }, [ tracks, trackName, perfIndex ]);
+        tracks.forEach((track:TracksTypes) => {
+            if (track.short_name.toLowerCase() == trackName.toLowerCase()) {
+                setCurrent(track);
+            }
+        });
+    }, [ tracks, trackName ]);
 
     if (error) 
         return (<ErrorBox message={error}/>);
