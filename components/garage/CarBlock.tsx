@@ -19,7 +19,10 @@ const CarBlock = ({ car, search, makeFilter } : CarBlockTypes) => {
     const [ status, setStatus ] = useState<string>();
 
     if (search) {
-        if ((makeFilter && makeFilter != car.make) || !car.model.toLowerCase().includes(search.toLowerCase()))
+
+        const full_car_name = car.year+" "+car.make+" "+car.model;
+
+        if ((makeFilter && makeFilter != car.make) || (!full_car_name.toLowerCase().includes(search.toLowerCase())))
             return null;
     } else {
         if (makeFilter == null || car.make != makeFilter)

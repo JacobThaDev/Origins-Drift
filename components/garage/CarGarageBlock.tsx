@@ -21,7 +21,7 @@ const CarGarageBlock = ({ car } : CarBlockTypes) => {
     const [ status, setStatus ] = useState<string>();
     const [ mounted, setMounted ] = useState<boolean>(false);
 
-    const { garage, loadGarage, setGarage }:GarageContextTypes = useGarageContext();
+    const { garage, loadGarage }:GarageContextTypes = useGarageContext();
 
     useEffect(() => setMounted(true), []);
     
