@@ -22,14 +22,14 @@ const PublicProfileHeader = ({ member } : { member:UsersTypes|undefined }) => {
             <PageHeader gradient={true}>
                 <>
                 <div className="relative max-w-full text-start">
-                    <div className="flex flex-col md:flex-row gap-10">
-                        <div className="min-w-[160px]">
+                    <div className="flex flex-col md:flex-row-reverse gap-10">
+                        <div className="min-w-[200px]">
                             <Image
                                 unoptimized
                                 src={getAvatar(member.discord.user.id, member.discord.user.avatar)}
-                                width={150} 
-                                height={150}
-                                className="rounded-full border-[6px] border-border hover:border-info w-full max-w-[160px]"
+                                width={200} 
+                                height={200}
+                                className="rounded-full border-[6px] border-border hover:border-info w-full max-w-[200px]"
                                 alt="" />
                         </div>
                         <div className="flex w-full flex-col gap-10 lg:flex-row lg:justify-between">
@@ -53,7 +53,7 @@ const PublicProfileHeader = ({ member } : { member:UsersTypes|undefined }) => {
                                 </div>
 
                                 <p className="text-4xl lg:text-6xl font-bold mb-3 tracking-tight">
-                                    {member.discord.nick || member.discord.user.global_name || member.discord.user.username}
+                                    {member.discord.nick || member.discord.user.global_name || member.discord.user.username} | Drift Profile
                                 </p>
                                 <p className="text-white/60 mb-7">
                                     {member.AccountData?.about_me}

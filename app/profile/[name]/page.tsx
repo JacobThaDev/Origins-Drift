@@ -79,7 +79,6 @@ export default function PublicProfile({ params }: ProfileTypes) {
     return(
         <>
             <PublicProfileHeader member={member} />
-            <hr className="border-border"/>
             <DriverStatistics stats={stats}/>
             <RecentDrifts recent={recent} />
             <DriftGarage member={member} garage={garage} />

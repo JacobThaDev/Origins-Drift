@@ -2,6 +2,7 @@ import { UsersTypes } from "@/utils/types/UsersTypes";
 import Container from "../layout/Container";
 import { GarageTypes } from "@/utils/types/GarageTypes";
 import Image from "next/image";
+import { CarIcon } from "../icons/CarIcon";
 
 interface DriftGarageTypes {
     member: UsersTypes|undefined;
@@ -16,16 +17,13 @@ const DriftGarage = ({ member, garage }: DriftGarageTypes) => {
 
     return(
     <>
-        <div className="py-10 pb-20">
+        <div className="pb-20">
             <Container>
-                <div className="flex flex-col justify-center gap-4 mb-5">
+                 <div className="flex items-center gap-5 py-4 mb-5">
+                    <CarIcon height={30} className="text-info" />
                     <div>
-                        <h2 className="text-sm font-semibold text-muted uppercase tracking-wider mb-3">
-                            Garage
-                        </h2>
-                        <p className="text-3xl md:text-4xl font-bold text-foreground mb-5">
-                            My <span className="italic text-info">Drift</span> Garage
-                        </p>
+                        <p className="text-sm text-muted">Garage</p>
+                        <p className="text-2xl lg:text-3xl font-bold">My <span className="italic text-info">Drift</span> Garage</p>
                     </div>
                 </div>
 

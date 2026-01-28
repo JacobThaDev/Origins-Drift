@@ -1,6 +1,6 @@
 "use client";
 
-import { ClockIcon, FireIcon, TrophyIcon } from "@heroicons/react/24/outline";
+import { ChartBarIcon, ClockIcon, FireIcon, TrophyIcon } from "@heroicons/react/24/outline";
 import { BullseyeIcon } from "../icons/BullseyeIcon";
 import { LeadersTypes } from "@/utils/types/LeadersTypes";
 import CountUp from "react-countup";
@@ -9,15 +9,22 @@ import Container from "../layout/Container";
 const DriverStatistics = ({ stats } : { stats:ProfileStatsTypes }) => {
 
     return(
-        <div className="pt-10">
+        <div className="pb-10">
             <Container>
                 <div>
+                    <div className="flex items-center gap-5 py-4 mb-5">
+                        <ChartBarIcon height={30} className="text-info" />
+                        <div>
+                            <p className="text-sm text-muted">Performance</p>
+                            <p className="text-2xl lg:text-3xl font-bold">Stats at a Glance</p>
+                        </div>
+                    </div>
 
                     <div className="flex flex-col gap-4 lg:flex-row items-center justify-evenly">
 
-                        <div className="bg-card border-[1px] border-secondary w-full rounded-xl p-6 flex items-center gap-5">
-                            <div className="flex items-center justify-center bg-secondary rounded-lg w-12 h-12">
-                                <TrophyIcon height={24} className="text-muted"/>
+                        <div className="bg-card border-[1px] border-secondary w-full rounded-xl p-6 flex items-center gap-6">
+                            <div className="flex items-center justify-center bg-secondary rounded-lg w-14 h-14">
+                                <TrophyIcon height={26} className="text-muted"/>
                             </div>
                             <div>
                                 <p className="text-2xl lg:text-3xl text-info font-black">
@@ -33,9 +40,9 @@ const DriverStatistics = ({ stats } : { stats:ProfileStatsTypes }) => {
                             </div>
                         </div>
 
-                        <div className="bg-card border-[1px] border-secondary w-full rounded-xl p-6 flex items-center gap-5">
-                            <div className="flex items-center justify-center bg-secondary rounded-lg w-12 h-12">
-                                <FireIcon height={24} className="text-muted"/>
+                        <div className="bg-card border-[1px] border-secondary w-full rounded-xl p-6 flex items-center gap-6">
+                            <div className="flex items-center justify-center bg-secondary rounded-lg w-14 h-14">
+                                <FireIcon height={26} className="text-muted"/>
                             </div>
                             <div>
                                 <p className="text-2xl lg:text-3xl text-info font-black">
@@ -51,9 +58,9 @@ const DriverStatistics = ({ stats } : { stats:ProfileStatsTypes }) => {
                             </div>
                         </div>
 
-                        <div className="bg-card border-[1px] border-secondary w-full rounded-xl p-6 flex items-center gap-5">
-                            <div className="flex items-center justify-center bg-secondary rounded-lg w-12 h-12">
-                                <ClockIcon height={24} className="text-muted"/>
+                        <div className="bg-card border-[1px] border-secondary w-full rounded-xl p-6 flex items-center gap-6">
+                            <div className="flex items-center justify-center bg-secondary rounded-lg w-14 h-14">
+                                <ClockIcon height={26} className="text-muted"/>
                             </div>
                             <div>
                                 <p className="text-2xl lg:text-3xl text-info font-black">
@@ -71,9 +78,9 @@ const DriverStatistics = ({ stats } : { stats:ProfileStatsTypes }) => {
                             </div>
                         </div>
 
-                        <div className="bg-card border-[1px] border-secondary w-full rounded-xl p-6 flex items-center gap-5">
-                            <div className="flex items-center justify-center bg-secondary rounded-lg w-12 h-12">
-                                <BullseyeIcon height={24} className="text-muted"/>
+                        <div className="bg-card border-[1px] border-secondary w-full rounded-xl p-6 flex items-center gap-6">
+                            <div className="flex items-center justify-center bg-secondary rounded-lg w-14 h-14">
+                                <BullseyeIcon height={26} className="text-muted"/>
                             </div>
                             <div>
                                 <p className="text-2xl lg:text-3xl text-info font-black">

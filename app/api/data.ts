@@ -440,7 +440,7 @@ export const getUserRecentScores = (user_id:string) => unstable_cache(
                 }
             ],
             order: [["id", "DESC"]],
-            limit: 7
+            limit: 21
         });
 
         return user;
