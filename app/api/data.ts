@@ -21,6 +21,15 @@ export const getUserTrackRecords = (user_id:string, classType:string = 'a') => u
                                 AND s.user_id = '${user_id}'
                                 AND s.class = '${classType}'
                         )`), 'top_score'
+                    ],
+                    [
+                        Sequelize.literal(`(
+                            SELECT COUNT(DISTINCT user_id)
+                            FROM scores AS s
+                            WHERE s.track = tracks.id
+                                AND s.class = '${classType}'
+                                AND s.score > top_score
+                        )`), 'rank'
                     ]
                 ]
             }
