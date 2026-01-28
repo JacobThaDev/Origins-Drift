@@ -1,8 +1,6 @@
 import { UsersTypes } from "@/utils/types/UsersTypes";
-import Container from "../layout/Container";
 import { GarageTypes } from "@/utils/types/GarageTypes";
 import Image from "next/image";
-import { CarIcon } from "../icons/CarIcon";
 
 interface DriftGarageTypes {
     member: UsersTypes|undefined;
@@ -16,97 +14,80 @@ const DriftGarage = ({ member, garage }: DriftGarageTypes) => {
     }
 
     return(
-    <>
-        <div className="pb-20">
-            <Container>
-                <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-4">
+    <div>
+        <div className="flex flex-col lg:flex-row lg:justify-between lg:items-baseline mb-4">
 
-                    <div className="flex items-center gap-5 py-4 mb-4">
-                        <CarIcon height={30} className="text-info" />
-                        <div>
-                            <p className="text-sm text-muted">Garage</p>
-                            <p className="text-3xl font-bold">My <span className="italic text-info">Drift</span> Garage</p>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div className="inline-flex items-center gap-4 text-in rounded-xl bg-card p-4 border-2 border-border">
-                            <div className="w-14 h-14 flex items-center justify-center bg-info/10 rounded-lg text-info">
-                                <CarIcon strokeWidth={2} height={24}/>
-                            </div>
-                            <div>
-                                <p className="text-2xl font-black">{garage?.length}</p>
-                                <p className="text-sm text-muted">Cars in garage</p>
-                            </div>
-                        </div>
-                    </div>
+            <div className="flex items-center gap-5 mb-5">
+                <div>
+                    <p className="text-sm text-muted">Garage</p>
+                    <p className="text-3xl font-bold">My <span className="italic text-info">Drift</span> Garage</p>
                 </div>
+            </div>
+        </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {garage && garage.map((car:GarageTypes, index:number) => {
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {garage && garage.map((car:GarageTypes, index:number) => {
 
-                        const drivetrain_type = car.CarData.drivetrain.toLowerCase();
+                const drivetrain_type = car.CarData.drivetrain.toLowerCase();
 
-                        const drivetrain = drivetrain_type == 'rear-wheel drive' ? 'rwd' :
-                            drivetrain_type == 'front-wheel drive' ? 'fwd' : 'awd';
+                const drivetrain = drivetrain_type == 'rear-wheel drive' ? 'rwd' :
+                    drivetrain_type == 'front-wheel drive' ? 'fwd' : 'awd';
 
-                        return(
-                            <div className="bg-card rounded-xl group text-start" 
-                                key={"garage-"+index}>
+                return(
+                    <div className="bg-card rounded-xl group text-start" 
+                        key={"garage-"+index}>
 
-                                <div className="relative overflow-hidden w-full h-[150px] bg-secondary rounded-xl inline-flex items-center justify-center">
-                                    {car.image_url ?
-                                    <div className="flex items-center justify-center absolute w-full h-full overflow-hidden">
-                                        <Image 
-                                            unoptimized
-                                            src={car.image_url} 
-                                            width={1920} height={1080} 
-                                            className="w-full min-w-[350px] opacity-80"
-                                            alt="" 
-                                            referrerPolicy="no-referrer"/>
-                                    </div> : 
-                                    <p className="text-3xl font-black text-white/10 text-center">
-                                        {car.CarData.make}
-                                    </p>}
+                        <div className="relative overflow-hidden w-full h-[150px] bg-secondary rounded-xl inline-flex items-center justify-center">
+                            {car.image_url ?
+                            <div className="flex items-center justify-center absolute w-full h-full overflow-hidden">
+                                <Image 
+                                    unoptimized
+                                    src={car.image_url} 
+                                    width={1920} height={1080} 
+                                    className="w-full min-w-[350px] opacity-80"
+                                    alt="" 
+                                    referrerPolicy="no-referrer"/>
+                            </div> : 
+                            <p className="text-3xl font-black text-white/10 text-center">
+                                {car.CarData.make}
+                            </p>}
 
-                                    <div className="absolute flex gap-1 items-center text-sm justify-end bottom-4 w-full px-4">
-                                        <p className="inline-block text-muted p-1 bg-card/60 px-3 rounded-md backdrop-blur font-bold">
-                                            {car.CarData.car_class}
-                                        </p>
+                            <div className="absolute flex gap-1 items-center text-sm justify-end bottom-4 w-full px-4">
+                                <p className="inline-block text-muted p-1 bg-card/60 px-3 rounded-md backdrop-blur font-bold">
+                                    {car.CarData.car_class}
+                                </p>
 
-                                        <p className="inline-block text-muted p-1 bg-card/60 px-3 rounded-md backdrop-blur font-bold">
-                                            {drivetrain.toUpperCase()}
-                                        </p>
-                                        
-                                    </div>
-                                </div>
+                                <p className="inline-block text-muted p-1 bg-card/60 px-3 rounded-md backdrop-blur font-bold">
+                                    {drivetrain.toUpperCase()}
+                                </p>
                                 
-                                <div className="p-4 py-2">
-                                    <div className="flex mb-3">
-                                        <div className="truncate w-full">
-                                             <div className="flex items-center">
-                                                <p className="text-muted text-sm">
-                                                    {car.CarData.make} | {car.CarData.year}
-                                                </p>
-                                                <div className="ml-auto">
-                                                    <p className="font-bold text-info">
-                                                        {car.CarData.power} HP
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <p className="text-lg truncate font-semibold">
-                                                {car.CarData.model}
+                            </div>
+                        </div>
+                        
+                        <div className="p-4 py-2">
+                            <div className="flex mb-3">
+                                <div className="truncate w-full">
+                                        <div className="flex items-center">
+                                        <p className="text-muted text-sm">
+                                            {car.CarData.make} | {car.CarData.year}
+                                        </p>
+                                        <div className="ml-auto">
+                                            <p className="font-bold text-info">
+                                                {car.CarData.power} HP
                                             </p>
                                         </div>
                                     </div>
+                                    <p className="text-lg truncate font-semibold">
+                                        {car.CarData.model}
+                                    </p>
                                 </div>
                             </div>
-                        )
-                    })}
-                </div>
-            </Container>
+                        </div>
+                    </div>
+                )
+            })}
         </div>
-    </>)
+    </div>)
 
 }
 

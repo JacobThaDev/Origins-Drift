@@ -2,13 +2,16 @@
 
 import ErrorBox from "@/components/global/ErrorBox";
 import LoadingBox from "@/components/global/LoadingBox";
+import Container from "@/components/layout/Container";
 import DriftGarage from "@/components/profile/DriftGarage";
 import DriverStatistics from "@/components/profile/DriverStatistics";
 import PublicProfileHeader from "@/components/profile/PublicProfileHeader";
 import RecentDrifts from "@/components/profile/RecentDrifts";
+import TrackRecords from "@/components/profile/TrackRecords";
 import LocalApi from "@/services/LocalApi";
 import { GarageTypes } from "@/utils/types/GarageTypes";
 import { LeadersTypes } from "@/utils/types/LeadersTypes";
+import { RecordsTypes } from "@/utils/types/RecordsTypes";
 import { UsersTypes } from "@/utils/types/UsersTypes";
 import { useEffect, useState } from "react";
 
@@ -24,7 +27,10 @@ export default function PublicProfile({ params }: ProfileTypes) {
     const [ member, setMember ]   = useState<UsersTypes>();
     const [ garage, setGarage ]   = useState<GarageTypes[]>();
     const [ stats, setStats ]     = useState<any>([]);
-    const [ recent, setRecent ]     = useState<LeadersTypes[]>([]);
+    const [ recent, setRecent ]   = useState<LeadersTypes[]>([]);
+
+    const [ records, setRecords ] = useState<RecordsTypes[]>([]);
+    const [ recordClass, setRecordClass ] = useState<"a"|"s1">("a");
 
     useEffect(() => setMounted(true), []);
 
@@ -48,14 +54,16 @@ export default function PublicProfile({ params }: ProfileTypes) {
             }
 
             try {
-                const [ stats, garage, recent ] = await Promise.all([
+                const [ stats, garage, recent, records ] = await Promise.all([
                     LocalApi.get("/user/"+name+"/stats"),
                     LocalApi.get("/user/"+name+"/garage"),
                     LocalApi.get("/user/"+name+"/recent"),
+                    LocalApi.get("/user/"+name+"/records/"+recordClass),
                 ]);
                 
                 setStats(stats);
                 setGarage(garage);
+                setRecords(records);
                 setRecent(recent);
                 setLoading(false);
             } catch(err:any) {
@@ -80,8 +88,22 @@ export default function PublicProfile({ params }: ProfileTypes) {
         <>
             <PublicProfileHeader member={member} />
             <DriverStatistics stats={stats}/>
-            <RecentDrifts recent={recent} />
-            <DriftGarage member={member} garage={garage} />
+
+            <div className="">
+                <Container>
+                    <div className="flex flex-col lg:flex-row gap-10 mb-20">
+                        <div className="w-full max-w-[350px]">
+                            <TrackRecords records={records} classType={recordClass} />
+                        </div>
+                        <div className="flex flex-col gap-10 w-full">
+                            <DriftGarage member={member} garage={garage} />
+
+                            <RecentDrifts recent={recent} />
+                        </div>
+                    </div>
+                </Container>
+            </div>
+            
         </>
     )
 }

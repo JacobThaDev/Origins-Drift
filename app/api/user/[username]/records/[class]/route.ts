@@ -1,10 +1,8 @@
-import db from "@/models";
-import { getUserByNameWithId, getUserTrackRecords } from "../../../data";
+import { getUserByNameWithId, getUserTrackRecords } from "@/app/api/data";
 import { UsersTypes } from "@/utils/types/UsersTypes";
-import { Sequelize } from "sequelize";
 
 type RouteContext = {
-    params: Promise<{ username: string }>;
+    params: Promise<{ username: string, class:string }>;
 };
 
 /**
@@ -15,7 +13,7 @@ type RouteContext = {
 // eslint-disable-next-line
 export async function GET(req: any, { params } : RouteContext) {
     try {
-        const { username } = await params;
+        const { username, class:classType } = await params;
 
         if (!username || username.length == 0 || username.length > 30) {
             return Response.json({
@@ -35,7 +33,7 @@ export async function GET(req: any, { params } : RouteContext) {
             })
         }
 
-        const track_records = await getUserTrackRecords(user.id);
+        const track_records = await getUserTrackRecords(user.id, classType);
 
         return Response.json(track_records);
     } catch (e:any) {

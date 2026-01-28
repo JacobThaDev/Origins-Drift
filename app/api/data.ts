@@ -7,6 +7,37 @@ import { DiscordMemberTypes } from "@/utils/types/discord/DiscordMemberTypes";
 const BOT_TOKEN   = process.env.DISCORD_BOT_TOKEN;
 const GUILD_ID    = process.env.DISCORD_GUILD_ID;
 
+export const getUserTrackRecords = (user_id:string, classType:string = 'a') => unstable_cache(
+    async () => {
+        const garage = await db.tracks.findAll({
+            attributes: {
+                exclude: ['webhook_url'],
+                include: [
+                    [
+                        Sequelize.literal(`(
+                            SELECT MAX(CAST(score AS SIGNED))
+                            FROM scores AS s
+                            WHERE s.track = tracks.id
+                                AND s.user_id = '${user_id}'
+                                AND s.class = '${classType}'
+                        )`), 'top_score'
+                    ]
+                ]
+            }
+        });
+        
+        return garage;
+    },
+    ['track-records', user_id, classType], {
+        revalidate: 3600,
+        tags: [
+            'track-records',
+            `track-records-${user_id}`,
+            `track-records-${user_id}-${classType}`
+        ]
+    }
+)();
+
 export const getGarage = (user_id:string) => unstable_cache(
     async () => {
         const garage = await db.garage.findAll({
@@ -440,7 +471,7 @@ export const getUserRecentScores = (user_id:string) => unstable_cache(
                 }
             ],
             order: [["id", "DESC"]],
-            limit: 21
+            limit: 10
         });
 
         return user;
