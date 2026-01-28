@@ -9,6 +9,7 @@ import Image from "next/image";
 import { UserIcon } from "../icons/UserIcon";
 import { client } from '@/lib/auth-client';
 import { ArrowRightStartOnRectangleIcon, Cog6ToothIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import ProfileDropdown from "./ProfileDropdown";
 
 const Navigation = () => {
 
@@ -123,21 +124,7 @@ const Navigation = () => {
                             </Link>}
                             
                             {session && 
-                            <Link href={"/profile"} className="inline-flex justify-center text-muted hover:bg-info hover:text-black px-4 h-10 rounded-lg group">
-                                <div className="flex gap-3 items-center">
-                                    <UserIcon width={16} strokeWidth={2} />
-                                    <p>My Profile</p>
-                                </div>
-                            </Link>}
-                                
-                            <div className="relative">
-                                {session && 
-                                <button 
-                                    onClick={() => setShowLogout(true)}
-                                    className="relative bg-secondary/80 text-muted hover:bg-danger/30 hover:text-danger rounded-full h-10 w-10 flex items-center justify-center">
-                                    <ArrowRightStartOnRectangleIcon width={16} strokeWidth={2} />
-                                </button>}
-                            </div>
+                            <ProfileDropdown session={session} setShowLogout={setShowLogout} />}
                         </div>
                         
                         <div className="flex w-full justify-end lg:hidden">
