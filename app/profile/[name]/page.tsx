@@ -54,12 +54,9 @@ export default function PublicProfile({ params }: ProfileTypes) {
             }
 
             try {
-                const [ stats, garage, recent, records ] = await Promise.all([
-                    LocalApi.get("/user/"+name+"/stats"),
-                    LocalApi.get("/user/"+name+"/garage"),
-                    LocalApi.get("/user/"+name+"/recent"),
-                    LocalApi.get("/user/"+name+"/records/"+recordClass),
-                ]);
+                const { 
+                    stats, garage, recent, records 
+                } = await LocalApi.get("/user/"+name+"/profile");
                 
                 setStats(stats);
                 setGarage(garage);
