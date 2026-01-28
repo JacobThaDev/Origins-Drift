@@ -78,6 +78,12 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
             }, { status: 401 });
         }
 
+        if (!session.discord || session.discord.roles.includes("1326527827008421918")) {
+            return Response.json({ 
+                error: "Only club members can submit scores."
+            }, { status: 401 });
+        }
+
         const json   = await req.json();
         const result = ScoreSchema.safeParse(json);
 
@@ -104,7 +110,6 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
         // grab original record
         let personal_best = await getUserRecord(user_id, score, trackData.id, classType);
 
-        console.log(personal_best)
         // now we just add a new score
         const score_result = await db.scores.create({
             user_id: user_id,
