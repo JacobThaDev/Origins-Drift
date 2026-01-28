@@ -28,11 +28,8 @@ const TrackRecords = ({ records, classType = 'a' }:  TrackRecordsTypes) => {
                             <div>
                                 <div className="flex items-center gap-5 w-full">
                                     <TrophyIcon height={20} className="text-muted/50" />
-                                    <p className="text-lg">
-                                        {record.name}
-                                    </p>
+                                    <p>{record.name}</p>
                                     <div className="flex items-center gap-2 ml-auto">
-                                        
                                         <span className="font-semibold font-mono">
                                             {!record.top_score ? 0 : formatNumber(record.top_score)}
                                         </span>

@@ -92,7 +92,7 @@ export default function PublicProfile({ params }: ProfileTypes) {
             <div className="">
                 <Container>
                     <div className="flex flex-col lg:flex-row gap-10 mb-20">
-                        <div className="w-full max-w-[350px]">
+                        <div className="w-full lg:max-w-[350px]">
                             <TrackRecords records={records} classType={recordClass} />
                         </div>
                         <div className="flex flex-col gap-10 w-full">

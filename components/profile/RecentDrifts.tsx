@@ -28,7 +28,7 @@ const RecentDrifts = ({ recent } : { recent:LeadersTypes[] }) => {
                                 <ClockIcon height={24} className="text-white/20"/>
                             </div>
                             <div className="flex items-center gap-5 w-full">
-                                <div className="flex flex-col w-full">
+                                <div className="flex flex-col lg:flex-row w-full">
                                     <p className="w-full">
                                         {recent.Track.name}
                                     </p>
@@ -38,10 +38,10 @@ const RecentDrifts = ({ recent } : { recent:LeadersTypes[] }) => {
                                 </div>
 
                                 <div className="flex flex-col lg:flex-row lg:items-center lg:gap-3">
-                                    <p className="font-bold text-xl">
+                                    <p className="font-bold text-xl lg:w-[150px] lg:text-end">
                                         {formatNumber(recent.score)}
                                     </p>
-                                    <p className="text-muted text-sm text-nowrap">
+                                    <p className="text-muted text-sm text-nowrap lg:w-[150px]">
                                         {getRelativeTime(recent.createdAt)}
                                     </p>
                                 </div>
