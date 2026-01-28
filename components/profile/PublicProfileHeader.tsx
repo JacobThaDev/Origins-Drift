@@ -51,10 +51,18 @@ const PublicProfileHeader = ({ member } : { member:UsersTypes|undefined }) => {
                                         </div>
                                     }
                                 </div>
+                                
+                                <div className="flex flex-row-reverse lg:flex-row justify-end lg:justify-start items-baseline mb-4 gap-x-3">
+                                    <p className="text-4xl lg:text-6xl font-bold tracking-tight text-nowrap">
+                                        {member.discord.nick || member.discord.user.global_name || member.discord.user.username}
+                                    </p>
 
-                                <p className="text-2xl lg:text-6xl font-bold mb-3 tracking-tight text-nowrap">
-                                    {member.discord.nick || member.discord.user.global_name || member.discord.user.username} <span className="text-muted text-xl font-semibold">Drifter Profile</span>
-                                </p>
+                                    <div>
+                                        {platform && <PlatformIcon platform={platform} size={28}/>}
+                                        <span className="hidden lg:inline-block text-muted text-base font-semibold text-nowrap">Drift Profile</span>
+                                    </div>
+                                </div>
+                                
                                 <p className="text-white/60 mb-7">
                                     {member.AccountData?.about_me}
                                 </p>
