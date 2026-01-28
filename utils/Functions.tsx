@@ -276,12 +276,8 @@ export const getAvatar = (member_id:string, avatarHash:string) => {
 export const getPlatformName = (platform:string) => {
     if (platform == "XBOX" || platform == "WINDOWS") {
         return `Xbox`;
-    } else if (platform == "STEAM") {
-        return `Steam`;
-    } else if (platform == "PLAYSTATION") {
-        return `Playstation`;
     }
-    return null;
+    return capitalize(platform);
 }
 
 

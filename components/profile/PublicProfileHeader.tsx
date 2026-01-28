@@ -75,7 +75,7 @@ const PublicProfileHeader = ({ member } : { member:UsersTypes|undefined }) => {
                                         Discord
                                     </Link>
 
-                                    {(platform && platform_name && platformLink) && 
+                                    {(platform && platform_name && platformLink && platformLink.length > 0) && 
                                     <>
                                         <Link href={platformLink} 
                                             target="_blank"
