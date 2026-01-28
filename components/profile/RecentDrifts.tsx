@@ -38,7 +38,7 @@ const RecentDrifts = ({ recent } : { recent:LeadersTypes[] }) => {
                                 </div>
 
                                 <div className="flex flex-col lg:flex-row lg:items-center lg:gap-3">
-                                    <p className="font-bold text-xl lg:w-[150px] lg:text-end">
+                                    <p className="font-bold lg:w-[150px] lg:text-end">
                                         {formatNumber(recent.score)}
                                     </p>
                                     <p className="text-muted text-sm text-nowrap lg:w-[150px]">
