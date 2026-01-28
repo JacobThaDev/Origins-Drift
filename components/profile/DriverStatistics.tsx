@@ -1,121 +1,82 @@
 "use client";
 
-import Container from "../layout/Container";
-import { useEffect, useState } from "react";
 import { ClockIcon, FireIcon, TrophyIcon } from "@heroicons/react/24/outline";
 import { BullseyeIcon } from "../icons/BullseyeIcon";
-import LocalApi from "@/services/LocalApi";
 import { LeadersTypes } from "@/utils/types/LeadersTypes";
 import CountUp from "react-countup";
-import { UsersTypes } from "@/utils/types/UsersTypes";
+import Container from "../layout/Container";
 
-const DriverStatistics = ({ member } : { member:UsersTypes|undefined }) => {
-    
-    const [ stats, setStats ] = useState<any>();
-    const [ mounted, setMounted ] = useState<boolean>();
-
-    useEffect(() => setMounted(true), []);
-
-    useEffect(() => {
-        if (!mounted) {
-            return;
-        }
-
-        async function getUserData() {
-            if (!member) {
-                return;
-            }
-
-            const result:ProfileStatsTypes = await LocalApi.get("/user/"+member.discord_name+"/stats");
-            
-            if (result.error) {
-                return;
-            }
-
-            setStats(result);
-        }
-
-        getUserData();
-    },// eslint-disable-next-line 
-    [mounted]);
-
-
-    if (!member) {
-        return null;
-    }
+const DriverStatistics = ({ stats } : { stats:ProfileStatsTypes }) => {
 
     return(
-        <div className="bg-card/50 py-20">
+        <div className="pt-10">
             <Container>
-                <div className="flex flex-col justify-center text-center gap-4">
-                    <div className="text-center mb-12">
-                        <h2 className="text-sm font-semibold text-info uppercase tracking-wider mb-3">
-                            Driver Statistics
-                        </h2>
-                        <p className="text-3xl md:text-4xl font-bold text-foreground mb-10">
-                            Performance at a Glance
-                        </p>
+                <div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                            <div className="bg-card rounded-lg p-7 text-start border-2 border-border hover:border-info/50 transition-all duration-300">
-                                <div className="bg-warning/20 rounded-lg w-14 h-14 flex items-center justify-center mb-5">
-                                    <TrophyIcon height={30} className="text-warning"/>
-                                </div>
+                    <div className="flex flex-col gap-4 lg:flex-row items-center justify-evenly">
 
-                                <p className="text-4xl font-black">
+                        <div className="bg-card border-[1px] border-secondary w-full rounded-xl p-6 flex items-center gap-5">
+                            <div className="flex items-center justify-center bg-secondary rounded-lg w-12 h-12">
+                                <TrophyIcon height={24} className="text-muted"/>
+                            </div>
+                            <div>
+                                <p className="text-2xl lg:text-3xl text-info font-black">
                                     {stats ?
                                     <CountUp
                                         start={0}
                                         end={stats.highest_score.score}
                                         /> : 0}
                                 </p>
-                                <p className="text-lg font-bold mb-1">Best Drift Score</p>
-                                <p className="text-white/60">
-                                    {stats?.highest_score?.Track.name || "Unknown"} Circuit{" "}
-                                    | {stats?.highest_score.class}-{stats?.highest_score.class == "a" ? "800" : "900"}
+                                <p className=" text-muted text-sm">
+                                    Best Drift Score
                                 </p>
                             </div>
+                        </div>
 
-                            <div className="bg-card rounded-lg p-7 text-start border-2 border-border hover:border-info/50 transition-all duration-300">
-                                <div className="bg-danger/20 rounded-lg w-14 h-14 flex items-center justify-center mb-5">
-                                    <FireIcon height={30} className="text-danger"/>
-                                </div>
-
-                                <p className="text-4xl font-black">
+                        <div className="bg-card border-[1px] border-secondary w-full rounded-xl p-6 flex items-center gap-5">
+                            <div className="flex items-center justify-center bg-secondary rounded-lg w-12 h-12">
+                                <FireIcon height={24} className="text-muted"/>
+                            </div>
+                            <div>
+                                <p className="text-2xl lg:text-3xl text-info font-black">
                                     {stats ?
-                                    <CountUp
-                                        start={0}
-                                        end={stats.total_entries}
-                                        /> : 0}
+                                        <CountUp
+                                            start={0}
+                                            end={stats.total_entries}
+                                            /> : 0}
                                 </p>
-                                <p className="text-lg font-bold mb-1">Total Drifts</p>
-                                <p className="text-white/60">All-time submissions</p>
+                                <p className=" text-muted text-sm">
+                                    Total Drifts
+                                </p>
                             </div>
+                        </div>
 
-                            <div className="bg-card rounded-lg p-7 text-start border-2 border-border hover:border-info/50 transition-all duration-300">
-                                <div className="bg-info/20 rounded-lg w-14 h-14 flex items-center justify-center mb-5">
-                                    <ClockIcon height={30} className="text-info"/>
-                                </div>
-
-                                <p className="text-4xl font-black">
+                        <div className="bg-card border-[1px] border-secondary w-full rounded-xl p-6 flex items-center gap-5">
+                            <div className="flex items-center justify-center bg-secondary rounded-lg w-12 h-12">
+                                <ClockIcon height={24} className="text-muted"/>
+                            </div>
+                            <div>
+                                <p className="text-2xl lg:text-3xl text-info font-black">
                                     {stats ?
-                                    <CountUp
-                                        start={0}
-                                        end={stats.track_time / 60}
-                                        decimals={2}
-                                        suffix=" hrs"
-                                        /> : 0}
+                                        <CountUp
+                                            start={0}
+                                            end={stats.track_time / 60}
+                                            decimals={2}
+                                            suffix=" hrs"
+                                            /> : 0}
                                 </p>
-                                <p className="text-lg font-bold mb-1">Track Time</p>
-                                <p className="text-white/60">Time spent drifting</p>
+                                <p className=" text-muted text-sm">
+                                    Track Time
+                                </p>
                             </div>
+                        </div>
 
-                            <div className="bg-card rounded-lg p-7 text-start border-2 border-border hover:border-info/50 transition-all duration-300">
-                                <div className="bg-success/20 rounded-lg w-14 h-14 flex items-center justify-center mb-5">
-                                    <BullseyeIcon height={30} className="text-success"/>
-                                </div>
-
-                                <p className="text-4xl font-black">
+                        <div className="bg-card border-[1px] border-secondary w-full rounded-xl p-6 flex items-center gap-5">
+                            <div className="flex items-center justify-center bg-secondary rounded-lg w-12 h-12">
+                                <BullseyeIcon height={24} className="text-muted"/>
+                            </div>
+                            <div>
+                                <p className="text-2xl lg:text-3xl text-info font-black">
                                     {stats ?
                                     <CountUp
                                         start={0}
@@ -124,8 +85,9 @@ const DriverStatistics = ({ member } : { member:UsersTypes|undefined }) => {
                                         suffix="m"
                                         /> : 0}
                                 </p>
-                                <p className="text-lg font-bold mb-1">Total Score</p>
-                                <p className="text-white/60">A sum of all scores</p>
+                                <p className=" text-muted text-sm">
+                                    Total Score
+                                </p>
                             </div>
                         </div>
                     </div>

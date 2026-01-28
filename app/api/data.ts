@@ -338,12 +338,11 @@ export const getCachedScores = (trackId: number, classType: string) => unstable_
     }
 )();
 
-export const getCachedRecentScores = (gameId: number, trackId: number, classType: string) => unstable_cache(
+export const getCachedRecentScores = (trackId: number, classType: string) => unstable_cache(
     async () => {
         return await db.scores.findAll({
             where: {
                 [Op.and]: {
-                    game: gameId,
                     track: trackId,
                     class: classType
                 }
@@ -414,6 +413,43 @@ export const getUserByName = (name:string, includeId:boolean = false) => unstabl
         tags: [
             `user-names`,
             `user-name-${name}`
+        ]
+    }
+)();
+
+export const getUserRecentScores = (user_id:string) => unstable_cache(
+    async () => {
+        const user = await db.scores.findAll({
+            where: {
+                user_id: user_id
+            },
+            attributes: {
+                exclude: ['user_id', 'track', 'game', 'proof_delete_hash']
+            },
+            include: [
+                {
+                    model: db.tracks,
+                    as: "Track",
+                    attributes: {
+                        exclude: ['game', 'webhook_url']
+                    },
+                    include: {
+                        model: db.games,
+                        as: "Game"
+                    }
+                }
+            ],
+            order: [["id", "DESC"]],
+            limit: 7
+        });
+
+        return user;
+    },
+    ['users-recent', user_id], {
+        revalidate: 3600,  // 1 hour
+        tags: [
+            `users-recent`,
+            `user-recent-${user_id}`
         ]
     }
 )();

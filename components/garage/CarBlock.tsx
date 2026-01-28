@@ -15,14 +15,16 @@ type CarBlockTypes = {
 
 const CarBlock = ({ car, search, makeFilter } : CarBlockTypes) => {
     
-    const { garage, setGarage }:GarageContextTypes = useGarageContext();
-    const [ status, setStatus ] = useState<string>();
+    const { garage, loadGarage }:GarageContextTypes = useGarageContext();
+    const [ adding, setAdding ] = useState<boolean>();
 
     if (search) {
-
         const full_car_name = car.year+" "+car.make+" "+car.model;
+        const full_car_partial_name = car.year+" "+car.model;
 
-        if ((makeFilter && makeFilter != car.make) || (!full_car_name.toLowerCase().includes(search.toLowerCase())))
+        if ((makeFilter && makeFilter != car.make) || 
+                (!full_car_name.toLowerCase().includes(search.toLowerCase()) 
+                    && !full_car_partial_name.toLowerCase().includes(search.toLowerCase())))
             return null;
     } else {
         if (makeFilter == null || car.make != makeFilter)
@@ -37,39 +39,31 @@ const CarBlock = ({ car, search, makeFilter } : CarBlockTypes) => {
     const inGarage = garage.filter((garage:GarageTypes) => garage.CarData.id == car.id).length > 0;
 
     const addCar = async(car:CarsDetailsTypes) => {
-        setStatus("Adding...");
+        setAdding(true);
+
         try {
             const result = await LocalApi.post("/garage/add", { 
                 car_id: car.id
             });
 
             if (result.success) {
-                const garage_copy = garage.map(r=>r);
-
-                garage_copy.push({
-                    car_id: car.id,
-                    image_url: null,
-                    CarData: car
-                });
-
-                setGarage(garage_copy);
+                await loadGarage();
+                setAdding(false);
             }
         } catch (err:any) {
             console.log(err);
         }
-
-        setStatus(undefined);
     }
     
     return (
         <button 
             onClick={() =>  addCar(car)} 
-            disabled={inGarage || status != undefined}
+            disabled={adding || inGarage}
             className="bg-card rounded-xl p-4 group text-start disabled:opacity-70">
 
             <div className="px-10 relative flex items-center justify-center w-full h-[150px] rounded-lg overflow-hidden mb-4 bg-secondary">
                 <p className="text-3xl font-black text-white/10 text-center">
-                    {inGarage ? "In Garage" : car.make}
+                    {adding ? "Adding..." : (inGarage ? "In Garage" : car.make)}
                 </p>
 
                 {!inGarage && !status && 

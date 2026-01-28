@@ -5,7 +5,7 @@ import { NextRequest } from "next/server";
 import { getGarage } from "../data";
 
 /**
- * get all cars in a users garage
+ * get all cars in a logged-in users garage
  * @param req {@link NextRequest}
  * @returns an array of cars in the users garage
  */

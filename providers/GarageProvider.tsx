@@ -57,7 +57,7 @@ export interface GarageContextTypes {
     makes: string[];
     loading: boolean;
     setLoading: (arg1: boolean) => void;
-    loadGarage: () => void;
+    loadGarage: () => Promise<GarageTypes[]>;
 }
 
 export const useGarageContext = () => useContext(GarageContext);

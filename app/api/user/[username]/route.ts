@@ -16,19 +16,18 @@ export async function GET(req: any, res:any) {
 
         if (!user) {
             return Response.json({ 
-                error: "Could not find a user by that name!"
-            })
+                error: "User does not exist"
+            }, { status: 404 })
         }
 
         const member = await getDiscordMember(user.Account.accountId) as DiscordMemberTypes;
         
         if (!member || member.error) { 
             return Response.json({ 
-                error: "Could not load Discord profile"
-            });
+                error: "Failed to load Discord profile"
+            }, { status: 404 })
         }
     
-
         return Response.json({
             ...user, 
             discord: member
@@ -39,6 +38,7 @@ export async function GET(req: any, res:any) {
             message: e.message
         });
     }
+    
 }
 
 interface RequestTypes {

@@ -265,3 +265,18 @@ select.custom-select::-ms-expand {
     height: 1px;
     width: 100px;
 }
+
+.custom-table tr th {
+    font-size: 14px;
+    padding-bottom: 6px;
+    color: rgba(255,255,255,0.3);
+}
+ 
+.custom-table tr td {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.custom-table tbody tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.12);
+}

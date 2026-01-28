@@ -2,18 +2,29 @@
 
 import ErrorBox from "@/components/global/ErrorBox";
 import LoadingBox from "@/components/global/LoadingBox";
+import DriftGarage from "@/components/profile/DriftGarage";
 import DriverStatistics from "@/components/profile/DriverStatistics";
 import PublicProfileHeader from "@/components/profile/PublicProfileHeader";
+import RecentDrifts from "@/components/profile/RecentDrifts";
 import LocalApi from "@/services/LocalApi";
+import { GarageTypes } from "@/utils/types/GarageTypes";
+import { LeadersTypes } from "@/utils/types/LeadersTypes";
 import { UsersTypes } from "@/utils/types/UsersTypes";
 import { useEffect, useState } from "react";
 
-export default function PublicProfile({ params }: { params: Promise<{ name: string }>}) {
+type ProfileTypes = {
+    params: Promise<{ name: string }>
+}
+
+export default function PublicProfile({ params }: ProfileTypes) {
 
     const [ mounted, setMounted ] = useState<boolean>();
     const [ error, setError ]     = useState<string>();
     const [ loading, setLoading ] = useState<boolean>(true);
     const [ member, setMember ]   = useState<UsersTypes>();
+    const [ garage, setGarage ]   = useState<GarageTypes[]>();
+    const [ stats, setStats ]     = useState<any>([]);
+    const [ recent, setRecent ]     = useState<LeadersTypes[]>([]);
 
     useEffect(() => setMounted(true), []);
 
@@ -26,16 +37,31 @@ export default function PublicProfile({ params }: { params: Promise<{ name: stri
             setLoading(true);
 
             const { name } = await params;
-            const result:UsersTypes = await LocalApi.get("/user/"+name);
 
-            if (result.error) {
-                setError(result.error);
+            try {
+                const user:UsersTypes = await LocalApi.get("/user/" + name);
+                setMember(user);
+            } catch (err:any) {
+                setError(err.response.data.error);
                 setLoading(false);
                 return;
             }
-            
-            setMember(result);
-            setLoading(false);
+
+            try {
+                const [ stats, garage, recent ] = await Promise.all([
+                    LocalApi.get("/user/"+name+"/stats"),
+                    LocalApi.get("/user/"+name+"/garage"),
+                    LocalApi.get("/user/"+name+"/recent"),
+                ]);
+                
+                setStats(stats);
+                setGarage(garage);
+                setRecent(recent);
+                setLoading(false);
+            } catch(err:any) {
+                setError(err.message);
+                setLoading(false);
+            }
         }
 
         getUserData();
@@ -52,8 +78,11 @@ export default function PublicProfile({ params }: { params: Promise<{ name: stri
 
     return(
         <>
-            <PublicProfileHeader member={member}/>
-            <DriverStatistics member={member}/>
+            <PublicProfileHeader member={member} />
+            <hr className="border-border"/>
+            <DriverStatistics stats={stats}/>
+            <RecentDrifts recent={recent} />
+            <DriftGarage member={member} garage={garage} />
         </>
     )
 }

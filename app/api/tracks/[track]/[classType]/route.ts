@@ -142,7 +142,7 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
         revalidateTag(`track-data-${track.toLowerCase()}-${classType.toLowerCase()}`);
         revalidateTag(`tracks-data-${classType.toLowerCase()}`);
         revalidateTag(`leaders-${trackData.id}-${classType.toUpperCase()}`);
-        revalidateTag(`recent-${trackData.id}-${classType.toUpperCase()}`);
+        revalidateTag(`user-recent-${user_id}`);
 
         return Response.json({
             success: true,
