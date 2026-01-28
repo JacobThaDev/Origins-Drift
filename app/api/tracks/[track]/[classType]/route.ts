@@ -136,8 +136,11 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
 
         if (isNewPb) {
             sendWebhook(trackData, score, personal_best, session.user, classType, proof_url);
+            
             // user has a new record so cache needs updated.
             revalidateTag(`user-record-${trackData.id}-${classType.toLowerCase()}-${user_id}`);
+            revalidateTag(`track-records-${user_id}-${classType}`);
+            revalidateTag(`leaders-${trackData.id}-${classType.toUpperCase()}`);
         }
 
         /**
@@ -146,7 +149,6 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
          */
         revalidateTag(`track-data-${track.toLowerCase()}-${classType.toLowerCase()}`);
         revalidateTag(`tracks-data-${classType.toLowerCase()}`);
-        revalidateTag(`leaders-${trackData.id}-${classType.toUpperCase()}`);
         revalidateTag(`user-recent-${user_id}`);
 
         return Response.json({

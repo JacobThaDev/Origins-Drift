@@ -4,6 +4,7 @@ import { client } from '@/lib/auth-client';
 import LocalApi from '@/services/LocalApi';
 import { CarsDetailsTypes } from '@/utils/types/CarsDetailsTypes';
 import { DiscordMemberTypes } from '@/utils/types/discord/DiscordMemberTypes';
+import { RecordsTypes } from '@/utils/types/RecordsTypes';
 import { SessionsTypes } from '@/utils/types/SessionsTypes';
 import { UsersTypes } from '@/utils/types/UsersTypes';
 import { createContext, useContext, useEffect, useState } from 'react';
@@ -22,6 +23,7 @@ export function ProfileContextProvider({ children }:ProfileContextProps) {
     const [ session, setSession ] = useState<SessionsTypes|null>();
     const [ profile, setProfile ] = useState<UsersTypes>();
     const [ discord, setDiscord ] = useState<DiscordMemberTypes>();
+    const [ records, setRecords ] = useState<RecordsTypes>();
 
     const [ selectedCar, setSelectedCar ] = useState<CarsDetailsTypes|undefined>();
     const [ error, setError ]             = useState<string>();
@@ -41,7 +43,18 @@ export function ProfileContextProvider({ children }:ProfileContextProps) {
         setProfile(session.user);
         setDiscord(session.discord);
         setLoading(false);
+        //loadRecords();
     }, [data, isPending]);
+
+    const loadRecords = async() => {
+        try {
+            const records = await LocalApi.get(`/user/${session?.user.discord_name}/records`);
+            setRecords(records);
+        } catch (err:any) {
+            console.log(err);
+        }
+        setLoading(false);
+    }
 
     const updateProfile = async(formData:any[]) => {
         try {

@@ -7,4 +7,5 @@ export interface RecordsTypes {
     favorite: boolean;
     track_image: string;
     top_score: number;
+    rank: number;
 }
