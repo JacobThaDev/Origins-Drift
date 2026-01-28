@@ -16,7 +16,7 @@ const DriverStatistics = ({ stats } : { stats:ProfileStatsTypes }) => {
                         <ChartBarIcon height={30} className="text-info" />
                         <div>
                             <p className="text-sm text-muted">Performance</p>
-                            <p className="text-2xl lg:text-3xl font-bold">Stats at a Glance</p>
+                            <p className="text-3xl font-bold">Stats at a Glance</p>
                         </div>
                     </div>
 

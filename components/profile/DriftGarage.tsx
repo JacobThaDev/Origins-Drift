@@ -19,11 +19,26 @@ const DriftGarage = ({ member, garage }: DriftGarageTypes) => {
     <>
         <div className="pb-20">
             <Container>
-                 <div className="flex items-center gap-5 py-4 mb-5">
-                    <CarIcon height={30} className="text-info" />
+                <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-4">
+
+                    <div className="flex items-center gap-5 py-4 mb-4">
+                        <CarIcon height={30} className="text-info" />
+                        <div>
+                            <p className="text-sm text-muted">Garage</p>
+                            <p className="text-3xl font-bold">My <span className="italic text-info">Drift</span> Garage</p>
+                        </div>
+                    </div>
+
                     <div>
-                        <p className="text-sm text-muted">Garage</p>
-                        <p className="text-2xl lg:text-3xl font-bold">My <span className="italic text-info">Drift</span> Garage</p>
+                        <div className="inline-flex items-center gap-4 text-in rounded-xl bg-card p-4 border-2 border-border">
+                            <div className="w-14 h-14 flex items-center justify-center bg-info/10 rounded-lg text-info">
+                                <CarIcon strokeWidth={2} height={24}/>
+                            </div>
+                            <div>
+                                <p className="text-2xl font-black">{garage?.length}</p>
+                                <p className="text-sm text-muted">Cars in garage</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

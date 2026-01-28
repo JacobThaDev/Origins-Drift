@@ -52,8 +52,8 @@ const PublicProfileHeader = ({ member } : { member:UsersTypes|undefined }) => {
                                     }
                                 </div>
 
-                                <p className="text-4xl lg:text-6xl font-bold mb-3 tracking-tight">
-                                    {member.discord.nick || member.discord.user.global_name || member.discord.user.username} | Drift Profile
+                                <p className="text-2xl lg:text-6xl font-bold mb-3 tracking-tight text-nowrap">
+                                    {member.discord.nick || member.discord.user.global_name || member.discord.user.username} <span className="text-muted text-xl font-semibold">Drifter Profile</span>
                                 </p>
                                 <p className="text-white/60 mb-7">
                                     {member.AccountData?.about_me}

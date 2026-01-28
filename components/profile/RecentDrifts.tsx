@@ -23,7 +23,7 @@ const RecentDrifts = ({ recent } : { recent:LeadersTypes[] }) => {
                         <FireIcon height={30} className="text-info" />
                         <div>
                             <p className="text-sm text-muted">Drift History</p>
-                            <p className="text-2xl lg:text-3xl font-bold">Last 25 <span className="text-info italic">Drifts</span></p>
+                            <p className="text-3xl font-bold">Last 25 <span className="text-info italic">Drifts</span></p>
                         </div>
                     </div>
 
