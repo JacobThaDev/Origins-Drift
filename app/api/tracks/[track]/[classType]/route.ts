@@ -78,7 +78,7 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
             }, { status: 401 });
         }
 
-        if (!session.discord || session.discord.roles.includes("1326527827008421918")) {
+        if (!session.discord || !session.discord.roles.includes("1326527827008421918")) {
             return Response.json({ 
                 error: "Only club members can submit scores."
             }, { status: 401 });
