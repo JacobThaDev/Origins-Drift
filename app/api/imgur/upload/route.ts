@@ -27,6 +27,12 @@ export async function POST(req: any, res:any) {
             }, { status: 401 });
         }
 
+        if (!session.discord || !session.discord.roles.includes("1326527827008421918")) {
+            return Response.json({ 
+                error: "Only club members can submit proof."
+            }, { status: 401 });
+        }
+
         const { image }:RequestTypes = await req.json();
 
         const imgurFormData = new FormData();
