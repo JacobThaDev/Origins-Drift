@@ -72,7 +72,7 @@ const PublicProfileHeader = ({ member } : { member:UsersTypes|undefined }) => {
                                         className="px-5 py-3 border-2 border-border hover:bg-info hover:border-info text-white hover:text-black rounded-lg font-semibold flex items-center gap-5 transition-all">
                                         <DiscordIcon height={20} />
                                         <div className="w-[1px] h-[30px] bg-border"></div>
-                                        Discord Profile
+                                        Discord
                                     </Link>
 
                                     {(platform && platform_name && platformLink) && 
@@ -83,7 +83,7 @@ const PublicProfileHeader = ({ member } : { member:UsersTypes|undefined }) => {
                                             <PlatformIcon platform={platform} size={24}/>
 
                                             <div className="w-[1px] h-[30px] bg-border"></div>
-                                            {getPlatformName(platform)} Profile
+                                            {getPlatformName(platform)}
                                         </Link>
                                     </>}
                                 </div>

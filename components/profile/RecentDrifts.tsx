@@ -67,7 +67,10 @@ const RecentDrifts = ({ recent } : { recent:LeadersTypes[] }) => {
                                             <td className="lg:w-[150px] px-3 lg:px-0">
                                                 <p className="font-black lg:text-xl">
                                                     {recent.proof_url ? 
-                                                    <Link target="_blank" href="" className="underline">
+                                                    <Link target="_blank" 
+                                                        href={recent.proof_url} 
+                                                        rel="nofollow"
+                                                        className="underline">
                                                         {formatNumber(recent.score, 0)}
                                                     </Link> 
                                                     : formatNumber(recent.score, 0)}
