@@ -2,10 +2,11 @@
 
 import { formatNumber, getRelativeTime } from "@/utils/Functions";
 import { LeadersTypes } from "@/utils/types/LeadersTypes";
-import { ClockIcon} from "@heroicons/react/24/outline";
+import { RecordsClassTypes, RecordsTypes } from "@/utils/types/RecordsTypes";
+import { ClockIcon } from "@heroicons/react/24/outline";
 
-const RecentDrifts = ({ recent } : { recent:LeadersTypes[] }) => {
-
+const RecentDrifts = ({ recent, records } : { recent:LeadersTypes[], records:RecordsClassTypes|undefined }) => {
+    
     return(
         <div>
             <div className="flex items-center gap-5 mb-5">
@@ -15,64 +16,62 @@ const RecentDrifts = ({ recent } : { recent:LeadersTypes[] }) => {
                 </div>
             </div>
 
-            <div className="bg-card overflow-hidden flex flex-col rounded-xl">
-                {recent && recent.map((recent:LeadersTypes, index:number) => {
+            
 
-                    if (!recent.Track) {
-                        return;
-                    }
+            <div className="bg-card overflow-hidden rounded-xl">
+                <table className="custom-table w-full">
+                    <tr>
+                        <th>Track</th>
+                        <th className="hidden lg:table-cell">Class</th>
+                        <th>Score</th>
+                        <th className="hidden lg:table-cell">Date</th>
+                    </tr>
+                    <tbody>
+                        {recent && recent.map((recent:LeadersTypes, index:number) => {
 
-                    return(
-                        <div key={"recent-"+index} className={`flex items-center gap-4 p-4 ${index % 2 && "bg-secondary/40"}`}>
-                            <div>
-                                <ClockIcon height={24} className="text-white/20"/>
-                            </div>
-                            <div className="flex items-center gap-5 w-full">
-                                <div className="flex flex-col lg:flex-row w-full">
-                                    <p className="w-full">
-                                        {recent.Track.name}
-                                    </p>
-                                    <p className="w-full text-sm text-muted">
-                                        {recent.class}-{recent.class == "A" ? "800" : "900"}
-                                    </p>
-                                </div>
+                            if (!recent.Track) {
+                                return;
+                            }
 
-                                <div className="flex flex-col lg:flex-row lg:items-center lg:gap-3 min-w-[120px] lg:w-auto">
-                                    <p className="font-bold lg:w-[150px] lg:text-end">
-                                        {formatNumber(recent.score)}
-                                    </p>
-                                    <p className="text-muted text-sm text-nowrap lg:w-[150px]">
-                                        {getRelativeTime(recent.createdAt)}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    )
+                            const classType = recent.class.toLowerCase() as "a"|"s1";
+                            const record = records 
+                                ? records[classType].filter((record:RecordsTypes) => record.id == recent.Track?.id)[0].top_score
+                                : 0;
 
-                    // return(
-                    // <div key={index} className="bg-card rounded-xl p-4 border-secondary flex gap-4 items-center">
-                    //     <div className="pt-2">
-                    //         <ClockIcon height={30} className="text-white/20"/>
-                    //     </div>
-                    //     <div>
-                    //         <p className="text-sm text-muted">{recent.Track.name}</p>
-                    //         <p className="font-bold text-lg text-info">
-                    //             {formatNumber(recent.score)}
-                    //         </p>
-                    //     </div>
-                    //     <div className="ml-auto">
-                    //         <p className="font-bold text-muted bg-secondary w-7 h-7 flex items-center justify-center rounded-lg">
-                    //             {recent.class}
-                    //         </p>
-
-                    //          <p className="text-muted text-sm">
-                    //             {getRelativeTime(recent.createdAt)}
-                    //         </p>
-                    //     </div>
-                    // </div>)
-                })}
+                            const difference = recent.score - record;
+                            
+                            return(
+                                <tr key={"recent-"+index}>
+                                    <td>
+                                        <p>{recent.Track.name}</p>
+                                        <p className="w-full text-sm text-muted lg:hidden">
+                                            {recent.class}-{recent.class == "A" ? "800" : "900"}
+                                        </p>
+                                    </td>
+                                    <td className="hidden lg:table-cell">
+                                        <p className="w-full text-sm text-muted">
+                                            {recent.class}-{recent.class == "A" ? "800" : "900"}
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p className="font-bold inline-flex flex-col lg:flex-row gap-x-3 items-center">
+                                            {formatNumber(recent.score)} 
+                                            <small className={`font-normal ${difference < 0 ? "text-danger" : difference == 0 ? "text-muted" : "text-success"}`}>
+                                                {recent.score - record} pts
+                                            </small>
+                                        </p>
+                                    </td>
+                                    <td className="hidden lg:table-cell">
+                                        <p className="text-sm italic text-muted">
+                                            {getRelativeTime(recent.createdAt)}
+                                        </p>
+                                    </td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
+                </table>
             </div>
-                
         </div>
     )
 }

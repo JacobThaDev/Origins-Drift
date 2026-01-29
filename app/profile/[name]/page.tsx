@@ -92,7 +92,7 @@ export default function PublicProfile({ params }: ProfileTypes) {
                         </div>
                         <div className="flex flex-col gap-10 w-full">
                             <DriftGarage member={member} garage={garage} />
-                            <RecentDrifts recent={recent} />
+                            <RecentDrifts recent={recent} records={records} />
                         </div>
                     </div>
                 </Container>

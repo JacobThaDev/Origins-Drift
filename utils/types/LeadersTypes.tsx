@@ -2,7 +2,7 @@ import { TracksTypes } from "./TracksTypes";
 import { UsersTypes } from "./UsersTypes";
 
 export interface LeadersTypes {
-    class: string;
+    class: "A"|"S1";
     score: number;
     verified: boolean;
     proof_url: string;
