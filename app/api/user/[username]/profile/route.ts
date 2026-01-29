@@ -33,16 +33,21 @@ export async function GET(req: any, { params } : RouteContext) {
             })
         }
 
-        const [ garage, recent_scores, track_records, stats ] = await Promise.all([
+
+        const [ garage, recent_scores, a_records, s1_records, stats ] = await Promise.all([
             getGarage(user.id),
             getUserRecentScores(user.id),
-            getUserTrackRecords(user.id),
+            getUserTrackRecords(user.id, 'a'),
+            getUserTrackRecords(user.id, 's1'),
             getUserStats(user.id)
         ])
 
         return Response.json({
             stats: stats,
-            records: track_records,
+            records: { 
+                a: a_records,
+                s1: s1_records
+            },
             garage: garage,
             recent: recent_scores
         });

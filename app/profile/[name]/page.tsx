@@ -11,7 +11,7 @@ import TrackRecords from "@/components/profile/TrackRecords";
 import LocalApi from "@/services/LocalApi";
 import { GarageTypes } from "@/utils/types/GarageTypes";
 import { LeadersTypes } from "@/utils/types/LeadersTypes";
-import { RecordsTypes } from "@/utils/types/RecordsTypes";
+import { RecordsClassTypes, RecordsTypes } from "@/utils/types/RecordsTypes";
 import { UsersTypes } from "@/utils/types/UsersTypes";
 import { useEffect, useState } from "react";
 
@@ -28,9 +28,7 @@ export default function PublicProfile({ params }: ProfileTypes) {
     const [ garage, setGarage ]   = useState<GarageTypes[]>();
     const [ stats, setStats ]     = useState<any>([]);
     const [ recent, setRecent ]   = useState<LeadersTypes[]>([]);
-
-    const [ records, setRecords ] = useState<RecordsTypes[]>([]);
-    const [ recordClass, setRecordClass ] = useState<"a"|"s1">("a");
+    const [ records, setRecords ] = useState<RecordsClassTypes>();
 
     useEffect(() => setMounted(true), []);
 
@@ -90,11 +88,10 @@ export default function PublicProfile({ params }: ProfileTypes) {
                 <Container>
                     <div className="flex flex-col lg:flex-row gap-10 mb-20">
                         <div className="w-full lg:max-w-[350px]">
-                            <TrackRecords records={records} classType={recordClass} />
+                            <TrackRecords records={records} />
                         </div>
                         <div className="flex flex-col gap-10 w-full">
                             <DriftGarage member={member} garage={garage} />
-
                             <RecentDrifts recent={recent} />
                         </div>
                     </div>

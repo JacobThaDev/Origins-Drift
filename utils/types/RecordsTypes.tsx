@@ -1,3 +1,8 @@
+export interface RecordsClassTypes {
+    a: RecordsTypes[],
+    s1: RecordsTypes[];
+};
+
 export interface RecordsTypes {
     id: number;
     name: string;
@@ -8,4 +13,4 @@ export interface RecordsTypes {
     track_image: string;
     top_score: number;
     rank: number;
-}
+};

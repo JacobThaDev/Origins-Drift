@@ -35,9 +35,13 @@ export async function GET(req: any, { params } : RouteContext) {
             })
         }
 
-        const track_records = await getUserTrackRecords(user.id);
+        const a_records = await getUserTrackRecords(user.id, 'a');
+        const s1_records = await getUserTrackRecords(user.id, 's1');
 
-        return Response.json(track_records);
+        return Response.json({
+            a: a_records,
+            s1: s1_records
+        });
     } catch (e:any) {
         return Response.json({
             error: e.message
