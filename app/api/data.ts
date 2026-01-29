@@ -10,6 +10,7 @@ const GUILD_ID    = process.env.DISCORD_GUILD_ID;
 export const getUserTrackRecords = (user_id:string, classType:string = 'a') => unstable_cache(
     async () => {
         const garage = await db.tracks.findAll({
+            order: [['id', 'ASC']],
             attributes: {
                 exclude: ['webhook_url'],
                 include: [
