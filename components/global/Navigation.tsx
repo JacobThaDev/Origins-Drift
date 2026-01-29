@@ -131,7 +131,7 @@ const Navigation = () => {
                             <button id="mobile-menu"
                                 onClick={() => setMenuOpen(true)}
                                 className="text-muted hover:bg-info/10 hover:text-info px-5 rounded-xl h-10 flex items-center justify-center">
-                                Menu
+                                Menu 
                             </button>
                         </div>
 

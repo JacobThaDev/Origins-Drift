@@ -1,7 +1,6 @@
 "use client";
 
 import { formatNumber } from "@/utils/Functions";
-import { ArrowPathRoundedSquareIcon, TrophyIcon } from "@heroicons/react/24/outline";
 import { RecordsClassTypes, RecordsTypes } from "@/utils/types/RecordsTypes";
 import { useState } from "react";
 import { SpeedIcon } from "../icons/SpeedIcon";

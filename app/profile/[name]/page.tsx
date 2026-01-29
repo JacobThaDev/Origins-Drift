@@ -11,7 +11,7 @@ import TrackRecords from "@/components/profile/TrackRecords";
 import LocalApi from "@/services/LocalApi";
 import { GarageTypes } from "@/utils/types/GarageTypes";
 import { LeadersTypes } from "@/utils/types/LeadersTypes";
-import { RecordsClassTypes, RecordsTypes } from "@/utils/types/RecordsTypes";
+import { RecordsClassTypes } from "@/utils/types/RecordsTypes";
 import { UsersTypes } from "@/utils/types/UsersTypes";
 import { useEffect, useState } from "react";
 
