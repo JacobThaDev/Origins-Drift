@@ -17,7 +17,7 @@ const SubmitButton = () => {
     const [ modalOpen, setModalOpen ] = useState<boolean>(false);
     const [ uploading, setUploading ] = useState<boolean>(false);
     const [ progress, setProgress ]   = useState<number>(0);
-    const [ score, setScore ]         = useState<number>();
+    const [ score, setScore ]         = useState<number>(0);
     const [ showConfirm, setShowConfirm ] = useState<boolean>(false);
 
     useEffect(() => {
@@ -43,7 +43,7 @@ const SubmitButton = () => {
     const reset = () => {
         toggleModal();
         setShowConfirm(false);
-        setScore(undefined);
+        setScore(0);
         setImgurData(undefined);
         setError(undefined);
     }

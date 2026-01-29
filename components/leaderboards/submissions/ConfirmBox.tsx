@@ -14,7 +14,7 @@ import GlowText from "@/components/misc/GlowText";
 import { ScoresEntryTypes } from "@/utils/types/ScoresEntryTypes";
 
 interface ConfirmBoxTypes {
-    score: number|undefined;
+    score: number;
     imgurData: ImgurDataTypes|undefined;
     activeTrack: TracksTypes;
     classFilter: string;
@@ -51,7 +51,7 @@ const ConfirmBox = ({
                 return;
             }
             
-            setIsPersonalBest(result.new_pb ? result.new_pb : false);
+            setIsPersonalBest(result.previous_best < score);
             setSubmitted(result as ScoresEntryTypes);
             
             if (result.new_pb) {
