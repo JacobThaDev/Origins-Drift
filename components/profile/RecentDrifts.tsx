@@ -3,7 +3,8 @@
 import { formatNumber, getRelativeTime } from "@/utils/Functions";
 import { LeadersTypes } from "@/utils/types/LeadersTypes";
 import { RecordsClassTypes, RecordsTypes } from "@/utils/types/RecordsTypes";
-import { ClockIcon } from "@heroicons/react/24/outline";
+import GlowText from "../misc/GlowText";
+import { TrophyIcon } from "@heroicons/react/24/outline";
 
 const RecentDrifts = ({ recent, records } : { recent:LeadersTypes[], records:RecordsClassTypes|undefined }) => {
     
@@ -54,11 +55,11 @@ const RecentDrifts = ({ recent, records } : { recent:LeadersTypes[], records:Rec
                                         </p>
                                     </td>
                                     <td>
-                                        <p className="font-bold inline-flex flex-col lg:flex-row gap-x-3 items-center">
+                                        <p className="font-bold inline-flex flex-col lg:flex-row gap-x-3 lg:items-center">
                                             {formatNumber(recent.score)} 
-                                            <small className={`font-normal ${difference < 0 ? "text-danger" : difference == 0 ? "text-muted" : "text-success"}`}>
-                                                {recent.score - record} pts
-                                            </small>
+                                            {difference != 0 && <small className={`font-normal ${difference < 0 ? "text-danger" : difference == 0 ? "text-muted" : "text-success"}`}>
+                                               {formatNumber(difference)}
+                                            </small>}
                                         </p>
                                     </td>
                                     <td className="hidden lg:table-cell">
