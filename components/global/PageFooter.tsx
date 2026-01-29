@@ -5,6 +5,7 @@ import Container from "../layout/Container";
 import { DiscordIcon } from "../icons/DiscordIcon";
 import { GithubIcon } from "../icons/GithubIcon";
 import { HeartIcon } from "@heroicons/react/24/solid";
+import { YoutubeIcon } from "../icons/YoutubeIcon";
 
 const PageFooter = () => {
     
@@ -36,6 +37,11 @@ const PageFooter = () => {
                                 target="_blank" rel="nofollow noopener" 
                                 className="w-9 h-9 rounded-lg bg-secondary hover:bg-info/20 flex items-center justify-center transition-colors">
                                 <GithubIcon height={20} className=""/>
+                            </Link>
+                            <Link href={process.env.NEXT_PUBLIC_YOUTUBE_URL} 
+                                target="_blank" rel="nofollow noopener" 
+                                className="w-9 h-9 rounded-lg bg-secondary hover:bg-info/20 flex items-center justify-center transition-colors">
+                                <YoutubeIcon height={20} className=""/>
                             </Link>
                         </div>
                     </div>
