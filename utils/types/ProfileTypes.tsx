@@ -1,6 +1,6 @@
 import { AccountTypes } from "./AccountTypes";
 import { DiscordMemberTypes } from "./discord/DiscordMemberTypes";
-import { LeadersTypes } from "./LeadersTypes";
+import { ScoresTypes } from "./ScoresTypes";
 import { TracksTypes } from "./TracksTypes";
 
 export interface ProfileTypes {

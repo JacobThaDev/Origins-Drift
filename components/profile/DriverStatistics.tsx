@@ -2,7 +2,7 @@
 
 import { ChartBarIcon, ClockIcon, FireIcon, TrophyIcon } from "@heroicons/react/24/outline";
 import { BullseyeIcon } from "../icons/BullseyeIcon";
-import { LeadersTypes } from "@/utils/types/LeadersTypes";
+import { ScoresTypes } from "@/utils/types/ScoresTypes";
 import CountUp from "react-countup";
 import Container from "../layout/Container";
 
@@ -108,7 +108,7 @@ interface ProfileStatsTypes {
    total_entries: number;
    track_time: number;
    total_score: number;
-   highest_score: LeadersTypes;
+   highest_score: ScoresTypes;
    error?: {
         message: string;
    };

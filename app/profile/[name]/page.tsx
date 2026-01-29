@@ -10,7 +10,7 @@ import RecentDrifts from "@/components/profile/RecentDrifts";
 import TrackRecords from "@/components/profile/TrackRecords";
 import LocalApi from "@/services/LocalApi";
 import { GarageTypes } from "@/utils/types/GarageTypes";
-import { LeadersTypes } from "@/utils/types/LeadersTypes";
+import { ScoresTypes } from "@/utils/types/ScoresTypes";
 import { RecordsClassTypes } from "@/utils/types/RecordsTypes";
 import { UsersTypes } from "@/utils/types/UsersTypes";
 import { useEffect, useState } from "react";
@@ -27,7 +27,7 @@ export default function PublicProfile({ params }: ProfileTypes) {
     const [ member, setMember ]   = useState<UsersTypes>();
     const [ garage, setGarage ]   = useState<GarageTypes[]>();
     const [ stats, setStats ]     = useState<any>([]);
-    const [ recent, setRecent ]   = useState<LeadersTypes[]>([]);
+    const [ recent, setRecent ]   = useState<ScoresTypes[]>([]);
     const [ records, setRecords ] = useState<RecordsClassTypes>();
 
     useEffect(() => setMounted(true), []);

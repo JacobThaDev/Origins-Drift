@@ -1,8 +1,8 @@
-import { LeadersTypes } from "./LeadersTypes";
+import { ScoresTypes } from "./ScoresTypes";
 import { TracksTypes } from "./TracksTypes";
 
 export interface LeaderboardTypes {
     track: TracksTypes;
-    leaderboard: LeadersTypes[];
+    leaderboard: ScoresTypes[];
     error?: string;
 }

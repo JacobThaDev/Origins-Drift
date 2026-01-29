@@ -1,7 +1,7 @@
 import { TracksTypes } from "@/utils/types/TracksTypes";
 import db from "@/models";
 import { revalidateTag,  } from "next/cache";
-import { LeadersTypes } from "@/utils/types/LeadersTypes";
+import { ScoresTypes } from "@/utils/types/ScoresTypes";
 import { formatNumber } from "@/utils/Functions";
 import { getTrackByName, getTrackByNameWithHook, getUserRecord } from "@/app/api/data";
 import { UsersTypes } from "@/utils/types/UsersTypes";
@@ -110,25 +110,26 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
         // grab original record
         let personal_best = await getUserRecord(user_id, score, trackData.id, classType);
 
+        if (!personal_best) {
+            personal_best = { score: 0, rank: 0 };
+        }
+
         // now we just add a new score
         const score_result = await db.scores.create({
             user_id: user_id,
             game: trackData.game,
             track: trackData.id,
+            personal_best: personal_best.score,
             class: classType.toUpperCase(),
             score: score,
             proof_url: proof_url,
             proof_delete_hash: delete_hash
-        }) as LeadersTypes;
+        }) as ScoresTypes;
 
         if (!score_result) {
             return Response.json({
                 error: "Failed to create new score."
             });
-        }
-
-        if (!personal_best) {
-            personal_best = { score: 0, rank: 0 };
         }
 
         const pb = personal_best.score;
@@ -154,6 +155,8 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
         return Response.json({
             success: true,
             message: "Your score has been submitted.",
+            score: score_result.score,
+            previous_best: personal_best.score,
             new_pb: isNewPb,
             result: score_result
         });

@@ -2,17 +2,16 @@
 
 import LocalApi from "@/services/LocalApi";
 import { formatNumber } from "@/utils/Functions";
-import { BasicApiResponseType } from "@/utils/types/BasicApiResponseType";
 import { ImgurDataTypes } from "@/utils/types/ImgurDataTypes";
-import { LeadersTypes } from "@/utils/types/LeadersTypes";
 import { TracksTypes } from "@/utils/types/TracksTypes";
-import { CheckIcon, PresentationChartBarIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon, CheckIcon, PresentationChartBarIcon, TrophyIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import PersonalBestBox from "./PersonalBestBox";
-import ScoreSavedBox from "./ScoreSavedBox";
 import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
+import Meteors from "@/components/misc/Meteors";
+import GlowText from "@/components/misc/GlowText";
+import { ScoresEntryTypes } from "@/utils/types/ScoresEntryTypes";
 
 interface ConfirmBoxTypes {
     score: number|undefined;
@@ -30,11 +29,9 @@ const ConfirmBox = ({
     const [ loading, setLoading ] = useState<boolean>(false);
     const [ isPersonalBest, setIsPersonalBest ] = useState<boolean>(false);
     const [ error, setError ] = useState<string>();
-    const [ submitted, setSubmitted ] = useState<LeadersTypes>();
-
+    const [ submitted, setSubmitted ] = useState<ScoresEntryTypes>();
     const { perfIndex, loadLeaderboard }:TracksContextTypes = useTracksContext();
     
-
     const submitData = async() => {
         if (loading) {
             return;
@@ -43,7 +40,7 @@ const ConfirmBox = ({
         setLoading(true);
         
         try {
-            const result:BasicApiResponseType = await LocalApi.post( "/tracks/"+activeTrack.short_name+"/"+perfIndex, {
+            const result:ScoresEntryTypes = await LocalApi.post( "/tracks/"+activeTrack.short_name+"/"+perfIndex, {
                 score: score as number,
                 proof_url: imgurData?.link,
                 delete_hash: imgurData?.deletehash
@@ -55,7 +52,7 @@ const ConfirmBox = ({
             }
             
             setIsPersonalBest(result.new_pb ? result.new_pb : false);
-            setSubmitted(result.result as LeadersTypes);
+            setSubmitted(result as ScoresEntryTypes);
             
             if (result.new_pb) {
                 // only time we need to update the tracks on their end,
@@ -78,19 +75,53 @@ const ConfirmBox = ({
     if (submitted) {
         if (isPersonalBest) {
             return (
-                <PersonalBestBox 
-                    score={submitted.score} 
-                    track={activeTrack} 
-                    submitted={submitted} 
-                    continueBtn={continueButton}/>
+                <div className="text-center relative overflow-hidden">
+                    <Meteors/>
+                    <div className="p-7 relative">
+                        <TrophyIcon height={80} className="mx-auto mb-5 text-warning" strokeWidth={0.5}/>
+                        <p className="text-white/60 text-sm">{activeTrack.name} ({submitted.result.class}-Class)</p>
+                        <p className="text-xl mb-1">
+                            New Personal Best!
+                        </p>
+                        
+                        <p className="mt-5 mb-2 text-5xl text-warning font-black brightness-125">
+                            <GlowText text={formatNumber(score)} />
+                        </p>
+
+                        <p className="mb-5 text-success">
+                            +{formatNumber(submitted.result.score - submitted.result.personal_best)}
+
+                        </p>
+
+                        <div className="relative overflow-hidden rounded-xl">
+                            <button 
+                                onClick={() => continueButton()} className="flex items-center justify-center gap-2 px-5 py-3 glow-button hover:brightness-125 transition-all w-full rounded-xl">
+                                <CheckIcon height={20} strokeWidth={4} /> Continue
+                            </button>
+                        </div>
+                    </div>
+                </div>
             )
         } else {
             return (
-                <ScoreSavedBox 
-                    track={activeTrack} 
-                    loading={loading} 
-                    data={submitted} 
-                    continueBtn={continueButton}/>
+                <div className="text-center p-7">
+                    <CheckCircleIcon height={80} className="mx-auto mb-5 text-success"/>
+                    <p className="text-white/60">
+                        Score saved! 
+                    </p>
+
+                    <p className="mb-3 text-xl">{activeTrack.name} ({submitted.result.class}-Class)</p> 
+
+                    <p className="text-3xl font-black mb-5">
+                        {formatNumber(submitted.result.score, 0)}
+                    </p>
+
+                    <button 
+                        disabled={loading}
+                        onClick={() => continueButton()} className="flex items-center justify-center gap-2 px-5 py-3 bg-success/70 hover:bg-success  transition-all w-full rounded-xl">
+                        <CheckIcon height={20} strokeWidth={4} /> Continue
+                    </button>
+                </div>
             )
         }
     }

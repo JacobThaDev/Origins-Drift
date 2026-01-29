@@ -1,6 +1,6 @@
 "use client"
 
-import { LeadersTypes } from "@/utils/types/LeadersTypes";
+import { ScoresTypes } from "@/utils/types/ScoresTypes";
 import Image from "next/image";
 import Link from "next/link";
 import { formatNumber, getRelativeTime } from "@/utils/Functions";
@@ -50,7 +50,7 @@ const LeaderTable = () => {
                 <div className="ml-auto hidden lg:inline-block">Score</div>
             </div>
             
-            {leaderboard && leaderboard.length > 0 ? leaderboard.map((entry:LeadersTypes, index:number) => {
+            {leaderboard && leaderboard.length > 0 ? leaderboard.map((entry:ScoresTypes, index:number) => {
 
                 return(
                     <div className={`flex items-center ${index % 2 && "bg-black/10"} py-4 pe-5`} key={"score-"+index}>

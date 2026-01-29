@@ -3,7 +3,7 @@
 import LocalApi from '@/services/LocalApi';
 import { GamesSymbol, GamesTypes } from '@/utils/types/GamesTypes';
 import { LeaderboardTypes } from '@/utils/types/LeaderboardTypes';
-import { LeadersTypes } from '@/utils/types/LeadersTypes';
+import { ScoresTypes } from '@/utils/types/ScoresTypes';
 import { TracksTypes } from '@/utils/types/TracksTypes';
 
 import { 
@@ -27,7 +27,7 @@ export function TracksContextProvider({ children }:TracksContextProps) {
     const [ tracks, setTracks ]           = useState<TracksTypes[]>();
     const [ current, setCurrent ]         = useState<TracksTypes>();
     const [ perfIndex, setPerfIndex ]     = useState<"a"|"s1">("a");
-    const [ leaderboard, setLeaderboard ] = useState<LeadersTypes[]>();
+    const [ leaderboard, setLeaderboard ] = useState<ScoresTypes[]>();
     const [ error, setError ]             = useState<string>();
     const [ game, setGame ]               = useState<GamesSymbol>("FH5");
 
@@ -143,8 +143,8 @@ export interface TracksContextTypes {
     setError: (arg1: string|undefined) => void;
     perfIndex: "a"|"s1";
     setPerfIndex: (arg1: "a"|"s1") => void;
-    leaderboard: LeadersTypes[];
-    setLeaderboard: (arg1: LeadersTypes[]|undefined) => void;
+    leaderboard: ScoresTypes[];
+    setLeaderboard: (arg1: ScoresTypes[]|undefined) => void;
     loadLeaderboard: (arg1?:boolean) => Promise<boolean>;
     game: GamesSymbol;
     setGame: (arg1: GamesSymbol) => void;

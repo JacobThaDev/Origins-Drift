@@ -1,5 +1,5 @@
 import { GamesTypes } from "./GamesTypes";
-import { LeadersTypes } from "./LeadersTypes";
+import { ScoresTypes } from "./ScoresTypes";
 
 export interface TracksTypes {
     id: number;
@@ -7,7 +7,7 @@ export interface TracksTypes {
     short_name: string;
     game: number;
     Game: GamesTypes;
-    Scores: LeadersTypes[];
+    Scores: ScoresTypes[];
     length: number;
     favorite: boolean;
     track_image: string;

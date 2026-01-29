@@ -26,6 +26,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: 0
         },
+        personal_best: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0
+        },
         proof_url: {
             type: DataTypes.STRING,
             allowNull: true,
