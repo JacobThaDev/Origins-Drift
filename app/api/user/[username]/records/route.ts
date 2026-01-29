@@ -1,7 +1,5 @@
-import db from "@/models";
 import { getUserByNameWithId, getUserTrackRecords } from "../../../data";
 import { UsersTypes } from "@/utils/types/UsersTypes";
-import { Sequelize } from "sequelize";
 
 type RouteContext = {
     params: Promise<{ username: string }>;
