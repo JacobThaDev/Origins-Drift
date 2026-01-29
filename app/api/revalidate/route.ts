@@ -21,6 +21,12 @@ export async function GET(req: any, res:any) {
             }, { status: 401 });
         }
 
+        if (session.user.Account.accountId != "150486701695827968") {
+            return Response.json({ 
+                error: "Unauthorized"
+            }, { status: 401 });
+        }
+
         revalidateTag(`users`);
         revalidateTag(`users-recent`);
         revalidateTag(`user-records`);
