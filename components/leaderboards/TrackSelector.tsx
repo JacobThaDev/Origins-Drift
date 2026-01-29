@@ -47,7 +47,7 @@ const TrackSelector = () => {
                     <ChevronDownIcon height={20} className="ml-auto"/>
                 </button>
                 
-                <div className={`absolute rounded-xl top-full mt-3 w-full bg-secondary ${menuOpen ? "flex" : "hidden"} flex-col max-h-[220px] overflow-hidden overflow-y-auto scrollbar z-[50] shadow-xl shadow-black/30`} id="track-dropdown">
+                <div className={`absolute rounded-xl top-full mt-3 w-full bg-secondary ${menuOpen ? "flex" : "hidden"} flex-col max-h-[300px] lg:max-h-[400px] overflow-hidden overflow-y-auto scrollbar z-[50] shadow-xl shadow-black/30`} id="track-dropdown">
                     {tracks && tracks.map((track:TracksTypes, index:number) => {
                         return(
                             <Link
