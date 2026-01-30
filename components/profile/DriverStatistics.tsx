@@ -12,7 +12,7 @@ const DriverStatistics = ({ stats } : { stats:ProfileStatsTypes }) => {
         <div className="pb-10">
             <Container>
                 <div>
-                    <div className="flex items-center gap-5 py-4 mb-5">
+                    <div className="flex items-center gap-5 mb-5">
                         <ChartBarIcon height={30} className="text-info" />
                         <div>
                             <p className="text-sm text-muted">Performance</p>

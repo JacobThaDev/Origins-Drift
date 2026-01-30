@@ -13,8 +13,8 @@ export default [
         icon: <UsersIcon height={20}/>
     },
     {
-        title: "Garage",
-        url: "/garage",
+        title: "Cars DB",
+        url: "/cars",
         icon: <CarIcon height={20}/>
     },
     {
