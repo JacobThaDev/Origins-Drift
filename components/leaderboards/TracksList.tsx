@@ -39,13 +39,13 @@ const TracksList = ({ tracks, showButton = true, limit = 6 } : TracksListTypes) 
                                     <div className="absolute gap-3 top-0 left-0 w-full h-full flex items-center px-5">
                                         <RouteIcon width={26} strokeWidth={1.5} className="text-muted group-hover:text-info/80" />
                                         <div>
-                                            <p className="text-xl font-bold">
+                                            <p className="text-xl lg:text-2xl font-bold">
                                                 {track.name}
                                             </p>
                                             <div className="flex items-center gap-3 text-muted text-sm">
                                                 <div className="flex items-center text-muted gap-2">
                                                     <MapPinIcon strokeWidth={2} height={16}/>
-                                                    <p>{game == "FH4" ? "United Kingdom" : game == "FH5" ? "Mexico" : "Japan"}</p>
+                                                    <p>{track.location}</p>
                                                 </div>
 
                                                 <div className="flex items-center gap-2">

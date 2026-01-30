@@ -9,6 +9,7 @@ export interface TracksTypes {
     Game: GamesTypes;
     Scores: ScoresTypes[];
     length: number;
+    location: string;
     favorite: boolean;
     track_image: string;
     error?: string;
