@@ -17,7 +17,7 @@ const DriftGarage = ({ member, garage }: DriftGarageTypes) => {
     <div>
         <div className="flex flex-col lg:flex-row lg:justify-between lg:items-baseline mb-4">
 
-            <div className="flex items-center gap-5 mb-5">
+            <div className="flex items-center gap-5 mb-4">
                 <div>
                     <p className="text-sm text-muted">Garage</p>
                     <p className="text-3xl font-bold">My <span className="italic text-info">Drift</span> Garage</p>
