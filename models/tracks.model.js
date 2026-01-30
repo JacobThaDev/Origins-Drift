@@ -20,6 +20,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: 0
         },
+        location: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: null
+        },
         game: {
             type: DataTypes.INTEGER,
             allowNull: false,

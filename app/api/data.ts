@@ -201,6 +201,7 @@ export const getTrackByNameWithHook = (track:string) => unstable_cache(
 export const getTracksData = (classType:string = 'a') => unstable_cache(
     async () => {
         const trackData = await db.tracks.findAll({
+            order: [['id', 'ASC']],
             attributes: {
                 exclude: ['webhook_url'],
                 include: [
