@@ -45,7 +45,6 @@ export const getUserTrackRecords = (user_id:string, classType:string = 'a') => u
         return garage;
     },
     ['track-records', user_id, classType], {
-        revalidate: 3600,
         tags: [
             'track-records',
             `track-records-${user_id}`,
@@ -76,7 +75,6 @@ export const getGarage = (user_id:string) => unstable_cache(
         return garage;
     },
     ['garage', user_id], {
-        revalidate: 3600,
         tags: [
             'garage',
             `garage-${user_id}`
@@ -106,7 +104,6 @@ export const getCarByOwner = (owner_id:string, car_id:number) => unstable_cache(
         return garage;
     },
     ['garage', owner_id, String(car_id)], {
-        revalidate: 3600,
         tags: [
             'garage',
             `garage-${owner_id}-${car_id}`
@@ -167,7 +164,6 @@ export const getTrackByName = (track:string, classType:string = 'a') => unstable
         return trackData;
     },
     ['track-data', track.toLowerCase(), classType], {
-        revalidate: 3600,
         tags: [
             'track-data',
             `track-data-${track.toLowerCase()}-${classType}`,
@@ -195,7 +191,6 @@ export const getTrackByNameWithHook = (track:string) => unstable_cache(
         return trackData;
     },
     ['track-hook', track.toLowerCase()], {
-        revalidate: 3600,
         tags: [
             'track-hook',
             `track-hook-${track.toLowerCase()}`,
@@ -280,7 +275,6 @@ export const getBasicTrackData = (track:string) => unstable_cache(
         return trackData;
     },
     ['track-basic', track.toLowerCase()], {
-        revalidate: (3600 & 6 ), // 6 hour for basic track data that rarely changes.
         tags: [
             'track-basic',
             `track-basic-${track.toLowerCase()}`,
@@ -493,7 +487,6 @@ export const getUserRecentScores = (user_id:string) => unstable_cache(
         return user;
     },
     ['users-recent', user_id], {
-        revalidate: 3600,  // 1 hour
         tags: [
             `users-recent`,
             `user-recent-${user_id}`
@@ -648,8 +641,7 @@ export const getUserStats = (user_id:string) => unstable_cache(
         tags: [
             'user-stats',
             `user-stats-${user_id}`
-        ],
-        revalidate: 3600
+        ]
     }
 )();
 

@@ -149,8 +149,10 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
          * across the website properly
          */
         revalidateTag(`track-data-${track.toLowerCase()}-${classType.toLowerCase()}`);
+        revalidateTag(`track-hook-${track.toLowerCase()}`);
         revalidateTag(`tracks-data-${classType.toLowerCase()}`);
         revalidateTag(`user-recent-${user_id}`);
+        revalidateTag(`user-stats-${user_id}`);
 
         return Response.json({
             success: true,
