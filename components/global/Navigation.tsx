@@ -98,7 +98,7 @@ const Navigation = () => {
                             return(
                                 <Link href={link.url} key={index}
                                     aria-label={link.title}
-                                    className={`hover:text-info flex gap-3 items-center text-muted px-7 lg:px-5 py-2 lg:py-3 transition-all lg:w-auto w-full`}>
+                                    className={`hover:text-info flex gap-3 items-center ${link.class && link.class || "text-muted"} px-7 lg:px-5 py-2 lg:py-3 transition-all lg:w-auto w-full`}>
                                     {link.title}
                                 </Link>
                             )
