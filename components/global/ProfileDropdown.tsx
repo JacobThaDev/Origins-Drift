@@ -67,7 +67,10 @@ const ProfileDropdown = ({ session, setShowLogout } : { session:SessionsTypes, s
                             <p className="text-lg">{session.user.name}</p>
                         </div>
                         <div className="ml-auto">
-                            <SignOutButton/>
+                            <button onClick={() => setShowLogout(true)}
+                                className="hover:bg-danger/70 transition-all p-2 text-white/50 rounded-full outline-0">
+                                <PowerIcon width={24} strokeWidth={2}  />
+                            </button>
                         </div>
                     </div>
                     <div className="flex flex-col py-3">
@@ -94,12 +97,6 @@ const ProfileDropdown = ({ session, setShowLogout } : { session:SessionsTypes, s
                             <Cog6ToothIcon height={20}/>
                             <p>Edit Profile</p>
                         </Link>
-
-                        <button onClick={() => setShowLogout(true)}
-                            className="flex w-full text-danger/80 hover:text-danger gap-3 lg:px-5 py-2 transition-all">
-                            <PowerIcon height={20}/>
-                            <p>Sign Out</p>
-                        </button>
                     </div>    
                 </div>}
 
