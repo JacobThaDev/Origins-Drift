@@ -21,7 +21,7 @@ const HomeStats = ({ stats }: { stats:any }) => {
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                        <div className="bg-card rounded-xl p-7 text-start border-2 border-border hover:border-info/50 transition-all duration-300 hover:scale-110 hover:rotate-[-5deg]">
+                        <div className="bg-card rounded-xl p-7 text-start border-2 border-border hover:border-warning/80 transition-all duration-300 hover:scale-110">
                             <div className="bg-warning/20 rounded-lg w-12 h-12 md:w-16 md:h-16 flex items-center justify-center mb-5">
                                 <TrophyIcon height={30} className="text-warning max-w-[24px] md:max-w-[38px]"/>
                             </div>
@@ -37,7 +37,7 @@ const HomeStats = ({ stats }: { stats:any }) => {
                             <p className="text-sm md:text-base text-muted">{stats?.max_score.Track.name} Circuit</p>
                         </div>
 
-                        <div className="bg-card rounded-xl p-7 text-start border-2 border-border hover:border-info/50 transition-all duration-300 hover:scale-110 hover:rotate-[-5deg]">
+                        <div className="bg-card rounded-xl p-7 text-start border-2 border-border hover:border-danger/80 transition-all duration-300 hover:scale-110">
                             <div className="bg-danger/20 rounded-lg w-12 h-12 md:w-16 md:h-16 flex items-center justify-center mb-5">
                                 <FireIcon height={30} className="text-danger max-w-[24px] md:max-w-[38px]"/>
                             </div>
@@ -55,7 +55,7 @@ const HomeStats = ({ stats }: { stats:any }) => {
                             <p className="text-sm md:text-base text-muted">Sum of all scores submitted</p>
                         </div>
 
-                        <div className="bg-card rounded-xl p-7 text-start border-2 border-border hover:border-info/50 transition-all duration-300 hover:scale-110 hover:rotate-[-5deg]">
+                        <div className="bg-card rounded-xl p-7 text-start border-2 border-border hover:border-info/80 transition-all duration-300 hover:scale-110">
                             <div className="bg-info/20 rounded-lg w-12 h-12 md:w-16 md:h-16 flex items-center justify-center mb-5">
                                 <QueueListIcon height={30} className="text-info max-w-[24px] md:max-w-[38px]"/>
                             </div>
@@ -71,7 +71,7 @@ const HomeStats = ({ stats }: { stats:any }) => {
                             <p className="text-muted">Cars we have data for</p>
                         </div>
 
-                        <div className="bg-card rounded-xl p-7 text-start border-2 border-border hover:border-info/50 transition-all duration-300 hover:scale-110 hover:rotate-[-5deg]">
+                        <div className="bg-card rounded-xl p-7 text-start border-2 border-border hover:border-success/80 transition-all duration-300 hover:scale-110">
                             <div className="bg-success/20 rounded-lg w-12 h-12 md:w-16 md:h-16 flex items-center justify-center mb-5">
                                 <BullseyeIcon height={30} strokeWidth={ 1} className="text-success max-w-[24px] md:max-w-[38px]"/>
                             </div>
