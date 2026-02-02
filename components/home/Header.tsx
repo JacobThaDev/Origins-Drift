@@ -3,12 +3,15 @@ import GlowText from "../misc/GlowText";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import PageHeader from "../layout/PageHeader";
 import CountUp from "react-countup";
+import { GamePadIcon } from "../icons/GamePadIcon";
 
 const HomeHeader = ({ stats }: { stats:any }) => {
 
     return(
         <PageHeader>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-info/10 border border-info/20 mb-8">
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-info/10 border border-info/20 mb-8">
+                <GamePadIcon height={20} strokeWidth={2} className="text-info"/>
+                <div className="h-[10px] w-[1px] bg-info"/>
                 <span className="text-sm font-medium text-info">Forza Horizon</span>
             </div>
 
