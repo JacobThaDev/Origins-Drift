@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { env as _env } from 'process';
 import LocalApi from "./services/LocalApi";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
     try {
         const session = await LocalApi.get("/auth/get-session", {
             headers: {

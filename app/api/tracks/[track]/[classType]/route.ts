@@ -119,7 +119,7 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
             user_id: user_id,
             game: trackData.game,
             track: trackData.id,
-            personal_best: personal_best.score,
+            personal_best: personal_best ? personal_best.score : 0, 
             class: classType.toUpperCase(),
             score: score,
             proof_url: proof_url,
@@ -139,20 +139,20 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
             sendWebhook(trackData, score, personal_best, session.user, classType, proof_url);
             
             // user has a new record so cache needs updated.
-            revalidateTag(`user-record-${trackData.id}-${classType.toLowerCase()}-${user_id}`);
-            revalidateTag(`track-records-${user_id}-${classType}`);
-            revalidateTag(`leaders-${trackData.id}-${classType.toUpperCase()}`);
+            revalidateTag(`user-record-${trackData.id}-${classType.toLowerCase()}-${user_id}`, 'max');
+            revalidateTag(`track-records-${user_id}-${classType}`, 'max');
+            revalidateTag(`leaders-${trackData.id}-${classType.toUpperCase()}`, 'max');
         }
 
         /**
          * Now we need to update the caches so it can show the new score
          * across the website properly
          */
-        revalidateTag(`track-data-${track.toLowerCase()}-${classType.toLowerCase()}`);
-        revalidateTag(`track-hook-${track.toLowerCase()}`);
-        revalidateTag(`tracks-data-${classType.toLowerCase()}`);
-        revalidateTag(`user-recent-${user_id}`);
-        revalidateTag(`user-stats-${user_id}`);
+        revalidateTag(`track-data-${track.toLowerCase()}-${classType.toLowerCase()}`, 'max');
+        revalidateTag(`track-hook-${track.toLowerCase()}`, 'max');
+        revalidateTag(`tracks-data-${classType.toLowerCase()}`, 'max');
+        revalidateTag(`user-recent-${user_id}`, 'max');
+        revalidateTag(`user-stats-${user_id}`, 'max');
 
         return Response.json({
             success: true,
