@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
             delete_hash: null
         });
 
-        revalidateTag(`garage-${session.session.userId}`);
+        revalidateTag(`garage-${session.session.userId}`, 'max');
 
         return Response.json({
             success: true,

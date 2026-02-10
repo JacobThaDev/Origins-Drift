@@ -65,12 +65,12 @@ export async function getFullUserProfile(userId: string) {
                 });
 
                 // need to refresh the caches for everything related to said user.
-                revalidateTag(`users-${userId}`);
-                revalidateTag(`user-name-id-${user.discord_name}`);
-                revalidateTag(`user-name-${user.discord_name}`);
-                revalidateTag(`leaders`);
-                revalidateTag(`user-records`);
-                revalidateTag(`tracks-data`);
+                revalidateTag(`users-${userId}`, 'max');
+                revalidateTag(`user-name-id-${user.discord_name}`, 'max');
+                revalidateTag(`user-name-${user.discord_name}`, 'max');
+                revalidateTag(`leaders`, 'max');
+                revalidateTag(`user-records`, 'max');
+                revalidateTag(`tracks-data`, 'max');
             } catch (err:any) {
                 console.error(err);
             }

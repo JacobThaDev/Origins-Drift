@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
             car_id: car_id
         }})
 
-        revalidateTag(`garage-${session.session.userId}`);
+        revalidateTag(`garage-${session.session.userId}`, 'max');
 
         return Response.json({
             success: true,

@@ -27,17 +27,17 @@ export async function GET(req: any, res:any) {
             }, { status: 401 });
         }
 
-        revalidateTag(`users`);
-        revalidateTag(`users-recent`);
-        revalidateTag(`user-records`);
-        revalidateTag(`user-record`);
-        revalidateTag(`track-data`);
-        revalidateTag(`track-hook`);
-        revalidateTag(`tracks-data`);
-        revalidateTag(`track-basic`);
-        revalidateTag(`leaders`);
-        revalidateTag(`recent`);
-        revalidateTag(`discord_users`);
+        revalidateTag(`users`, 'max');
+        revalidateTag(`users-recent`, 'max');
+        revalidateTag(`user-records`, 'max');
+        revalidateTag(`user-record`, 'max');
+        revalidateTag(`track-data`, 'max');
+        revalidateTag(`track-hook`, 'max');
+        revalidateTag(`tracks-data`, 'max');
+        revalidateTag(`track-basic`, 'max');
+        revalidateTag(`leaders`, 'max');
+        revalidateTag(`recent`, 'max');
+        revalidateTag(`discord_users`, 'max');
         
         return Response.json({ 
             message: "Revalidated caches."

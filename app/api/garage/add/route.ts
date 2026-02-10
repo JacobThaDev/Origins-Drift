@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
             }, { status: 400 })
         }
 
-        revalidateTag(`garage-${session.session.userId}`);
+        revalidateTag(`garage-${session.session.userId}`, 'max');
 
         return Response.json({
             success: true,
