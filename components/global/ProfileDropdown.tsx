@@ -55,7 +55,7 @@ const ProfileDropdown = ({ session, setShowLogout } : { session:SessionsTypes, s
                 <div className="absolute top-full mt-8 shadow-xl shadow-black/50 right-0 w-[270px] bg-card border-[1px] border-secondary rounded-xl overflow-hidden">
                     
                     <div className="p-4 bg-black/20 flex gap-4">
-                        <Image
+                        { session && session.user && <><Image
                             unoptimized
                             src={getAvatar(session.discord.user.id, session.discord.user.avatar)}
                             width={50} 
@@ -72,6 +72,7 @@ const ProfileDropdown = ({ session, setShowLogout } : { session:SessionsTypes, s
                                 <PowerIcon width={24} strokeWidth={2}  />
                             </button>
                         </div>
+                        </>}
                     </div>
                     <div className="flex flex-col py-3">
 

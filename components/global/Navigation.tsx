@@ -14,7 +14,7 @@ import ProfileDropdown from "./ProfileDropdown";
 const Navigation = () => {
 
     const [ menuOpen, setMenuOpen ] = useState<boolean>(false);
-    const { session, setSession, setProfile }:ProfileContextTypes = useProfileContext();
+    const { profile, session, setSession, setProfile }:ProfileContextTypes = useProfileContext();
     const [ mounted, setMounted ] = useState<boolean>(false);
     const [ showLogout, setShowLogout ] = useState<boolean>();
 
@@ -123,7 +123,7 @@ const Navigation = () => {
                                 </div>
                             </Link>}
                             
-                            {session && 
+                            {session && session.user && 
                             <ProfileDropdown session={session} setShowLogout={setShowLogout} />}
                         </div>
                         
@@ -152,19 +152,20 @@ const Navigation = () => {
                             <XMarkIcon height={20}/>
                         </button>
                     </div>
-                    <Link href="/profile">
+                    
+                    {session.user && session.user.image && <Link href="/profile">
                         <Image 
                             className="rounded-full"
                             src={session.user.image}
                             width={72}
                             height={72}
                             alt=""/>
-                    </Link>
+                    </Link>}
 
                     <div className="text-center">
                         <p className="text-white/50">Signed in as</p>
-                        <p className="text-2xl font-black mb-2">{session.user.name}</p>
-                        <p>{session.user.discord_name}</p>
+                        <p className="text-2xl font-black mb-2">{session.user?.name}</p>
+                        <p>{session.user?.discord_name}</p>
                     </div>
                 </div>
             : <>
@@ -201,7 +202,7 @@ const Navigation = () => {
 
             <div className="flex flex-col justify-start items-start">
                 <div className="relative">
-                    {session && 
+                    {session && session.user && 
                     <Link href={`/profile/`+session.user.discord_name} 
                         onClick={() => setMenuOpen(false)}
                         className="hover:text-info flex gap-3 items-center text-muted px-7 lg:px-5 py-2 lg:py-3 transition-all lg:w-auto w-full">
@@ -209,7 +210,7 @@ const Navigation = () => {
                         <p>View Profile</p>
                     </Link>}
 
-                    {session && 
+                    {session && session.user  && 
                     <Link href="/profile"  
                         onClick={() => setMenuOpen(false)}
                         className="hover:text-info flex gap-3 items-center text-muted px-7 lg:px-5 py-2 lg:py-3 transition-all lg:w-auto w-full">
@@ -217,7 +218,7 @@ const Navigation = () => {
                         <p>Profile Settings</p>
                     </Link>}
                     
-                    {session && 
+                    {session && session.user  && 
                     <button 
                         onClick={() => {
                             setMenuOpen(false);

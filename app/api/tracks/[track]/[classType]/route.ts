@@ -109,7 +109,9 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
 
         // grab original record
         let personal_best = await getUserRecord(user_id, score, trackData.id, classType);
-
+        
+        console.log(personal_best);
+        
         if (!personal_best) {
             personal_best = { score: 0, rank: 0 };
         }
@@ -119,7 +121,7 @@ export async function POST(req: NextRequest, { params }: RouteContext) {
             user_id: user_id,
             game: trackData.game,
             track: trackData.id,
-            personal_best: personal_best ? personal_best.score : 0, 
+            personal_best: personal_best && personal_best.score ? personal_best.score : 0, 
             class: classType.toUpperCase(),
             score: score,
             proof_url: proof_url,

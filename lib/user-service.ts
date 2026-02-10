@@ -22,6 +22,7 @@ export async function getFullUserProfile(userId: string) {
             {
                 model: db.accountData,
                 as: "AccountData",
+                require: false,
                 attributes: {
                     exclude: ['user_id']
                 }

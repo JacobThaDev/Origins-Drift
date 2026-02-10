@@ -38,7 +38,7 @@ export function ProfileContextProvider({ children }:ProfileContextProps) {
         }
 
         const session = data as unknown as SessionsTypes;
-
+        
         setSession(session);
         setProfile(session.user);
         setDiscord(session.discord);
