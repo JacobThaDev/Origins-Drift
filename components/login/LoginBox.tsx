@@ -21,8 +21,8 @@ const LoginBox = () => {
         
         await client.signIn.social({
             provider: "discord",
-            callbackURL: "/",
-            errorCallbackURL: "/",
+            callbackURL: process.env.NEXT_PUBLIC_SITE_URL,
+            errorCallbackURL: process.env.NEXT_PUBLIC_SITE_URL+"/error",
         });
     }
 

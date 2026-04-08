@@ -168,7 +168,7 @@ const CarDetailsSidebar = ({ details, setDetails, setDetailType, detailType }: S
                         </div>
                         <div className="flex items-center justify-between py-1">
                             <div className="font-bold text-muted">0-60mph</div>
-                            <div>{details.A60 ?? "unknown"}s</div>
+                            <div>{details.A60 ?? "unknown"}</div>
                         </div>
                         <div className="flex items-center justify-between py-1">
                             <div className="font-bold text-muted">0-100mph</div>
