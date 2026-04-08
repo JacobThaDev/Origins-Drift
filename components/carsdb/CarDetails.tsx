@@ -1,11 +1,8 @@
 "use client";
 
-import { GarageContextTypes, useGarageContext } from "@/providers/GarageProvider";
-import LocalApi from "@/services/LocalApi";
 import { capitalize, formatNumber } from "@/utils/Functions";
 import { CarsDetailsTypes } from "@/utils/types/CarsDetailsTypes";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
 
 interface SidebarTypes {
     details: CarsDetailsTypes;
@@ -15,7 +12,6 @@ interface SidebarTypes {
 }
 
 const CarDetails = ({ details, setDetails, setDetailType, detailType }: SidebarTypes) => {
-    console.log(details);
 
     const drivetrain = details.drivetrain == 'rear-wheel drive' ? 'rwd' :
                        details.drivetrain == 'front-wheel drive' ? 'fwd' : 'awd';
@@ -148,7 +144,7 @@ const CarDetails = ({ details, setDetails, setDetailType, detailType }: SidebarT
                         </div>
                         <div className="flex items-center justify-between py-1">
                             <div className="font-bold text-muted">0-60mph</div>
-                            <div>{details.A60 ?? "unknown"}</div>
+                            <div>{details.A60 ? details.A60+"s" : "unknown"}</div>
                         </div>
                         <div className="flex items-center justify-between py-1">
                             <div className="font-bold text-muted">0-100mph</div>
