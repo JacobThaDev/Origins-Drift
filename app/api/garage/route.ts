@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth"; // Your BetterAuth server instance // If usin
 import { headers } from "next/headers";
 import { SessionsTypes } from "@/utils/types/SessionsTypes";
 import { NextRequest } from "next/server";
-import { getGarage } from "../data";
+import { getGarage, getGarageUncached } from "../data";
 
 /**
  * get all cars in a logged-in users garage
@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
         }
 
         // get the garage
-        const garage = await getGarage(session.session.userId);
+        const garage = await getGarageUncached(session.session.userId);
 
         return Response.json(garage);
     } catch (e:any) {

@@ -36,6 +36,10 @@ const config: Config = {
             lightPurple: "#A684FF",
             green: "#00C950",
             pink: "#FF637E",
+            common: "#7DC945",
+            rare: "#2ACCFB",
+            epic: "#D447EE",
+            legendary: "#FFA417"
         },
         container: {
             center: true,

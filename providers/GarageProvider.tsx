@@ -41,6 +41,7 @@ export function GarageContextProvider({ children }:GarageContextProps) {
         setGarage(car_details);
         setMakes(makes);
         setLoading(false);
+
     }
     
     return (

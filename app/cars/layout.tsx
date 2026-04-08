@@ -1,5 +1,4 @@
 import { CarsContextProvider } from "@/providers/CarsProvider";
-import { GarageContextProvider } from "@/providers/GarageProvider";
 import type { Metadata } from "next";
 
 interface RootLayoutTypes {

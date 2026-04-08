@@ -14,7 +14,7 @@ export function CarsContextProvider({ children }:CarsContextProps) {
 
     const [ loading, setLoading ] = useState<boolean>(false);
     const [ cars, setCars ]       = useState<CarsDetailsTypes[]>();
-    const [ makes, setMakes ]     = useState<string[]>();
+    const [ makes, setMakes ]     = useState<string[]>([]);
     const [ mounted, setMounted ] = useState<boolean>(false);
 
     useEffect(() => setMounted(true), []);

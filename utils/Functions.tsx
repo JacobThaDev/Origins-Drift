@@ -52,6 +52,24 @@ export const capitalize = (str?: string) => {
     return first + end;
 }
 
+export const capitalizeAll = (str?: string) => {
+    if (!str) {
+        return str;
+    }
+
+    let parts  = str.split(" ");
+    let newStr = "";
+
+    parts.forEach((part:string) => {
+        let first = part.charAt(0).toUpperCase();
+        let end   = part.substring(1, part.length).toLowerCase();
+        newStr += first + end+" ";
+    });
+
+    return newStr;
+;
+}
+
 /**
  * Shortens a string to a specified length.
  * If the string length is greater than the specified length, it appends "..." to the shortened string.

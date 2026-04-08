@@ -14,7 +14,9 @@ const CarGarage = () => {
         <>
             <div>
                 <Container>
-                    <p className="font-bold text-3xl mb-5">My Garage</p>
+                    <p className="font-bold text-3xl mb-5">
+                        My Garage
+                    </p>
 
                     {garage.length == 0 && <EmptyCarGarageBlock/>}
                     

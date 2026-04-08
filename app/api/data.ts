@@ -53,7 +53,28 @@ export const getUserTrackRecords = (user_id:string, classType:string = 'a') => u
     }
 )();
 
-export const getGarage = (user_id:string) => unstable_cache(
+export const getGarageUncached = async(user_id:string) => {
+    const garage = await db.garage.findAll({
+        where: {
+            owner: user_id
+        },
+        attributes: {
+            exclude: ['owner', 'delete_hash', 'updatedAt'],
+        },
+        include: [
+            {
+                model: db.cars_fh5,
+                as: 'CarData',
+            }
+        ],
+        raw: true,
+        nest: true
+    });
+
+    return garage;
+};
+
+export const getGarage = (user_id:string, useCache:boolean = true) => unstable_cache(
     async () => {
         const garage = await db.garage.findAll({
             where: {

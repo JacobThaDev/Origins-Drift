@@ -8,7 +8,7 @@ export interface CarsDetailsTypes {
     speed: number;
     handling: number;
     acceleration: number;
-    launcher: number;
+    launch: number;
     braking: number;
     offroad: number;
     car_class: string;
@@ -27,12 +27,16 @@ export interface CarsDetailsTypes {
     drivetrain: string;
     gears: number;
     weight: number;
-    weight_dsitribution: number;
+    weight_distribution: number;
     b60:number; // braking 60-0
     b100: number; // braking 100-0
+    B60:number; // braking 60-0
+    B100: number; // braking 100-0
     g60: number;
     g120: number;
     a60: number; // acceleration 0-60
     a100: number; // acceleration 0-100
+    A60: number; // acceleration 0-60
+    A100: number; // acceleration 0-100
     top_speed: number;
 }

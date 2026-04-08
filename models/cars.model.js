@@ -129,32 +129,32 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.FLOAT,
             allowNull: false
         },
-        B60: {
+        b60: {
             type: DataTypes.FLOAT,
             allowNull: true,
             defaultValue: null
         },
-        B100: {
+        b100: {
             type: DataTypes.FLOAT,
             allowNull: true,
             defaultValue: null
         },
-        G60: {
+        g60: {
             type: DataTypes.FLOAT,
             allowNull: true,
             defaultValue: null
         },
-        G120: {
+        g120: {
             type: DataTypes.FLOAT,
             allowNull: true,
             defaultValue: null
         },
-        A60: {
+        a60: {
             type: DataTypes.FLOAT,
             allowNull: true,
             defaultValue: null
         },
-        A100: {
+        a100: {
             type: DataTypes.FLOAT,
             allowNull: true,
             defaultValue: null

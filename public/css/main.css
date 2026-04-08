@@ -280,3 +280,21 @@ select.custom-select::-ms-expand {
 .custom-table tbody tr:nth-child(odd) {
     background-color: rgba(0, 0, 0, 0.12);
 }
+
+.scrollbar-hidden::-webkit-scrollbar { 
+    display:none;
+}
+
+.parent{
+  width:240px;
+  overflow-x: hidden; 
+  float:left;
+}
+
+.child {
+  width:1000px;
+  float:left;
+  font-size:15px;
+  font-family:arial;
+  cursor: pointer;
+}
