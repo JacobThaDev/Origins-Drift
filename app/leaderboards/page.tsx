@@ -65,11 +65,14 @@ export default function Leaderboards() {
                                 </div>
                             </button>
 
-                            <button onClick={() => setPerfIndex(perfIndex == "a" ? "s1" : "a")}
+                            <button onClick={() => setPerfIndex(perfIndex == "b" ? "a" : (perfIndex == "a" ? "s1" : "b"))}
                                     className="inline-flex items-center rounded-xl bg-card p-2 border-2 border-border font-bold">
                                 
                                 <p className="px-5 text-sm text-muted hidden md:inline-block">Class</p>
                                 
+                                <div className={`${perfIndex == "b" && "bg-warning text-white"} w-14 py-2 rounded-lg`}>
+                                    B
+                                </div>
                                 <div className={`${perfIndex == "a" && "bg-danger text-white"} w-14 py-2 rounded-lg`}>
                                     A
                                 </div>

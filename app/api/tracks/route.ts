@@ -12,11 +12,12 @@ import { getTracksData } from "../data";
 export async function GET(req: any, res:any) {
     const searchParams = req.nextUrl.searchParams;
     const classType    = searchParams.get("class") || "a";
+    const game         = searchParams.get("game") || "FH6";
 
-    if (classType != "a" && classType != "s1") {
+    if (classType != "a" && classType != "s1" && classType != "b") {
         return Response.json({
             error: { 
-                message: "Invalid class. Must be either A or S1."
+                message: "Invalid class. Must be either B, A, or S1."
             }
         })
     }

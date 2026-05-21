@@ -1,7 +1,7 @@
 "use client";
 
 import CarsHeader from "@/components/carsdb/CarsHeader";
-import CarList from "@/components/carsdb/CarsList";
+import CarsList from "@/components/carsdb/CarsList";
 
 
 export default function CarsDb() {
@@ -9,7 +9,7 @@ export default function CarsDb() {
     return (
         <>
             <CarsHeader/>
-            <CarList/>
+            <CarsList/>
         </>
     )
 }

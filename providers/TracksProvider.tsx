@@ -26,10 +26,10 @@ export function TracksContextProvider({ children }:TracksContextProps) {
 
     const [ tracks, setTracks ]           = useState<TracksTypes[]>();
     const [ current, setCurrent ]         = useState<TracksTypes>();
-    const [ perfIndex, setPerfIndex ]     = useState<"a"|"s1">("a");
+    const [ perfIndex, setPerfIndex ]     = useState<"b"|"a"|"s1">("a");
     const [ leaderboard, setLeaderboard ] = useState<ScoresTypes[]>();
     const [ error, setError ]             = useState<string>();
-    const [ game, setGame ]               = useState<GamesSymbol>("FH5");
+    const [ game, setGame ]               = useState<GamesSymbol>("FH6");
 
     
     useEffect(() => {
@@ -72,6 +72,8 @@ export function TracksContextProvider({ children }:TracksContextProps) {
 
         try {
             let results = await LocalApi.get(`/tracks?class=${perfIndex}`);
+
+            console.log(results);
             
             if (!results || results.error) {
                 setError(results.error);
@@ -141,8 +143,8 @@ export interface TracksContextTypes {
     setCurrent: (arg1: TracksTypes|undefined|null) => void;
     error: string;
     setError: (arg1: string|undefined) => void;
-    perfIndex: "a"|"s1";
-    setPerfIndex: (arg1: "a"|"s1") => void;
+    perfIndex: "b"|"a"|"s1";
+    setPerfIndex: (arg1: "b"|"a"|"s1") => void;
     leaderboard: ScoresTypes[];
     setLeaderboard: (arg1: ScoresTypes[]|undefined) => void;
     loadLeaderboard: (arg1?:boolean) => Promise<boolean>;

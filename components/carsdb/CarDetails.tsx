@@ -1,165 +1,257 @@
 "use client";
 
-import { capitalize, formatNumber } from "@/utils/Functions";
+import { formatNumber } from "@/utils/Functions";
 import { CarsDetailsTypes } from "@/utils/types/CarsDetailsTypes";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import { ArrowRightIcon, BoltIcon, ClockIcon, LinkIcon, PowerIcon, StopIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { SpeedIcon } from "../icons/SpeedIcon";
+import { WeightIcon } from "../icons/WeightIcon";
+import { useState } from "react";
+import { MountainIcon } from "../icons/MountainIcon";
+import { BrakingIcon } from "../icons/BrakingIcon";
+import { HandlingIcon } from "../icons/HandlingIcon";
+import { AccelIcon } from "../icons/AccelIcon";
 
 interface SidebarTypes {
-    details: CarsDetailsTypes;
+    details: CarsDetailsTypes|undefined;
     setDetails: (arg1:CarsDetailsTypes|undefined) => void;
-    detailType: "basic"|"advanced";
-    setDetailType: (arg1:"basic"|"advanced") => void;
+    detailType?: "basic"|"advanced";
+    setDetailType?: (arg1:"basic"|"advanced") => void;
 }
 
-const CarDetails = ({ details, setDetails, setDetailType, detailType }: SidebarTypes) => {
+const CarDetails = ({ details, setDetails }: SidebarTypes) => {
 
-    const drivetrain = details.drivetrain == 'rear-wheel drive' ? 'rwd' :
-                       details.drivetrain == 'front-wheel drive' ? 'fwd' : 'awd';
+
+    const [ showDetails, setShowDetails ] = useState<boolean>(false);
+
+    const closeModal = () => {
+        document.body.classList.remove('overflow-y-hidden');
+        setDetails(undefined);
+    }
+
+    if (!details) {
+        return null;
+    }
+
+    const drivetrain = !details ? "" : (details.drivetrain.toLowerCase() == 'rear-wheel drive' ? 'RWD' :
+                       details.drivetrain.toLowerCase() == 'front-wheel drive' ? 'FWD' : 'AWD');
 
     return(
-        <div className="fixed left-0 top-0 h-full z-[1001] w-full">
-            <div className="absolute top-0 w-[100vw] h-full backdrop-blur-sm"
-                onClick={() => setDetails(undefined)}/>
-
-            <div className="bg-card overflow-hidden relative h-full min-w-[300px] max-w-[300px] flex flex-col">
-
-                <div className="px-10 relative flex flex-col items-center justify-center w-full h-[150px] min-h-[150px] overflow-hidden bg-secondary">
-                    <p className="text-sm font-black text-white/10 text-center">
-                        {details?.make}
-                    </p>
-                    <p className="text-xl font-black text-white/40 text-center">
-                        {details?.model ?? "Select a Car"}
-                    </p>
-                </div>
-
-                <div className="mb-5">
-                    {details.rarity.toLowerCase() == "common" && 
-                    <div className={`bg-common text-uppercase font-bold text-center py-2`}>
-                        {capitalize(details?.rarity)}
-                    </div>}
-                    
-                    {details.rarity.toLowerCase() == "rare" && 
-                    <div className={`bg-rare text-uppercase font-bold text-center py-2`}>
-                        {capitalize(details?.rarity)}
-                    </div>}
-
-                    {details.rarity.toLowerCase() == "epic" && 
-                    <div className={`bg-epic text-uppercase font-bold text-center py-2`}>
-                        {capitalize(details?.rarity)}
-                    </div>}
-
-                    {details.rarity.toLowerCase() == "legendary" && 
-                    <div className={`bg-legendary text-uppercase font-bold text-center py-2`}>
-                        {capitalize(details?.rarity)}
-                    </div>}
-                </div>
-
-                <div className="flex items-center justify-center gap-3 text-sm bg-button w-[80px] mx-auto p-2 rounded-lg mb-5">
-                    <p>{details.car_class}-{details.rating}</p>
-                </div>
-
-                <div className="flex items-stretch justify-center">
-                    <button className="p-4" onClick={() => setDetailType(detailType == "advanced" ? "basic" : "advanced")}>
-                        <ChevronLeftIcon height={20}/>
-                    </button>
-                    <button className="w-[100px]" onClick={() => setDetailType(detailType == "advanced" ? "basic" : "advanced")}>
-                        {capitalize(detailType)}
-                    </button>
-                    <button className="p-4" onClick={() => setDetailType(detailType == "advanced" ? "basic" : "advanced")}>
-                        <ChevronRightIcon height={20}/>
-                    </button>
-                </div>
-
+        <div className="fixed md:px-[2em] top-0 left-0 flex items-center justify-center w-full h-full backdrop-blur-sm z-[1000]">
+            
+            <div className="bg-card flex flex-col md:rounded-xl overflow-hidden w-full md:max-w-2xl h-full md:h-auto border-button border-[1px]">
                 
+                <div className="relative p-6 pb-4 bg-gradient-to-br from-secondary to-card border-b-[1px] border-border">
+                    <div className="flex gap-4">
+                        <div className="flex items-center justify-center min-w-16 h-16 bg-danger rounded-lg">
+                            <p className="font-bold text-2xl">
+                                {details.make.substring(0, 1)}
+                            </p>
+                        </div>
+                        <div className="w-full">
+                            <p className="text-muted">
+                                {details.year} {details.make}
+                            </p>
+                            <p className="text-2xl font-bold">
+                                {details.model}
+                            </p>
 
-                {detailType == "basic" && <>
-                    <div className="flex flex-col gap-1 py-3 px-7 h-full overflow-y-auto scrollbar mx-3">
-                        <div className="flex items-center justify-between">
-                            <div className="font-bold text-muted">Speed</div>
-                            <div>{details.speed}</div>
+                            <div className="flex items-center gap-3 mt-2">
+                                <span className="text-sm font-mono text-info font-semibold">
+                                    {details.car_class}-{details.rating}
+                                </span>
+                                <span className="text-sm text-muted">|</span>
+                                <span className="text-sm font-medium text-blue-400">
+                                    {drivetrain}
+                                </span>
+                            </div>
                         </div>
-                        <div className="flex items-center justify-between">
-                            <div className="font-bold text-muted">Handling</div>
-                            <div>{details.handling}</div>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <div className="font-bold text-muted">Acceleration</div>
-                            <div>{details.acceleration}</div>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <div className="font-bold text-muted">Launch</div>
-                            <div>{details.launch}</div>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <div className="font-bold text-muted">Braking</div>
-                            <div>{details.braking}</div>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <div className="font-bold text-muted">Offroad</div>
-                            <div>{details.offroad}</div>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <div className="font-bold text-muted">Price</div>
-                            <div>{formatNumber(details.price)} cr</div>
+                        <div>
+                            <button onClick={() => closeModal()} className="absolute top-4 right-4 text-muted font-black bg-background/50 hover:bg-background rounded-lg w-8 h-8 flex items-center justify-center">
+                                <XMarkIcon height={16} strokeWidth={3}/>
+                            </button>
                         </div>
                     </div>
-                </>}
+                </div>
 
-                {detailType == "advanced" && <>
-                    <div className="flex flex-col gap-1 py-3 px-7 h-full overflow-y-auto scrollbar mx-3">
-                        <div className="flex items-center justify-between py-1">
-                            <div className="font-bold text-muted">Power</div>
-                            <div>{formatNumber(details.power, 0)} HP</div>
-                        </div>
-                        <div className="flex items-center justify-between py-1">
-                            <div className="font-bold text-muted">Torque</div>
-                            <div>{formatNumber(details.torque, 0)} ft-lb</div>
-                        </div>
-                        <div className="flex items-center justify-between py-1">
-                            <div className="font-bold text-muted">Drivetrain</div>
-                            <div>{drivetrain.toUpperCase()}</div>
-                        </div>
-                        <div className="flex items-center justify-between py-1">
-                            <div className="font-bold text-muted">Weight</div>
-                            <div>{formatNumber(details.weight, 0)} lbs</div>
-                        </div>
-                        <div className="flex items-center justify-between py-1">
-                            <div className="font-bold text-muted">Front</div>
-                            <div>{formatNumber(details.weight_distribution * 100, 0)} %</div>
-                        </div>
-                        <div className="flex items-center justify-between py-1">
-                            <div className="font-bold text-muted">Engine</div>
-                            <div>{details.engine_size}L {details.engine_type}</div>
-                        </div>
-                        <div className="flex items-center justify-between py-1">
-                            <div className="font-bold text-muted">Placement</div>
-                            <div>{details.engine_placement}</div>
+                <div className="p-6 overflow-y-auto max-h-full">
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-3 mb-5">
+                        <div className="bg-card rounded-xl bg-secondary/30 p-4 border-[1px] border-border flex md:inline-block items-center justify-between">
+                            <div className="flex items-center gap-3 md:mb-2">
+                                <BoltIcon height={20} className="text-warning" />
+                                <p className="text-muted text-sm">Power</p>
+                            </div>
+                            <p className="text-lg lg:text-2xl font-bold">
+                                {formatNumber(details.power, 0)}{" "}
+                                <span className="text-sm font-normal text-muted">HP</span>
+                            </p>
                         </div>
 
-                        <hr className="w-[100px] mx-auto my-3 border-button"/>
+                        <div className="bg-card rounded-xl bg-secondary/30 p-4 border-[1px] border-border flex md:inline-block items-center justify-between">
+                            <div className="flex items-center gap-3 md:mb-2">
+                                <SpeedIcon height={20} className="text-danger" strokeWidth={2}/>
+                                <p className="text-muted text-sm">Torque</p>
+                            </div>
+                            <p className="text-lg lg:text-2xl font-bold">
+                                {formatNumber(details.torque, 0)}{" "}
+                                <span className="text-sm font-normal text-muted">ft. lbs</span>
+                            </p>
+                        </div>
 
-                        <div className="flex items-center justify-between py-1">
-                            <div className="font-bold text-muted">Top Speed</div>
-                            <div>{details.top_speed} mph</div>
-                        </div>
-                        <div className="flex items-center justify-between py-1">
-                            <div className="font-bold text-muted">0-60mph</div>
-                            <div>{details.A60 ? details.A60+"s" : "unknown"}</div>
-                        </div>
-                        <div className="flex items-center justify-between py-1">
-                            <div className="font-bold text-muted">0-100mph</div>
-                            <div>{details.A100 ? details.A100+"s" : "unknown"}</div>
-                        </div>
-                        <div className="flex items-center justify-between py-1">
-                            <div className="font-bold text-muted">60-0mph</div>
-                            <div>{details.B60 ? details.B60+" ft." : "unknown"}</div>
-                        </div>
-                        <div className="flex items-center justify-between py-1">
-                            <div className="font-bold text-muted">100-0mph</div>
-                            <div>{details.B100 ? details.B100+" ft." : "unknown"}</div>
+                        <div className="bg-card rounded-xl bg-secondary/30 p-4 border-[1px] border-border flex md:inline-block items-center justify-between">
+                            <div className="flex items-center gap-3 md:mb-2">
+                                <WeightIcon height={20} className="text-info" strokeWidth={2}/>
+                                <p className="text-muted text-sm">Weight</p>
+                            </div>
+                            <p className="text-lg lg:text-2xl font-bold">
+                                {formatNumber(details.weight, 0)}{" "}
+                                <span className="text-sm font-normal text-muted">lbs</span>
+                            </p>
                         </div>
                     </div>
-                </>}
+
+                    <p className="uppercase font-bold text-white/80 mb-3">
+                        PERFORMANCE
+                    </p>
+
+                    <div className="flex flex-col gap-2 mb-10">
+                        <div>
+                            <div className="flex items-center gap-2 mb-1 w-full">
+                                <ArrowRightIcon height={14} />
+                                <div className="text-muted">
+                                    Speed
+                                </div>
+                                <div className="font-bold ml-auto">
+                                    {details.speed}
+                                </div>
+                            </div>
+                            <div className="w-full h-2 rounded-full relative overflow-hidden bg-background">
+                                <div style={{ width: `${details.speed * 10}%` }} className={`absolute h-2 bg-info rounded-full`}></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div className="flex items-center gap-2 mb-1 w-full">
+                                <AccelIcon height={14} strokeWidth={1.5} />
+                                <div className="text-muted">
+                                    Acceleration
+                                </div>
+                                <div className="font-bold ml-auto">
+                                    {details.acceleration}
+                                </div>
+                            </div>
+                            <div className="w-full h-2 rounded-full relative overflow-hidden bg-background">
+                                <div style={{ width: `${details.acceleration * 10}%` }}
+                                    className={`absolute h-2 bg-warning rounded-full`}></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div className="flex items-center gap-2 mb-1 w-full">
+                                <HandlingIcon height={14} strokeWidth={2}/>
+                                <div className="text-muted">
+                                    Handling
+                                </div>
+                                <div className="font-bold ml-auto">
+                                    {details.handling}
+                                </div>
+                            </div>
+                            <div className="w-full h-2 rounded-full relative overflow-hidden bg-background">
+                                <div style={{ width: `${details.handling * 10}%` }} 
+                                    className={`absolute h-2 bg-success rounded-full`}></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div className="flex items-center gap-2 mb-1 w-full">
+                                <BrakingIcon height={14} strokeWidth={2} />
+                                <div className="text-muted">
+                                    Braking
+                                </div>
+                                <div className="font-bold ml-auto">
+                                    {details.braking}
+                                </div>
+                            </div>
+                            <div className="w-full h-2 rounded-full relative overflow-hidden bg-background">
+                                <div style={{ width: `${details.braking * 10}%` }} 
+                                    className={`absolute h-2 bg-danger rounded-full`}></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div className="flex items-center gap-2 mb-1 w-full">
+                                <MountainIcon height={14} strokeWidth={2}  />
+                                <div className="text-muted">
+                                    Offroad
+                                </div>
+                                <div className="font-bold ml-auto">
+                                    {details.offroad}
+                                </div>
+                            </div>
+                            <div className="w-full h-2 rounded-full relative overflow-hidden bg-background">
+                                <div style={{ width: `${details.offroad * 10}%` }} className={`absolute h-2 bg-purple rounded-full`}></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex gap-3 items-center mb-7">
+                        <p className="uppercase font-bold text-white/80">
+                            Detailed Stats
+                        </p>
+                        <button onClick={() => setShowDetails((prev) => !prev)} className="text-info">
+                            {showDetails ? "Hide" : "Show"}
+                        </button>
+                    </div>
+
+                    {showDetails &&
+                    <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-3 mb-5">
+                        <div className="bg-card rounded-xl bg-secondary/30 p-4 border-[1px] border-border flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <ClockIcon height={20} className="text-info" />
+                                <p className="text-muted text-sm">0-60</p>
+                            </div>
+                            <p className="text-lg font-bold">
+                                {formatNumber(details.A60, 0)}{" "}
+                                <span className="text-sm font-normal text-muted">s</span>
+                            </p>
+                        </div>
+
+                        <div className="bg-card rounded-xl bg-secondary/30 p-4 border-[1px] border-border flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <ClockIcon height={20} className="text-purple" />
+                                <p className="text-muted text-sm">0-100</p>
+                            </div>
+                            <p className="text-lg font-bold">
+                                {formatNumber(details.A100, 0)}{" "}
+                                <span className="text-sm font-normal text-muted">s</span>
+                            </p>
+                        </div>
+
+                        <div className="bg-card rounded-xl bg-secondary/30 p-4 border-[1px] border-border flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <StopIcon height={20} className="text-danger" />
+                                <p className="text-muted text-sm">60-0</p>
+                            </div>
+                            <p className="text-lg font-bold">
+                                {formatNumber(details.B60, 0)}{" "}
+                                <span className="text-sm font-normal text-muted">ft</span>
+                            </p>
+                        </div>
+
+                        <div className="bg-card rounded-xl bg-secondary/30 p-4 border-[1px] border-border flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <StopIcon height={20} className="text-warning" />
+                                <p className="text-muted text-sm">100-0a</p>
+                            </div>
+                            <p className="text-lg font-bold">
+                                {formatNumber(details.B100, 0)}{" "}
+                                <span className="text-sm font-normal text-muted">ft</span>
+                            </p>
+                        </div>
+                    </div>}
+
+
+                </div>
             </div>
         </div>
     )

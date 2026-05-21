@@ -31,31 +31,29 @@ const CarList = () => {
         setActive(makes[activeIdx]);
     }, [mounted, makes, activeIdx]);
 
-    const filtered = makes ? makes.filter((make:string) => make.toLowerCase() == active?.toLowerCase()) : [];
-
     return(
         <div className="pb-24">
             <Container>
-                {details && 
-                    <CarDetails
-                        details={details}
-                        setDetails={setDetails}
-                        setDetailType={setDetailType}
-                        detailType={detailType} />}
 
                 <MakeSelector 
                     makes={makes} 
                     activeIdx={activeIdx} 
                     setActiveIdx={setActiveIdx} />
 
-                {filtered.map((manufacturer:string, index:number) => {
-                    return(
-                        <CarBlock 
-                            key={"car-"+index}
-                            manufacturer={manufacturer}
-                            setDetails={setDetails}/>
-                    )
-                })}
+                <div className="flex gap-5 items-start">
+                    {/* <CarDetails
+                        details={details}
+                        setDetails={setDetails}
+                        setDetailType={setDetailType}
+                        detailType={detailType} /> */}
+
+                    <div className="w-full">
+                        <CarBlock manufacturer={makes[activeIdx]} />
+                    </div>
+                </div>
+                
+
+                
             </Container>
         </div>
     );

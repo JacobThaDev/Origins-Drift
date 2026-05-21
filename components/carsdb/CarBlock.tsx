@@ -1,20 +1,35 @@
 import { CarsContextTypes, useCarsContext } from "@/providers/CarsProvider";
 import { CarsDetailsTypes } from "@/utils/types/CarsDetailsTypes";
+import { useState } from "react";
+import CarDetails from "./CarDetails";
 
 interface CarBlockTypes {
     manufacturer: string;
-    setDetails: (arg1: CarsDetailsTypes) => void;
 }
 
-const CarBlock = ({ manufacturer, setDetails }: CarBlockTypes) => {
+const CarBlock = ({ manufacturer }: CarBlockTypes) => {
 
     const { cars }:CarsContextTypes = useCarsContext();
-    const availCars = cars.filter(car => car.make.toLowerCase() == manufacturer.toLowerCase());
+    const [ details, setDetails ] = useState<CarsDetailsTypes>();
 
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-start gap-3 mb-5">
-            {availCars && availCars.map((car:CarsDetailsTypes, index:number) => {
-                    
+    if (!manufacturer) {
+        return null;
+    }
+
+    const available = cars.filter(car => car.make.toLowerCase() == manufacturer.toLowerCase());
+
+    const openModal = (details:CarsDetailsTypes) => {
+        document.body.classList.add('overflow-y-hidden');
+        setDetails(details);
+    }
+
+    return(
+        <>
+        <CarDetails details={details} setDetails={setDetails} />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-start gap-3">
+            
+            {available && available.map((car:CarsDetailsTypes, index:number) => {
                 return(
                     <div className="bg-card rounded-xl p-4 group text-start disabled:opacity-70"
                         key={index}>
@@ -44,7 +59,7 @@ const CarBlock = ({ manufacturer, setDetails }: CarBlockTypes) => {
                         <div className="flex gap-3 w-full">
                             <button 
                                 className="inline-block w-full bg-button hover:bg-buttonHover rounded-lg py-2"
-                                onClick={() => setDetails(car)}>
+                                onClick={() => openModal(car)}>
                                 Details
                             </button>
                         </div>
@@ -52,7 +67,8 @@ const CarBlock = ({ manufacturer, setDetails }: CarBlockTypes) => {
                 )
             })}
         </div>
-    );
+        </>
+    )
 }
 
 export default CarBlock;
