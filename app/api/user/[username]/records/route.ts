@@ -34,10 +34,12 @@ export async function GET(req: any, { params } : RouteContext) {
         }
 
         const a_records = await getUserTrackRecords(user.id, 'a');
+        const b_records = await getUserTrackRecords(user.id, 'b');
         const s1_records = await getUserTrackRecords(user.id, 's1');
 
         return Response.json({
             a: a_records,
+            b: b_records,
             s1: s1_records
         });
     } catch (e:any) {
