@@ -1,5 +1,6 @@
 export interface RecordsClassTypes {
-    a: RecordsTypes[],
+    a: RecordsTypes[];
+    b: RecordsTypes[];
     s1: RecordsTypes[];
 };
 

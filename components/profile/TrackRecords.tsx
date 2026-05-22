@@ -11,7 +11,7 @@ interface TrackRecordsTypes {
 
 const TrackRecords = ({ records }:  TrackRecordsTypes) => {
 
-    const [ classType, setclassType ] = useState<"a"|"s1">("a");
+    const [ classType, setclassType ] = useState<"b"|"a"|"s1">("b");
     
     if (!records)
         return null;
@@ -24,18 +24,18 @@ const TrackRecords = ({ records }:  TrackRecordsTypes) => {
                     <p className="text-3xl font-bold">Track Records</p>
                 </div>
                 <div>
-                    <button onClick={() => setclassType(classType == "a" ? "s1" : "a")} 
-                        className="inline-flex items-center gap-3 relative border-[1px] border-secondary p-3 rounded-lg">
-                        <SpeedIcon height={18} strokeWidth={2} className="text-muted"/>
-                        <div className="text-white flex items-center gap-2">
-                            {classType.toUpperCase()}-{classType == "a" ? 800 : 900}
-                        </div>
-                    </button>
+                    <select 
+                        onChange={(e:any) => setclassType(e.target.value)}
+                        className="custom-select px-3 py-3 bg-button hover:bg-buttonHover outline-none w-full lg:w-[110px] truncate rounded-lg">
+                        <option value="b">B-Class</option>
+                        <option value="a">A-Class</option>
+                        <option value="s1">S1-Class</option>
+                    </select>
                 </div>
             </div>
 
             <div className="grid grid-cols-1 bg-card rounded-xl overflow-hidden">
-                {records && records[classType].map((record:RecordsTypes, index:number) => {
+                {records && Object.keys(records).includes(classType) && records[classType].map((record:RecordsTypes, index:number) => {
 
                     return(
                         <div className={`flex items-center py-4 px-5 ${index % 2 == 0 && "bg-secondary/40"}`} key={"record-"+index}>

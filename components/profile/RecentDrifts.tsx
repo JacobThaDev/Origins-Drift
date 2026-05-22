@@ -48,12 +48,12 @@ const RecentDrifts = ({ recent, records } : { recent:ScoresTypes[], records:Reco
                                     <td>
                                         <p>{recent.Track.name}</p>
                                         <p className="w-full text-sm text-muted lg:hidden">
-                                            {recent.class}-{recent.class == "A" ? "800" : "900"}
+                                            {recent.class}-Class
                                         </p>
                                     </td>
                                     <td className="hidden lg:table-cell">
                                         <p className="w-full text-sm text-muted">
-                                            {recent.class}-{recent.class == "A" ? "800" : "900"}
+                                            {recent.class}-Class
                                         </p>
                                     </td>
                                     <td>

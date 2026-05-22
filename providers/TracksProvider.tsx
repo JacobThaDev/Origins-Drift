@@ -26,7 +26,7 @@ export function TracksContextProvider({ children }:TracksContextProps) {
 
     const [ tracks, setTracks ]           = useState<TracksTypes[]>();
     const [ current, setCurrent ]         = useState<TracksTypes>();
-    const [ perfIndex, setPerfIndex ]     = useState<"b"|"a"|"s1">("a");
+    const [ perfIndex, setPerfIndex ]     = useState<"b"|"a"|"s1">("b");
     const [ leaderboard, setLeaderboard ] = useState<ScoresTypes[]>();
     const [ error, setError ]             = useState<string>();
     const [ game, setGame ]               = useState<GamesSymbol>("FH6");

@@ -15,9 +15,9 @@ export async function GET(req: any, res:any) {
         const trackName = bodyData?.track.toLowerCase();
         const classType = bodyData?.classType.toLowerCase();
 
-        if (classType != "a" && classType != "s1") {
+        if (classType != "b" && classType != "a" && classType != "s1") {
             return Response.json({
-                error: "Invalid car class. Must be either a or s1"
+                error: "Invalid car class. Must be either B, A, or S1"
             });
         }
 

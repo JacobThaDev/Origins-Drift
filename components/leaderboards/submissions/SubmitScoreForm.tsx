@@ -78,7 +78,7 @@ const SubmitScoreForm = ({
             <div className="flex flex-col gap-3">
                 <div className="flex">
                     <div className="rounded-l-xl w-[120px] py-4 bg-secondary text-center">
-                        {perfIndex.toUpperCase()}-{perfIndex == "a" ? "800" : "900"}
+                        {perfIndex.toUpperCase()}-Class
                     </div>
                     <input 
                         onChange={(e:any) => setScore(e.target.value as number)}

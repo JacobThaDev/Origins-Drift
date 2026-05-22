@@ -7,11 +7,11 @@ const ClassButton = () => {
     const { perfIndex, setPerfIndex }:TracksContextTypes = useTracksContext();
     
     return(
-        <button onClick={() => setPerfIndex(perfIndex == "a" ? "s1" : "a")} 
+        <button onClick={() => setPerfIndex(perfIndex == "b" ? "a" : (perfIndex == "a" ? "s1" : "b"))} 
             className="inline-flex items-center gap-3 relative">
             <SpeedIcon height={18} strokeWidth={2} className="text-muted"/>
             <div className="text-white flex items-center gap-2">
-                {perfIndex.toUpperCase()}-{perfIndex == "a" ? 800 : 900}
+                {perfIndex.toUpperCase()}-{perfIndex == "a" ? "700" : (perfIndex == "b" ? "600" : "800")}
                 <ArrowPathRoundedSquareIcon height={16} 
                     className="text-white/60 inline-block" 
                     strokeWidth={1.5}/>

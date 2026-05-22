@@ -26,9 +26,9 @@ export async function GET(req: any, { params } : RouteContext) {
     try {
         const { track, classType }  = await params;
 
-        if (classType != "a" && classType != "s1") {
+        if (classType != "b" && classType != "a" && classType != "s1") {
             return Response.json({
-                error: "Invalid car class. Must be either a or s1"
+                error: "Invalid car class. Must be either B, A, or S1"
             }, { status: 422 });
         }
 
@@ -202,7 +202,7 @@ const sendWebhook = async(trackData:TracksTypes, score:number, pb:{ score: numbe
                     fields: [
                         {
                             name: "Class",
-                            value: `\`${classType.toUpperCase()}${classType.toUpperCase() === "A" ? "-800" : "-900"}\``,
+                            value: `\`${classType.toUpperCase()}-Class\``,
                             inline: true,
                         },
                         {

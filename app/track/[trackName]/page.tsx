@@ -80,7 +80,7 @@ export default function TrackLeaderboard({ params }: { params: Promise<{ trackNa
                             <p className="text-white/60 mb-5">Compete for the highest drift scores on this legendary drift circuit.</p>
                         </div>
                         <div>
-                            <TrackSelector/>
+                            <TrackSelector gameId={current ? current.game : 3}/>
                         </div>
                     </div>
                             

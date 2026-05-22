@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { UsersIcon } from "../icons/UsersIcon";
 import { formatNumber } from "@/utils/Functions";
 
-const TrackSelector = () => {
+const TrackSelector = ({ gameId }: { gameId: number }) => {
     
     const { tracks, current }:TracksContextTypes = useTracksContext();
     const [ menuOpen, setMenuOpen ] = useState<boolean>(false);
@@ -49,6 +49,9 @@ const TrackSelector = () => {
                 
                 <div className={`absolute rounded-xl top-full mt-3 w-full bg-secondary ${menuOpen ? "flex" : "hidden"} flex-col max-h-[300px] lg:max-h-[400px] overflow-hidden overflow-y-auto scrollbar z-[50] shadow-xl shadow-black/30`} id="track-dropdown">
                     {tracks && tracks.map((track:TracksTypes, index:number) => {
+                        if (track.game != gameId) {
+                            return null;
+                        }
                         return(
                             <Link
                                 href={`/track/${track.short_name}`} 
