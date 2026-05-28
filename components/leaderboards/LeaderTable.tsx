@@ -61,7 +61,7 @@ const LeaderTable = () => {
                         <div className="flex items-center w-full gap-3">
                             <div>
                                 {entry.User && 
-                                <Image src={entry.User?.image} width={46} height={46} alt=""
+                                <Image unoptimized src={entry.User?.image} width={46} height={46} alt=""
                                     className="rounded-full border-[5px] border-black/30" />}
                             </div>
                             <div>
