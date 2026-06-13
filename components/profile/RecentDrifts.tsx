@@ -37,7 +37,7 @@ const RecentDrifts = ({ recent, records } : { recent:ScoresTypes[], records:Reco
                             }
 
                             const classType = recent.class.toLowerCase() as "a"|"s1";
-                            const record = records 
+                            const record = records && records[classType]
                                 ? records[classType].filter((record:RecordsTypes) => record.id == recent.Track?.id)[0].top_score
                                 : 0;
 
