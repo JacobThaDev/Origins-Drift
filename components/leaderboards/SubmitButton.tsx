@@ -1,5 +1,4 @@
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import LocalApi from "@/services/LocalApi";
@@ -7,10 +6,9 @@ import { ImgurDataTypes } from "@/utils/types/ImgurDataTypes";
 import ConfirmBox from "./submissions/ConfirmBox";
 import Particles from "../misc/Particles";
 import SubmitScoreForm from "./submissions/SubmitScoreForm";
+import { TracksTypes } from "@/utils/types/TracksTypes";
 
-const SubmitButton = () => {
-
-    const { current, perfIndex }:TracksContextTypes = useTracksContext();
+const SubmitButton = ({ track, classType, trackData }: { track: string, classType: "b"|"a"|"s1", trackData: TracksTypes | undefined }) => {
 
     const [ imgurData, setImgurData ] = useState<ImgurDataTypes>();
     const [ error, setError ]         = useState<string>();
@@ -99,12 +97,13 @@ const SubmitButton = () => {
             <div className="bg-card rounded-2xl w-full max-w-[400px]">
                 {!showConfirm ? 
                 <>
-                    <Image src={current.track_image} 
+                    <Image src={"/img/tracks/"+track+".png"} unoptimized
                         className="rounded-2xl"
                         width={450} 
                         height={150} alt=""/>
 
                     <SubmitScoreForm
+                        classType={classType}
                         score={score}
                         uploading={uploading}
                         setUploading={setUploading}
@@ -121,8 +120,8 @@ const SubmitButton = () => {
                 </> : 
                 <ConfirmBox 
                     score={score}
-                    activeTrack={current}
-                    classFilter={perfIndex}
+                    activeTrack={trackData}
+                    classFilter={classType}
                     imgurData={imgurData}
                     setShowConfirm={setShowConfirm}
                     reset={reset}/> 

@@ -29,10 +29,6 @@ const TracksSection = () => {
                 </div>
             </div>
 
-            <div className="mb-6">
-                <ClassButton />
-            </div>
-
             <TracksList tracks={filtered} limit={6}/>
         </>
     )

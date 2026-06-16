@@ -7,14 +7,11 @@ import { useDropzone } from 'react-dropzone';
 import LocalApi from "@/services/LocalApi";
 import { useCallback } from "react";
 import { ImgurDataTypes } from "@/utils/types/ImgurDataTypes";
-import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
 
 const SubmitScoreForm = ({ 
     score, setScore, imgurData, setImgurData, uploading, setUploading, error, setError,
-    progress, setProgress, toggleModal, deleteImage, validate
+    progress, setProgress, toggleModal, deleteImage, validate, classType
 }: SubmitScoreFormTypes) => {
-
-    const { perfIndex }:TracksContextTypes = useTracksContext();
 
     const onDrop = useCallback((acceptedFiles:File[]) => {
         if (uploading) {
@@ -78,7 +75,7 @@ const SubmitScoreForm = ({
             <div className="flex flex-col gap-3">
                 <div className="flex">
                     <div className="rounded-l-xl w-[120px] py-4 bg-secondary text-center">
-                        {perfIndex.toUpperCase()}-Class
+                        {classType.toUpperCase()}-Class
                     </div>
                     <input 
                         onChange={(e:any) => setScore(e.target.value as number)}
@@ -155,6 +152,7 @@ interface SubmitScoreFormTypes {
     toggleModal: () => void;
     deleteImage: () => void;
     validate: () => void;
+    classType: "b"|"a"|"s1";
 }
 
 export default SubmitScoreForm;

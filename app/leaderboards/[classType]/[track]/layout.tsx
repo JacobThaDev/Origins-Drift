@@ -6,16 +6,17 @@ interface RootLayoutTypes {
 }
 
 interface MetaProps {
-    params: Promise<{ trackName: string }>;
+    params: Promise<{ classType:string; track: string; }>;
 };
 
 export async function generateMetadata({ params }: MetaProps): Promise<Metadata> {
     try {
-        const trackName = (await params).trackName.replace("_", " ").replace("%20", " ");
+        const { track, classType } = await params;
+        const trackName = track.replace("_", " ").replace("%20", " ");
         
         return {
-            title: capitalize(trackName)+" Leaderboard",
-            description: `Top 50 drifters on ${trackName}`,
+            title: capitalize(trackName)+" ("+classType.toUpperCase()+"-Class) Leaderboard",
+            description: `Top 50 drifters on ${trackName} (${classType.toUpperCase()}-Class)`,
         };
     } catch (e:any) {
         console.error(e);

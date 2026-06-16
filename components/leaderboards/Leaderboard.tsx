@@ -1,36 +1,66 @@
-"use client"
-
+import LocalApi from "@/services/LocalApi";
+import { formatNumber, getRelativeTime } from "@/utils/Functions";
+import { LeaderboardTypes } from "@/utils/types/LeaderboardTypes";
 import { ScoresTypes } from "@/utils/types/ScoresTypes";
+import { ArrowTopRightOnSquareIcon, CheckBadgeIcon, FlagIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
-import { formatNumber, getRelativeTime } from "@/utils/Functions";
-import { ArrowTopRightOnSquareIcon, CheckBadgeIcon, FlagIcon } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
+import { LoadingIcon } from "../icons/LoadingIcon";
 import SubmitButton from "./SubmitButton";
 import { ProfileContextTypes, useProfileContext } from "@/providers/ProfileProvider";
-import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
-import { LoadingIcon } from "../icons/LoadingIcon";
+import { TracksTypes } from "@/utils/types/TracksTypes";
 
-const LeaderTable = () => {
+const Leaderboard = ({ track, classType }: { track: string, classType: "b"|"a"|"s1" }) => {
+
+     const { profile }:ProfileContextTypes = useProfileContext();
+     
+    const [ mounted, setMounted ] = useState<boolean>();
+    const [ trackData, setTrackData ] = useState<TracksTypes>();
+    const [ error, setError ]     = useState<string>();
+    const [ loading, setLoading ] = useState<boolean>();
+    const [ fetching, setFetching ] = useState<boolean>();
+    const [ leaderboard, setLeaderboard ] = useState< ScoresTypes[]|undefined>();
+
+    useEffect(() => {setMounted(true); setLoading(true); }, []);
+
+    useEffect(() => {
+        if (!mounted) {
+            return;
+        }
+
+       // updateLeaderboard();
+
+    },// eslint-disable-next-line 
+    [mounted]);
     
-    const { leaderboard, loading, fetching }:TracksContextTypes = useTracksContext();
-    const { profile }:ProfileContextTypes = useProfileContext();
-    
-    if (!loading && leaderboard && leaderboard.length == 0) {
-        return (
-            <div className="p-10 bg-card text-center border-2 border-border rounded-2xl">
-                <FlagIcon height={50} className="mx-auto mb-3"/>
-                <p className="text-2xl font-bold">No legends here... yet</p>
-                <p className="text-white/60 mb-4">This track is waiting for its first high score. Will it be yours?</p>
-                <div className="flex justify-center">
-                    {profile && <SubmitButton/>}
-                </div>
-            </div>
-        )
-    }
+    /*const updateLeaderboard = async() => {
+        setFetching(true)
+        try {
+            let results:LeaderboardTypes = await LocalApi.get(
+                `/tracks/${track}/${classType}/leaderboard`
+            );
+            
+            if (results.error) {
+                setError(results.error);
+                setFetching(false);
+                setLoading(false);
+                return false;
+            }
+            
+            setTrackData(results.track);
+            setLeaderboard(results.leaderboard);
+            setFetching(false);
+            setLoading(false);
+        } catch (err:any) {
+            console.log(err);
+        }    
+    }*/
 
     return(
+        <>
         <div className="bg-card relative border-2 border-border rounded-xl overflow-hidden font-mono">
-            
+
             {fetching && 
             <div className="bg-card/80 absolute z-10 top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-sm">
                 <LoadingIcon height={50}/>
@@ -41,7 +71,7 @@ const LeaderTable = () => {
                     <p>Leaderboard</p>
                     <p className="text-sm text-white/70">Top 50</p>
                 </div>
-                {profile && <SubmitButton/>}
+                {profile && <SubmitButton track={track} classType={classType} trackData={trackData}/>}
             </div>
 
             <div className="text-sm py-2 flex items-center pe-4 text-white/40 bg-black/10">
@@ -49,7 +79,7 @@ const LeaderTable = () => {
                 <div>Username <span className="lg:hidden">/ Score</span></div>
                 <div className="ml-auto hidden lg:inline-block">Score</div>
             </div>
-            
+
             {leaderboard && leaderboard.length > 0 ? leaderboard.map((entry:ScoresTypes, index:number) => {
 
                 return(
@@ -117,7 +147,9 @@ const LeaderTable = () => {
                 </div>
             </>}
         </div>
+        </>
     )
+
 }
 
-export default LeaderTable;
+export default Leaderboard;

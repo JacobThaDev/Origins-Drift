@@ -42,7 +42,7 @@ export default function Home() {
 
             <div className="py-20" id="leaderboards">
                 <Container>
-                    <TracksSection/>
+                    
                 </Container>
             </div>
         </>

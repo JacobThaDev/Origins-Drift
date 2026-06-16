@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import LoadingBox from "@/components/global/LoadingBox";
 import { LoadingIcon } from "@/components/icons/LoadingIcon";
@@ -8,11 +8,16 @@ import ClassDropdown from "@/components/leaderboards/ClassDropdown";
 import TrackList from "@/components/leaderboards/TrackList";
 import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
 import { TracksTypes } from "@/utils/types/TracksTypes";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
-export default function Leaderboards() {
+type ProfileTypes = {
+    params: Promise<{ classType: "b"|"a"|"s1" }>
+}
+
+export default function ClassLeaderboard({ params }: ProfileTypes) {
     
     const [ mounted, setMounted ] = useState<boolean>();
+    const { classType }: { classType: "b"|"a"|"s1" } = use(params);
 
     const { 
         tracks, loading, game, loadTracks
@@ -26,7 +31,7 @@ export default function Leaderboards() {
         }
 
         async function load() {
-            loadTracks('b', true);
+            loadTracks(classType, true);
         }
 
         load();
@@ -67,15 +72,14 @@ export default function Leaderboards() {
                             {game == "FH5" ? "Horizon 5" : "Horizon 6"}
                         </div>
                         <div className="w-full lg:w-auto text-nowrap">
-                            <ClassDropdown currentClass={'b'}/>
+                            <ClassDropdown currentClass={classType}/>
                         </div>
                         {loading && <LoadingIcon height={20}/>}
                     </div>
 
-                    <TrackList tracks={gameTracks} classType={'b'} />
+                    <TrackList tracks={gameTracks} classType={classType}/>
                 </Container>
             </div>
         </>
     );
-
 }

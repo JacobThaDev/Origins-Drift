@@ -16,7 +16,7 @@ import { ScoresEntryTypes } from "@/utils/types/ScoresEntryTypes";
 interface ConfirmBoxTypes {
     score: number;
     imgurData: ImgurDataTypes|undefined;
-    activeTrack: TracksTypes;
+    activeTrack: TracksTypes|undefined;
     classFilter: string;
     reset: () => void;
     setShowConfirm: (arg1: boolean) => void;
@@ -30,17 +30,17 @@ const ConfirmBox = ({
     const [ isPersonalBest, setIsPersonalBest ] = useState<boolean>(false);
     const [ error, setError ] = useState<string>();
     const [ submitted, setSubmitted ] = useState<ScoresEntryTypes>();
-    const { perfIndex, loadLeaderboard }:TracksContextTypes = useTracksContext();
+    const { loadLeaderboard }:TracksContextTypes = useTracksContext();
     
     const submitData = async() => {
-        if (loading) {
+        if (loading || !activeTrack) {
             return;
         }
 
         setLoading(true);
         
         try {
-            const result:ScoresEntryTypes = await LocalApi.post( "/tracks/"+activeTrack.short_name+"/"+perfIndex, {
+            const result:ScoresEntryTypes = await LocalApi.post( "/tracks/"+activeTrack.short_name+"/"+classFilter, {
                 score: score as number,
                 proof_url: imgurData?.link,
                 delete_hash: imgurData?.deletehash
@@ -79,7 +79,7 @@ const ConfirmBox = ({
                     <Meteors/>
                     <div className="p-7 relative">
                         <TrophyIcon height={80} className="mx-auto mb-5 text-warning" strokeWidth={0.5}/>
-                        <p className="text-white/60 text-sm">{activeTrack.name} ({submitted.result.class}-Class)</p>
+                        <p className="text-white/60 text-sm">{activeTrack?.name} ({submitted.result.class}-Class)</p>
                         <p className="text-xl mb-1">
                             New Personal Best!
                         </p>
@@ -110,7 +110,7 @@ const ConfirmBox = ({
                         Score saved! 
                     </p>
 
-                    <p className="mb-3 text-xl">{activeTrack.name} ({submitted.result.class}-Class)</p> 
+                    <p className="mb-3 text-xl">{activeTrack?.name} ({submitted.result.class}-Class)</p> 
 
                     <p className="text-3xl font-black mb-5">
                         {formatNumber(submitted.result.score, 0)}
@@ -137,7 +137,7 @@ const ConfirmBox = ({
                     <p className="text-white/60">
                         Confirm Entry
                     </p>
-                    <p className="mb-3 text-xl">{activeTrack.name} &#40;Class {classFilter.toUpperCase()}-{classFilter.toUpperCase() == "A" ? 800 : 900}&#41;</p> 
+                    <p className="mb-3 text-xl">{activeTrack?.name} &#40;Class {classFilter.toUpperCase()}-{classFilter.toUpperCase() == "A" ? 800 : 900}&#41;</p> 
                     <div className="flex items-center justify-center gap-3 text-2xl font-black">
                         <PresentationChartBarIcon height={30} className="text-warning"/>
                         {formatNumber(score, 0)}

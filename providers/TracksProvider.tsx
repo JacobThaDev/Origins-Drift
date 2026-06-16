@@ -36,42 +36,12 @@ export function TracksContextProvider({ children }:TracksContextProps) {
         setMounted(true);
     }, []);
 
-    useEffect(() => {
-        if (!mounted) {
-            return;
-        }
-        console.log("called")
-        loadTracks();
-    }, [ mounted, perfIndex ]);
-
-    useEffect(() => {
-        async function loadLeaderboard() {
-            let results:LeaderboardTypes = await LocalApi.get(
-                `/tracks/${current?.short_name}/${perfIndex}/leaderboard`
-            );
-            
-            if (results.error) {
-                setError(results.error);
-                setLoading(false);
-                setFetching(false);
-                return false;
-            }
-
-            setLeaderboard(results.leaderboard);
-            setLoading(false);
-            setFetching(false);
-        }
-
-        if (tracks && current)
-            loadLeaderboard();
-    }, [ tracks, current ]);
-
-    const loadTracks = async(loadFlag:boolean = false) => {
+    const loadTracks = async(classType: "b"|"a"|"s1", loadFlag:boolean = false) => {
         if (loadFlag)
             setLoading(true);
 
         try {
-            let results = await LocalApi.get(`/tracks?class=${perfIndex}`);
+            let results = await LocalApi.get(`/tracks?class=${classType}`);
 
             console.log(results);
             
@@ -81,6 +51,7 @@ export function TracksContextProvider({ children }:TracksContextProps) {
                 return false;
             }
 
+            setLoading(false);
             setTracks(results);
             return true;
         } catch (err:any) {
@@ -90,39 +61,9 @@ export function TracksContextProvider({ children }:TracksContextProps) {
         }
     }
 
-    const loadLeaderboard = async(showLoader:boolean = false) => {
-        if (showLoader)
-            setLoading(true);
-
-        setFetching(true);
-        
-        try {
-            let results:LeaderboardTypes = await LocalApi.get(
-                `/tracks/${current?.short_name}/${perfIndex}/leaderboard`
-            );
-            
-            if (results.error) {
-                setError(results.error);
-                setLoading(false);
-                setFetching(false);
-                return false;
-            }
-            
-            setLeaderboard(results.leaderboard);
-            setLoading(false);
-            setFetching(false);
-            return true;
-        } catch (err:any) {
-            setLoading(false);
-            setFetching(false);
-            setError(err.message);
-            return false;
-        }
-    }
-
     return (
         <TracksContext.Provider value={{ 
-            loading, setLoading, loadLeaderboard, current, setCurrent, tracks, error, 
+            loading, setLoading, current, setCurrent, tracks, error, 
             setError, perfIndex, setPerfIndex, leaderboard, setLeaderboard, game, setGame,
             fetching, setFetching, loadTracks
             }}>
@@ -138,7 +79,7 @@ export interface TracksContextTypes {
     setLoading: (arg1: boolean) => void;
     setFetching: (arg1: boolean) => void;
     tracks: TracksTypes[];
-    loadTracks: (arg1?:boolean) => Promise<boolean>;
+    loadTracks: (arg1: "b"|"a"|"s1", arg2?:boolean) => Promise<boolean>;
     current: TracksTypes;
     setCurrent: (arg1: TracksTypes|undefined|null) => void;
     error: string;
