@@ -1,15 +1,9 @@
 "use client";
 
-import { TracksContextTypes, useTracksContext } from "@/providers/TracksProvider";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 const ClassDropdown = ({ currentClass } : { currentClass: "b"|"a"|"s1" }) => {
-
-
-    const { 
-        loading, perfIndex
-    }:TracksContextTypes = useTracksContext();
 
     const [ open, setOpen ] = useState<boolean>(false);
     const [ mounted, setMounted ] = useState<boolean>(false);
