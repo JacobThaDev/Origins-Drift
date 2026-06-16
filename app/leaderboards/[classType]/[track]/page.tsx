@@ -1,6 +1,5 @@
 "use client";
 
-import LoadingBox from "@/components/global/LoadingBox";
 import { RouteIcon } from "@/components/icons/RouteIcon";
 import Container from "@/components/layout/Container";
 import PageHeader from "@/components/layout/PageHeader";
@@ -16,7 +15,7 @@ type ProfileTypes = {
     params: Promise<{ classType: "b"|"a"|"s1", track:string }>
 }
 
-export default function ClassLeaderboard({ params }: ProfileTypes) {
+export default function TrackLeaderboard({ params }: ProfileTypes) {
     
     const { track, classType }: { track:string; classType: "b"|"a"|"s1" } = use(params);
     const { tracks, current, setCurrent, loadTracks }:TracksContextTypes = useTracksContext();
@@ -29,26 +28,24 @@ export default function ClassLeaderboard({ params }: ProfileTypes) {
         if (!mounted) {
             return;
         }
+        loadTracks(classType, true);
     },// eslint-disable-next-line 
     [mounted]);
 
+    
     useEffect(() => {
         if (!tracks) {
+            loadTracks(classType, true);
             return;
         }
+
         tracks.forEach((trackInfo:TracksTypes) => {
             if (trackInfo.short_name.toLowerCase() == track.toLowerCase()) {
                 setCurrent(trackInfo);
-
-                loadTracks(classType, true);
             }
         });
     }, // eslint-disable-next-line 
     [ tracks, track ]);
-
-    if (!current) {
-        return <LoadingBox message="Loading Track Data"/>;
-    }
 
     return (
         <>
@@ -61,18 +58,18 @@ export default function ClassLeaderboard({ params }: ProfileTypes) {
                         Medium
                     </div>
 
-                    {current.favorite && 
+                    {current?.favorite && 
                     <div className="bg-info/10 border-2 border-info/10 py-1 px-2 rounded-lg">
                         Top Track
                     </div>}
 
-                    {current.Game?.symbol == "FH5" && 
+                    {current?.Game?.symbol == "FH5" && 
                     <div className="flex gap-2 lg:ml-auto bg-black/20 border-2 border-border py-1 px-2 rounded-lg items-center">
                         <p className="text-info font-black">FORZA</p>
                         <p className="text-white/60">HORIZON 5</p>
                     </div>}
 
-                    {current.Game?.symbol == "FH6" && 
+                    {current?.Game?.symbol == "FH6" && 
                     <div className="flex gap-2 lg:ml-auto bg-black/20 border-2 border-border py-1 px-2 rounded-lg items-center">
                         <p className="text-info font-black">FORZA</p>
                         <p className="text-white/60">HORIZON 6</p>
@@ -81,7 +78,7 @@ export default function ClassLeaderboard({ params }: ProfileTypes) {
                 
                 <div className="flex flex-col lg:flex-row justify-between lg:items-center mb-5">
                     <div>
-                        <p className="text-3xl lg:text-6xl font-bold mb-3">{current.name} Circuit</p>
+                        <p className="text-3xl lg:text-6xl font-bold mb-3">{current?.name} Circuit</p>
                         <p className="text-white/60 mb-5">Compete for the highest drift scores on this legendary drift circuit.</p>
                     </div>
                     <div>
@@ -102,12 +99,12 @@ export default function ClassLeaderboard({ params }: ProfileTypes) {
 
                             <div className="flex items-center gap-3">
                                 <RouteIcon height={18} strokeWidth={2} className="text-muted"/>
-                                <p>{current.length} mi</p>
+                                <p>0 mi</p>
                             </div>
 
                             <div className="w-[1px] bg-border"></div>
 
-                            <ClassButton track={current.short_name} classType={classType}/>
+                            <ClassButton track={track} classType={classType}/>
                         </div>
                     </div>
                 </div>
@@ -117,7 +114,7 @@ export default function ClassLeaderboard({ params }: ProfileTypes) {
 
         <Container>
             <div className="pb-20">
-                <Leaderboard track={current.short_name} classType={classType}/>
+                <Leaderboard track={track} classType={classType}/>
             </div>
         </Container>
         </>

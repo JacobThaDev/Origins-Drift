@@ -13,7 +13,7 @@ import { TracksTypes } from "@/utils/types/TracksTypes";
 
 const Leaderboard = ({ track, classType }: { track: string, classType: "b"|"a"|"s1" }) => {
 
-     const { profile }:ProfileContextTypes = useProfileContext();
+    const { profile }:ProfileContextTypes = useProfileContext();
      
     const [ mounted, setMounted ] = useState<boolean>();
     const [ trackData, setTrackData ] = useState<TracksTypes>();
@@ -29,12 +29,12 @@ const Leaderboard = ({ track, classType }: { track: string, classType: "b"|"a"|"
             return;
         }
 
-       // updateLeaderboard();
+        updateLeaderboard();
 
     },// eslint-disable-next-line 
     [mounted]);
     
-    /*const updateLeaderboard = async() => {
+    const updateLeaderboard = async() => {
         setFetching(true)
         try {
             let results:LeaderboardTypes = await LocalApi.get(
@@ -55,7 +55,7 @@ const Leaderboard = ({ track, classType }: { track: string, classType: "b"|"a"|"
         } catch (err:any) {
             console.log(err);
         }    
-    }*/
+    }
 
     return(
         <>
