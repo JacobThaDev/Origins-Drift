@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { UsersIcon } from "../icons/UsersIcon";
 import { formatNumber } from "@/utils/Functions";
 
-const TrackSelector = ({ gameId }: { gameId: number }) => {
+const TrackSelector = ({ gameId, classType }: { gameId: number; classType: "b"|"a"|"s1" }) => {
     
     const { tracks, current }:TracksContextTypes = useTracksContext();
     const [ menuOpen, setMenuOpen ] = useState<boolean>(false);
@@ -54,7 +54,7 @@ const TrackSelector = ({ gameId }: { gameId: number }) => {
                         }
                         return(
                             <Link
-                                href={`/track/${track.short_name}`} 
+                                href={`/leaderboards/${classType}/${track.short_name}`} 
                                 key={index} 
                                 id="track-button"
                                 className={`flex w-full items-center gap-3 hover:bg-card px-5 py-2 ${current == track ? "!bg-info/10" : ""}`} >

@@ -82,7 +82,7 @@ export default function TrackLeaderboard({ params }: ProfileTypes) {
                         <p className="text-white/60 mb-5">Compete for the highest drift scores on this legendary drift circuit.</p>
                     </div>
                     <div>
-                        <TrackSelector gameId={current ? current.game : 3}/>
+                        <TrackSelector gameId={current ? current.game : 3} classType={classType}/>
                     </div>
                 </div>
                         
