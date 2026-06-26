@@ -222,7 +222,7 @@ export const getTrackByNameWithHook = (track:string) => unstable_cache(
 export const getTracksData = (classType:string = 'a') => unstable_cache(
     async () => {
         const trackData = await db.tracks.findAll({
-            order: [['id', 'ASC']],
+            order: [['name', 'ASC']],
             attributes: {
                 exclude: ['webhook_url'],
                 include: [
@@ -291,7 +291,8 @@ export const getBasicTrackData = (track:string) => unstable_cache(
             include: {
                 model: db.games,
                 as: "Game"
-            }
+            },
+            order: [['name', 'ASC']],
         });
         
         return trackData;
